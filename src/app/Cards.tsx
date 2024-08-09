@@ -13,7 +13,7 @@ type Props = {
 export function CardPrim({ children, shouldDisplaceOnHover, className, onClick }: { children: React.ReactNode, shouldDisplaceOnHover?: boolean, className?: string, onClick?: () => void }) {
     return <div onClick={onClick} className={`cursor-pointer flex flex-row items-center gap-4 ${shouldDisplaceOnHover ? "transform hover:translate-y-1 transition duration-100 border-b-4 hover:border-0 border-black/10 px-4 py-5" : ""} ${className}`}>{children}</div>
 }
-function ServiceInfoCard({ service, via, isPopular, className, onClick }: Props) {
+function DepartureCard({ service, via, isPopular, className, onClick }: Props) {
     const {
         status,
         platform,
@@ -40,4 +40,4 @@ function ServiceInfoCard({ service, via, isPopular, className, onClick }: Props)
     )
 }
 
-export default ServiceInfoCard
+export default DepartureCard

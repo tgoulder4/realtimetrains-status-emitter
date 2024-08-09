@@ -14,26 +14,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { maxWidthClassNames } from "@/lib/layout";
 import { applicationName } from "@/app-config";
 import { Input } from "@/components/ui/input";
-import ServiceInfoCard, { CardPrim } from "../Cards";
+import DepartureCard, { CardPrim } from "../Cards";
 import { Button } from "@/components/ui/button";
-/**
- * 
- * @param srvcs 
- * @returns Unique services. Errors are "MULTIDEST" for multiple destinations.
- */
-function findUniqueServices(srvcs: Service[]): Service[] {
-    return srvcs.map(station => {
-        const stationName = station.destinationStationName;
-        //if stationanme contains a comma or an and symbol throw an error
-        if (stationName.includes(',') || stationName.includes('&')) {
-            return { destinationStationName: "MULTIDEST", departureTime: "--", platform: "0", status: "Error", stationCode: "--" };
-        } else {
-            return station
-        }
-    }).filter((value, index, self) => {
-        return srvcs.findIndex(station => station.destinationStationName === value.destinationStationName) === index;
-    })
-}
+import { findUniqueServices } from "@/lib/services";
 function InputField({ leftText, value, className }: { leftText: string, value?: string, className?: string }) {
     return <div className={`w-full flex flex-row items-center gap-2 ${className}`}>
         <p className="opacity-40 text-sm text-white">{leftText}</p>
@@ -41,18 +24,10 @@ function InputField({ leftText, value, className }: { leftText: string, value?: 
     </div>
 }
 export default function Home() {
-    // const { execute, isPending, error } = useServerAction(submitDestinationSA);
-    const formSchema = z.object({ dest: z.string() });
-    // const form = useForm<z.infer<typeof formSchema>>({
-    //     resolver: zodResolver(formSchema),
-    //     defaultValues: {
-    //         dest: 'BHM',
-    //     }
-    // });
     const sp = useSearchParams()
     const destination = sp.get('dest');
     const destinationName = findStationNameByCode(destination ? destination : '');
-    const [servicesFromEuston, setServicesFromEuston] = useState<Service[]>([
+    const [departures, setDepartures] = useState<Service[]>([
         {
             destinationStationName: "Birmingham New Street",
             departureTime: "12:00",
@@ -68,26 +43,16 @@ export default function Home() {
             stationCode: 'MAN'
         }
     ]);
-    const [selectedServices, setSelectedServices] = useState<string[]>([]);
+    //select the string station codes for easy appending to the URL
+    const [selectedDepartures, setSelectedDepartures] = useState<string[]>([]);
+
     useEffect(() => {
         async function main() {
             // const services = await getServiceList(destination ? destination : undefined);
-            // setServicesFromEuston(destination ? services.slice(0, 8) : services);
+            // setDepartures(destination ? services.slice(0, 8) : services);
         }
         main()
     }, []);
-    const [errors, setErrors] = useState<string[]>([""]);
-    const uniqueServicesFromEuston: Service[] = findUniqueServices(servicesFromEuston)
-        .filter(station => {
-            if (station.destinationStationName === "MULTIDEST") {
-                setErrors(prev => ([...prev, "Some destinations aren't available as multiple destinations aren't yet supported."]));
-            }
-            return station.destinationStationName !== "MULTIDEST";
-        })
-    // console.log("uniqueServicesFromEuston: ", uniqueServicesFromEuston);
-
-
-    //make a headerarea component then abstract it. make it here then once it's done move it to a diferent file.
     return (
         <main className="flex min-h-screen h-full flex-col">
             <div className={`hidden ${maxWidthClassNames}`}></div>
@@ -103,24 +68,17 @@ export default function Home() {
             <div className={`${maxWidthClassNames} flex flex-col h-full justify-between`}>
                 <div className="px-12 pt-8 flex flex-col h-full gap-4">
                     <h2 className="font-semibold">{destination ? "Results" : "Departing soon"}</h2>
-                    <DeparturesList setSelectedServices={setSelectedServices} selectedServices={selectedServices} services={uniqueServicesFromEuston} via={destination ? destinationName : undefined} />
+                    <div className="flex flex-col gap-4">
+                        {departures.map(departure => <DepartureCard onClick={() => {
+                            console.log("Appending station code " + departure.stationCode); setSelectedDepartures(prev => prev.includes(departure.stationCode) ?
+                                prev.filter(code => code !== departure.stationCode)
+                                : [...prev, departure.stationCode]);
+                            console.log("Selected departures: ", selectedDepartures);
+                        }} className={`${selectedDepartures.includes(departure.stationCode) ? "!bg-blue-300" : ""}`} via={destination || undefined} service={departure} />)}
+                    </div>
                 </div>
-                {selectedServices.length && <div className="px-10 grid place-items-center"> <Button className="animate-in text-lg font-semibold  bg-green-900 border-b-8 border-green-950 hover:border-b-0 px-12 py-8 -translate-y-10 transition-transform ease-in text-white">Beat The Rush! ({selectedServices.length})</Button></div>}
+                {selectedDepartures.length && <div className="px-10 grid place-items-center"> <Button className="animate-in text-lg font-semibold  bg-green-900 border-b-8 border-green-950 hover:border-b-0 px-12 py-8 -translate-y-10 transition-transform ease-in text-white">Beat The Rush! ({selectedDepartures.length})</Button></div>}
             </div>
-            {errors?.map(err => <CardPrim className="bg-red-900"><p className="text-white">{err}</p></CardPrim>)}
         </main>
     );
-}
-
-function DeparturesList({ services, selectedServices, via, setSelectedServices }: { services: Service[], selectedServices: string[], via?: string, setSelectedServices: Dispatch<SetStateAction<string[]>> }) {
-    return (
-        <div className="flex flex-col gap-4">
-            {services.map(service => <ServiceInfoCard onClick={() => {
-                console.log("Appending station code " + service.stationCode); setSelectedServices(prev => prev.includes(service.stationCode) ?
-                    prev.filter(code => code !== service.stationCode)
-                    : [...prev, service.stationCode]);
-                console.log("Selected services: ", selectedServices);
-            }} className={`${selectedServices.includes(service.stationCode) ? "!bg-blue-300" : ""}`} via={via} service={service} />)}
-        </div>
-    )
 }
