@@ -8,7 +8,7 @@ export type Service = {
     departureTime: string,
     destinationStationName: string,
     stationCode: string,
-    errors?: any
+    provider?: string
 }
 export const getServiceList = async (dest?: string): Promise<Service[]> => {
     console.log("getServiceList called with dest: ", dest)
@@ -43,6 +43,6 @@ export const getServiceList = async (dest?: string): Promise<Service[]> => {
 
     } catch (e) {
         console.error(e);
-        return [{ status: 'Error', platform: '0', departureTime: '--', destinationStationName: '--', errors: e, stationCode: '--' }]
+        return [{ status: 'Error', platform: '0', departureTime: '--', destinationStationName: '--', stationCode: '--' }]
     }
 }
