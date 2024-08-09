@@ -25,11 +25,11 @@ function ServiceInfoCard({ service, via, isPopular, className, onClick }: Props)
     return (
         <CardPrim onClick={onClick} className={`bg-white h-20 ${className}`} shouldDisplaceOnHover>
             <h2 className='text-xl font-bold'>{departureTime}</h2>
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-start">
                 <h3 className='font-bold'>{destinationStationName}</h3>
                 <div className="flex flex-row justify-between w-full">
                     {via &&
-                        <div className="flex flex-row mt-2 gap-2">
+                        <div className="flex flex-row  gap-2">
                             <p className='opacity-50'>Via {via}</p>
                             {isPopular ? <Badge className='bg-[#D2F3FA]' variant="default">Badge</Badge> : <></>}
                         </div>}

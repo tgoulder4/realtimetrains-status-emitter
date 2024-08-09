@@ -51,6 +51,7 @@ export default function Home() {
     // });
     const sp = useSearchParams()
     const destination = sp.get('dest');
+    const destinationName = findStationNameByCode(destination ? destination : '');
     const [servicesFromEuston, setServicesFromEuston] = useState<Service[]>([
         {
             destinationStationName: "Birmingham New Street",
@@ -83,26 +84,26 @@ export default function Home() {
             }
             return station.destinationStationName !== "MULTIDEST";
         })
-    console.log("uniqueServicesFromEuston: ", uniqueServicesFromEuston);
+    // console.log("uniqueServicesFromEuston: ", uniqueServicesFromEuston);
 
 
     //make a headerarea component then abstract it. make it here then once it's done move it to a diferent file.
     return (
-        <main className="flex min-h-screen flex-col h-full">
+        <main className="flex min-h-screen h-full flex-col">
             <div className={`hidden ${maxWidthClassNames}`}></div>
             <div className={`navArea w-full pt-8 pb-4 md:pt-20 bg-zinc-900`}>
                 <div className={`${maxWidthClassNames} flex flex-col gap-4 items-center`}>
                     <h2 className="font-semibold text-white text-2xl">{applicationName}</h2>
                     <div className="w-full flex flex-col gap-4">
                         <InputField value="London Euston" leftText="From:" />
-                        <InputField className="pl-[17px]" value={destination ? findStationNameByCode(destination) : ''} leftText="To:" />
+                        <InputField className="pl-[17px]" value={destination ? destinationName : ''} leftText="To:" />
                     </div>
                 </div>
             </div>
             <div className={`${maxWidthClassNames} flex flex-col h-full justify-between`}>
-                <div className="px-12 pt-8 flex flex-col gap-4">
+                <div className="px-12 pt-8 flex flex-col h-full gap-4">
                     <h2 className="font-semibold">{destination ? "Results" : "Departing soon"}</h2>
-                    <DeparturesList setSelectedServices={setSelectedServices} selectedServices={selectedServices} services={uniqueServicesFromEuston} via={destination ? destination : undefined} />
+                    <DeparturesList setSelectedServices={setSelectedServices} selectedServices={selectedServices} services={uniqueServicesFromEuston} via={destination ? destinationName : undefined} />
                 </div>
                 {selectedServices.length && <div className="px-10 grid place-items-center"> <Button className="animate-in text-lg font-semibold  bg-green-900 border-b-8 border-green-950 hover:border-b-0 px-12 py-8 -translate-y-10 transition-transform ease-in text-white">Beat The Rush! ({selectedServices.length})</Button></div>}
             </div>
@@ -117,8 +118,9 @@ function DeparturesList({ services, selectedServices, via, setSelectedServices }
             {services.map(service => <ServiceInfoCard onClick={() => {
                 console.log("Appending station code " + service.stationCode); setSelectedServices(prev => prev.includes(service.stationCode) ?
                     prev.filter(code => code !== service.stationCode)
-                    : [...prev, service.stationCode])
-            }} className={`${selectedServices.includes(service.stationCode) ? "bg-blue-300" : ""}`} service={service} />)}
+                    : [...prev, service.stationCode]);
+                console.log("Selected services: ", selectedServices);
+            }} className={`${selectedServices.includes(service.stationCode) ? "!bg-blue-300" : ""}`} via={via} service={service} />)}
         </div>
     )
 }
