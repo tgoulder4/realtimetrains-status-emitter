@@ -37,6 +37,7 @@ export default function Home() {
         }
     })
     function onSubmit(data: z.infer<typeof formSchema>) {
+        console.log("onSubmit called with data: ", data)
         window.location.href = `/find?dest=${data.dest}`
     }
 
@@ -73,7 +74,7 @@ export default function Home() {
                 <div className={`${maxWidthClassNames} flex flex-col gap-4 items-center`}>
                     <h2 className="font-semibold text-white text-2xl">{applicationName}</h2>
                     <Form {...form}>
-                        <form className="w-full" onClick={form.handleSubmit(onSubmit)}>
+                        <form className="w-full" onSubmit={form.handleSubmit(onSubmit)}>
                             <div className="w-full flex flex-col gap-4">
                                 <div className="flex flex-row gap-2">
                                     <div className={`w-full flex flex-row items-center gap-2`}>
@@ -95,11 +96,10 @@ export default function Home() {
                                 <div className="pl-[17px] flex flex-row gap-2">
                                     <div className={`w-full flex flex-row items-center gap-2`}>
                                         <p className="opacity-40 text-sm text-white">To:</p>
-                                        <DeparturesComboBoxFormField options={findUniquelyNamedDepartures(departures).map(station => ({ label: station.destinationStationName, value: station.stationCode }))} form={form} />
+                                        <DeparturesComboBoxFormField onSubmit={onSubmit} options={findUniquelyNamedDepartures(departures).map(station => ({ label: station.destinationStationName, value: station.stationCode }))} form={form} />
                                     </div>
                                 </div>
                             </div>
-                            <Button type="submit"></Button>
 
                         </form>
                     </Form>

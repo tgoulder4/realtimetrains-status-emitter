@@ -22,10 +22,11 @@ type Props = {
     form: UseFormReturn<any>,
     options: { label: string, value: string }[],
     defaultOption?: { label: string, value: string }
+    onSubmit: (data: any) => void
 }
 
 function DeparturesComboBoxFormField({
-    form, options
+    form, options, onSubmit
 }: Props) {
     return (
         <FormField
@@ -39,6 +40,7 @@ function DeparturesComboBoxFormField({
                                 <Button
                                     variant="outline"
                                     role="combobox"
+                                    type='button'
                                     className={cn(
                                         "justify-between bg-zinc-800 border-zinc-800/90 text-white font-bold rounded-none",
                                         !field.value && "text-muted-foreground"
@@ -64,7 +66,8 @@ function DeparturesComboBoxFormField({
                                                 value={option.label}
                                                 key={option.value}
                                                 onSelect={() => {
-                                                    form.setValue("dest", option.value)
+                                                    form.setValue("dest", option.value);
+                                                    form.handleSubmit(onSubmit)();
                                                 }}
                                             >
                                                 <Check
