@@ -2,25 +2,27 @@
 import { findStationCodeByName, findStationNameByCode, stationNamesWithCodes } from "@/lib/map";
 import cheerio from 'cheerio'
 import { useServerAction } from 'zsa-react'
-import { checkTrueDestinationName } from "@/lib/utils";
+import { addIfNewOrRemoveIfExistingItemFromArray } from "@/lib/utils";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import { ComboBox } from "@/components/ui/combobox";
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { getServiceList, Service } from "../utils";
+import { getServiceList } from "../../lib/core/main";
+import { Service } from "@/lib/types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { maxWidthClassNames } from "@/lib/layout";
 import { applicationName } from "@/app-config";
 import { Input } from "@/components/ui/input";
 import DepartureCard, { CardPrim } from "../Cards";
 import { Button } from "@/components/ui/button";
-import { findUniqueServices } from "@/lib/services";
-function InputField({ leftText, value, className }: { leftText: string, value?: string, className?: string }) {
+import { checkTrueDestinationName } from "@/lib/destinations";
+import { findUniquelyNamedDepartures } from "@/lib/departures";
+function InputFieldForDepOrDest({ leftText, defaultValue, readOnly, className }: { leftText: string, defaultValue?: string, readOnly?: boolean, className?: string }) {
     return <div className={`w-full flex flex-row items-center gap-2 ${className}`}>
         <p className="opacity-40 text-sm text-white">{leftText}</p>
-        <Input className="bg-zinc-800 border-zinc-800/90 text-white font-bold" value={value} placeholder="Select a station..." />
+        <Input className="bg-zinc-800 border-zinc-800/90 text-white font-bold" defaultValue={defaultValue} readOnly={readOnly} placeholder="Select a station..." />
     </div>
 }
 export default function Home() {
@@ -60,24 +62,31 @@ export default function Home() {
                 <div className={`${maxWidthClassNames} flex flex-col gap-4 items-center`}>
                     <h2 className="font-semibold text-white text-2xl">{applicationName}</h2>
                     <div className="w-full flex flex-col gap-4">
-                        <InputField value="London Euston" leftText="From:" />
-                        <InputField className="pl-[17px]" value={destination ? destinationName : ''} leftText="To:" />
+                        <InputFieldForDepOrDest defaultValue="London Euston" readOnly leftText="From:" />
+                        <div className="flex flex-row gap-2">
+                            <InputFieldForDepOrDest className="pl-[17px]" defaultValue={destination ? destinationName : ''} leftText="To:" />
+                            <Button type="submit"></Button>
+                        </div>
                     </div>
+                    {/* form here */}
                 </div>
             </div>
             <div className={`${maxWidthClassNames} flex flex-col h-full justify-between`}>
                 <div className="px-12 pt-8 flex flex-col h-full gap-4">
                     <h2 className="font-semibold">{destination ? "Results" : "Departing soon"}</h2>
                     <div className="flex flex-col gap-4">
-                        {departures.map(departure => <DepartureCard onClick={() => {
-                            console.log("Appending station code " + departure.stationCode); setSelectedDepartures(prev => prev.includes(departure.stationCode) ?
-                                prev.filter(code => code !== departure.stationCode)
-                                : [...prev, departure.stationCode]);
-                            console.log("Selected departures: ", selectedDepartures);
-                        }} className={`${selectedDepartures.includes(departure.stationCode) ? "!bg-blue-300" : ""}`} via={destination || undefined} service={departure} />)}
+                        {departures.map(departure =>
+                            <DepartureCard onClick={() => {
+                                setSelectedDepartures(prev => addIfNewOrRemoveIfExistingItemFromArray(prev, departure.stationCode))
+                            }} className={`${selectedDepartures.includes(departure.stationCode) ? "!bg-blue-300" : ""}`} via={destination || undefined} service={departure} />)
+                        }
                     </div>
                 </div>
-                {selectedDepartures.length && <div className="px-10 grid place-items-center"> <Button className="animate-in text-lg font-semibold  bg-green-900 border-b-8 border-green-950 hover:border-b-0 px-12 py-8 -translate-y-10 transition-transform ease-in text-white">Beat The Rush! ({selectedDepartures.length})</Button></div>}
+                {selectedDepartures.length && <div className="px-10 grid place-items-center">
+                    <Button className="animate-in text-lg font-semibold  bg-green-900 border-b-8 border-green-950 hover:border-b-0 px-12 py-8 -translate-y-10 transition-transform ease-in text-white">
+                        Beat The Rush! ({selectedDepartures.length})
+                    </Button>
+                </div>}
             </div>
         </main>
     );

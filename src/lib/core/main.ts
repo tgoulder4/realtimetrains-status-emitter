@@ -2,14 +2,8 @@
 import { cache } from "react";
 import cheerio from 'cheerio'
 import { findStationCodeByName } from "@/lib/map";
-export type Service = {
-    status: string,
-    platform: string,
-    departureTime: string,
-    destinationStationName: string,
-    stationCode: string,
-    provider?: string
-}
+import { Service } from "@/lib/types";
+
 export const getServiceList = async (dest?: string): Promise<Service[]> => {
     console.log("getServiceList called with dest: ", dest)
     try {

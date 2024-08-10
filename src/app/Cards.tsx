@@ -1,5 +1,5 @@
 import React from 'react'
-import { Service } from './utils'
+import { Service } from '../lib/core/main'
 import { Badge } from "@/components/ui/badge"
 import { checkStationIsPopular } from '@/lib/utils'
 

@@ -2,9 +2,6 @@ import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { stationNamesWithCodes } from "./map"
 
-export function checkTrueDestinationName(destination: string) {
-  return stationNamesWithCodes.find(station => station.StationName === destination) ? true : false
-}
 export function checkStationIsPopular(stationName: string) {
   const popularStations = ['Birmingham New Street', "Manchester Piccadilly", "Crewe",
     "London Euston", "London Kings Cross", "London St Pancras International", "London Liverpool Street",
@@ -16,4 +13,7 @@ export function checkStationIsPopular(stationName: string) {
 }
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
+}
+export function addIfNewOrRemoveIfExistingItemFromArray<T>(arr: T[], item: T) {
+  return arr.includes(item) ? arr.filter(i => i !== item) : [...arr, item]
 }
