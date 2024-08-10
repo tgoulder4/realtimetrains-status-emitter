@@ -1,5 +1,5 @@
 'use client'
-import { findStationCodeByName, findStationNameByCode, stationNamesWithCodes } from "@/lib/map";
+import { stationNamesWithCodes } from "@/lib/map";
 import cheerio from 'cheerio'
 import { useServerAction } from 'zsa-react'
 import { addIfNewOrRemoveIfExistingItemFromArray, cn } from "@/lib/utils";
@@ -17,7 +17,7 @@ import { applicationName } from "@/app-config";
 import { Input } from "@/components/ui/input";
 import DepartureCard, { CardPrim } from "../Cards";
 import { Button } from "@/components/ui/button";
-import { checkTrueDestinationName } from "@/lib/destinations";
+import { checkTrueDestinationName, findDestinationCodeByName, findDestinationNameByCode } from "@/lib/destinations";
 import { findUniquelyNamedDepartures } from "@/lib/departures";
 import DeparturesComboBoxFormField from "./departuresComboBoxFormField";
 
@@ -25,7 +25,7 @@ import DeparturesComboBoxFormField from "./departuresComboBoxFormField";
 export default function Home() {
     const sp = useSearchParams()
     const destination = sp.get('dest');
-    const destinationName = findStationNameByCode(destination ? destination : '');
+    const destinationName = findDestinationNameByCode(destination ? destination : '');
     console.log("destinationName: ", destinationName)
     //header form stuff
     const formSchema = z.object({ dest: z.string().length(3).or(z.string().length(0)), dep: z.literal("London Euston") });
@@ -73,7 +73,7 @@ export default function Home() {
         main()
     }, []);
     return (
-        <main className="flex min-h-screen h-full flex-col">
+        <main className="flex h-full flex-col pb-24">
             <div className={`hidden ${maxWidthClassNames}`}></div>
             <div className={`navArea w-full pt-8 pb-4 md:pt-20 bg-zinc-900`}>
                 <div className={`${maxWidthClassNames} flex flex-col gap-4 items-center`}>
@@ -128,7 +128,7 @@ export default function Home() {
                         } else {
                             window.location.href = `/track?trains=${selectedDepartures.map(code => `T${departures.find(dep => dep.stationCode == code)?.departureTime}D${code}`).join('+')}`
                         }
-                    }} className="animate-in text-lg font-semibold  bg-green-900 border-b-8 border-green-950 hover:border-b-0 px-12 py-8 -translate-y-10 transition-transform ease-in text-white">
+                    }} className={`animate-in text-lg font-semibold ${selectedDepartures.length > 0 ? "bg-green-900 border-b-8 border-green-950 hover:border-b-0 -translate-y-2" : ""}  px-12 py-8  transition-transform ease-in text-white`}>
                         Beat The Rush! {selectedDepartures.length > 0 && `(${selectedDepartures.length})`}
                     </Button>
                 </div>
