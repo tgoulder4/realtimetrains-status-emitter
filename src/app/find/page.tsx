@@ -2,9 +2,9 @@
 import { findStationCodeByName, findStationNameByCode, stationNamesWithCodes } from "@/lib/map";
 import cheerio from 'cheerio'
 import { useServerAction } from 'zsa-react'
-import { addIfNewOrRemoveIfExistingItemFromArray } from "@/lib/utils";
+import { addIfNewOrRemoveIfExistingItemFromArray, cn } from "@/lib/utils";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-
+import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '@/components/ui/form'
 import { ComboBox } from "@/components/ui/combobox";
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from "react-hook-form";
@@ -19,16 +19,28 @@ import DepartureCard, { CardPrim } from "../Cards";
 import { Button } from "@/components/ui/button";
 import { checkTrueDestinationName } from "@/lib/destinations";
 import { findUniquelyNamedDepartures } from "@/lib/departures";
-function InputFieldForDepOrDest({ leftText, defaultValue, readOnly, className }: { leftText: string, defaultValue?: string, readOnly?: boolean, className?: string }) {
-    return <div className={`w-full flex flex-row items-center gap-2 ${className}`}>
-        <p className="opacity-40 text-sm text-white">{leftText}</p>
-        <Input className="bg-zinc-800 border-zinc-800/90 text-white font-bold" defaultValue={defaultValue} readOnly={readOnly} placeholder="Select a station..." />
-    </div>
-}
+import DeparturesComboBoxFormField from "./departuresComboBoxFormField";
+
+
 export default function Home() {
     const sp = useSearchParams()
     const destination = sp.get('dest');
     const destinationName = findStationNameByCode(destination ? destination : '');
+    console.log("destinationName: ", destinationName)
+    //header form stuff
+    const formSchema = z.object({ dest: z.string().length(3), dep: z.literal("London Euston") });
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            dest: destination || '',
+            dep: 'London Euston'
+        }
+    })
+    function onSubmit(data: z.infer<typeof formSchema>) {
+        window.location.href = `/find?dest=${data.dest}`
+    }
+
+
     const [departures, setDepartures] = useState<Service[]>([
         {
             destinationStationName: "Birmingham New Street",
@@ -47,7 +59,6 @@ export default function Home() {
     ]);
     //select the string station codes for easy appending to the URL
     const [selectedDepartures, setSelectedDepartures] = useState<string[]>([]);
-
     useEffect(() => {
         async function main() {
             // const services = await getServiceList(destination ? destination : undefined);
@@ -61,13 +72,37 @@ export default function Home() {
             <div className={`navArea w-full pt-8 pb-4 md:pt-20 bg-zinc-900`}>
                 <div className={`${maxWidthClassNames} flex flex-col gap-4 items-center`}>
                     <h2 className="font-semibold text-white text-2xl">{applicationName}</h2>
-                    <div className="w-full flex flex-col gap-4">
-                        <InputFieldForDepOrDest defaultValue="London Euston" readOnly leftText="From:" />
-                        <div className="flex flex-row gap-2">
-                            <InputFieldForDepOrDest className="pl-[17px]" defaultValue={destination ? destinationName : ''} leftText="To:" />
+                    <Form {...form}>
+                        <form className="w-full" onClick={form.handleSubmit(onSubmit)}>
+                            <div className="w-full flex flex-col gap-4">
+                                <div className="flex flex-row gap-2">
+                                    <div className={`w-full flex flex-row items-center gap-2`}>
+                                        <p className="opacity-40 text-sm text-white">From:</p>
+                                        <FormField
+                                            control={form.control}
+                                            name="dep"
+                                            render={({ field }) => (
+                                                <FormItem className="w-full">
+                                                    <FormControl>
+                                                        <Input {...field} readOnly className="bg-zinc-800 border-zinc-800/90 text-white font-bold" />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="pl-[17px] flex flex-row gap-2">
+                                    <div className={`w-full flex flex-row items-center gap-2`}>
+                                        <p className="opacity-40 text-sm text-white">To:</p>
+                                        <DeparturesComboBoxFormField options={findUniquelyNamedDepartures(departures).map(station => ({ label: station.destinationStationName, value: station.stationCode }))} form={form} />
+                                    </div>
+                                </div>
+                            </div>
                             <Button type="submit"></Button>
-                        </div>
-                    </div>
+
+                        </form>
+                    </Form>
                     {/* form here */}
                 </div>
             </div>
@@ -88,6 +123,6 @@ export default function Home() {
                     </Button>
                 </div>}
             </div>
-        </main>
+        </main >
     );
 }
