@@ -40,6 +40,10 @@ export default function Home() {
         console.log("onSubmit called with data: ", data)
         window.location.href = `/find?dest=${data.dest}`
     }
+    function handleBeatTheRushClick() {
+        //shake the cards of class departureCard
+
+    }
 
 
     const [departures, setDepartures] = useState<Service[]>([
@@ -60,6 +64,7 @@ export default function Home() {
     ]);
     //select the string station codes for easy appending to the URL
     const [selectedDepartures, setSelectedDepartures] = useState<string[]>([]);
+    const [error, setError] = useState<string | null>(null);
     useEffect(() => {
         async function main() {
             // const services = await getServiceList(destination ? destination : undefined);
@@ -103,7 +108,6 @@ export default function Home() {
 
                         </form>
                     </Form>
-                    {/* form here */}
                 </div>
             </div>
             <div className={`${maxWidthClassNames} flex flex-col h-full justify-between`}>
@@ -113,15 +117,21 @@ export default function Home() {
                         {departures.map(departure =>
                             <DepartureCard onClick={() => {
                                 setSelectedDepartures(prev => addIfNewOrRemoveIfExistingItemFromArray(prev, departure.stationCode))
-                            }} className={`${selectedDepartures.includes(departure.stationCode) ? "!bg-blue-300" : ""}`} via={destination || undefined} service={departure} />)
+                            }} className={`${selectedDepartures.includes(departure.stationCode) ? "!bg-blue-300" : ""} ${error && "animate-[shake] duration-700 animate-once transition-colors bg-red-400"}`} via={destination || undefined} service={departure} />)
                         }
                     </div>
                 </div>
-                {selectedDepartures.length && <div className="px-10 grid place-items-center">
-                    <Button className="animate-in text-lg font-semibold  bg-green-900 border-b-8 border-green-950 hover:border-b-0 px-12 py-8 -translate-y-10 transition-transform ease-in text-white">
-                        Beat The Rush! ({selectedDepartures.length})
+                <div className="px-10 grid place-items-center">
+                    <Button onClick={() => {
+                        if (selectedDepartures.length == 0) {
+                            setError("Please select at least one departure");
+                        } else {
+                            window.location.href = `/track?trains=${selectedDepartures.map(code => `T${departures.find(dep => dep.stationCode == code)?.departureTime}D${code}`).join('+')}`
+                        }
+                    }} className="animate-in text-lg font-semibold  bg-green-900 border-b-8 border-green-950 hover:border-b-0 px-12 py-8 -translate-y-10 transition-transform ease-in text-white">
+                        Beat The Rush! {selectedDepartures.length > 0 && `(${selectedDepartures.length})`}
                     </Button>
-                </div>}
+                </div>
             </div>
         </main >
     );
