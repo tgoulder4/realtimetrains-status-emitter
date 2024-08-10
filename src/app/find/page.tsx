@@ -28,7 +28,7 @@ export default function Home() {
     const destinationName = findStationNameByCode(destination ? destination : '');
     console.log("destinationName: ", destinationName)
     //header form stuff
-    const formSchema = z.object({ dest: z.string().length(3), dep: z.literal("London Euston") });
+    const formSchema = z.object({ dest: z.string().length(3).or(z.string().length(0)), dep: z.literal("London Euston") });
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -78,7 +78,7 @@ export default function Home() {
                             <div className="w-full flex flex-col gap-4">
                                 <div className="flex flex-row gap-2">
                                     <div className={`w-full flex flex-row items-center gap-2`}>
-                                        <p className="opacity-40 text-sm text-white">From:</p>
+                                        <p className="opacity-40  text-white">From:</p>
                                         <FormField
                                             control={form.control}
                                             name="dep"
@@ -95,8 +95,8 @@ export default function Home() {
                                 </div>
                                 <div className="pl-[17px] flex flex-row gap-2">
                                     <div className={`w-full flex flex-row items-center gap-2`}>
-                                        <p className="opacity-40 text-sm text-white">To:</p>
-                                        <DeparturesComboBoxFormField onSubmit={onSubmit} options={findUniquelyNamedDepartures(departures).map(station => ({ label: station.destinationStationName, value: station.stationCode }))} form={form} />
+                                        <p className="opacity-40  text-white">To:</p>
+                                        <DeparturesComboBoxFormField onSubmit={onSubmit} _options={findUniquelyNamedDepartures(departures).map(station => ({ label: station.destinationStationName, value: station.stationCode }))} form={form} />
                                     </div>
                                 </div>
                             </div>

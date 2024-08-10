@@ -20,14 +20,18 @@ import { Service } from '@/lib/types'
 import { Check, ChevronsUpDown } from 'lucide-react'
 type Props = {
     form: UseFormReturn<any>,
-    options: { label: string, value: string }[],
+    _options: { label: string, value: string }[],
     defaultOption?: { label: string, value: string }
     onSubmit: (data: any) => void
 }
 
 function DeparturesComboBoxFormField({
-    form, options, onSubmit
+    form, _options, onSubmit
 }: Props) {
+    //add a clear value to options
+    const options = [
+        { label: "Clear", value: "" },
+        ..._options];
     return (
         <FormField
             control={form.control}
@@ -48,7 +52,7 @@ function DeparturesComboBoxFormField({
                                 >
                                     {field.value
                                         ? options.find(
-                                            (language) => language.value === field.value
+                                            (station) => station.value === field.value
                                         )?.label
                                         : "Select a station..."}
                                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -57,14 +61,15 @@ function DeparturesComboBoxFormField({
                         </PopoverTrigger>
                         <PopoverContent className="p-0">
                             <Command>
-                                <CommandInput placeholder="Search language..." />
+                                <CommandInput placeholder="Search stations..." />
                                 <CommandList>
-                                    <CommandEmpty>No language found.</CommandEmpty>
+                                    <CommandEmpty>No stations found.</CommandEmpty>
                                     <CommandGroup>
                                         {options.map((option) => (
                                             <CommandItem
                                                 value={option.label}
                                                 key={option.value}
+                                                className={`${option.value === "" ? "text-white/40" : ""}`}
                                                 onSelect={() => {
                                                     form.setValue("dest", option.value);
                                                     form.handleSubmit(onSubmit)();
