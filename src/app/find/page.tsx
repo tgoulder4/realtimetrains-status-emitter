@@ -144,9 +144,9 @@ export default function Home() {
                 <div className="px-12 pt-8 flex flex-col h-full gap-4">
                     <h2 className="font-semibold">{aimStation ? "Results" : "Departing soon"}</h2>
                     <div className="flex flex-col gap-4">
-                        {renderedDepartures.map(departure => {
+                        {renderedDepartures.map((departure, index) => {
                             const selectedDepInfo = "T" + departure.scheduledDepartureTime.replace(":", "") + "D" + departure.destinationStationCode + "A" + aimStation;
-                            if (departure.destinationStationName == "LOAD") return <div className="bg-zinc-200 animate animate-pulse h-20 w-full"></div>
+                            if (departure.destinationStationName == "LOAD") return <div key={"load-" + index} className="bg-zinc-200 animate animate-pulse h-20 w-full"></div>
                             return <DepartureCard key={departure.scheduledDepartureTime + departure.destinationStationName} onClick={() => {
                                 setSelectedDepartures(prev => addIfNewOrRemoveIfExistingItemFromArray(prev, selectedDepInfo))
                             }} className={`${selectedDepartures.includes(selectedDepInfo) ? "!bg-blue-300" : ""} ${error && "animate-[shake] duration-700 animate-once transition-colors bg-red-400"}`} via={aimStationName == departure.destinationStationName ? undefined : aimStationName || undefined} service={departure} />
