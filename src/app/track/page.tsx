@@ -21,25 +21,25 @@ function TrackPage({ }: Props) {
         redirect('/404');
     }
     const [selectedServiceToTrack, setSelectedServiceToTrack] = useState(0);
-    //url like http://localhost:3000/track?trains=T1940DBHMAMAN
+    //url like http://localhost:3000/track?trains=T-1940D-BHMA-MAN
     const servicesToTrack = trains.split('+').map((train) => {
-        //get time
-        const depTime = train.slice(1, 5);
-        console.log("depTime: ", depTime)
-        //get destination code up to char before A
-        const depDestinationStation = train.slice(6, -4)
-        console.log("depDestinationStation: ", depDestinationStation)
-        const depDestinationStationName = findStationNameByCode(depDestinationStation);
-        //get aim station
-        const aimStation = train.slice(-3)
-        console.log("aimStation: ", aimStation)
-        const aimStationName = findStationNameByCode(aimStation);
-        return {
-            scheduledDepartureTime:
-                //insert a  : in the middle of the string
-                depTime.slice(0, 2) + ":" + depTime.slice(2)
-            , departure: { depDestinationStation, depDestinationStationName }, aimStation: { code: aimStation, name: aimStationName }
+        const matches = {
+            depTime: train.match(/T-(\d{4})/)?.[1],
+            depDestinationStation: train.match(/D-(\w{3})/)?.[1],
+            aimStationCode: train.match(/A-(\w{3})/)?.[1]
+        };
+        for (const key in matches) {
+            console.log("key: ", key)
+            if (key === null || key === "null") {
+                throw new Error(`No match found for ${key}`);
+            }
         }
+        const service = {
+            departure: { depDestinationStation: matches.depDestinationStation as string, depDestinationStationName: findStationNameByCode(matches.depDestinationStation!) as string },
+            scheduledDepartureTime: matches.depTime as string,
+            aimStation: { code: matches.aimStationCode as string, name: findStationNameByCode(matches.aimStationCode!) }
+        }
+        return service;
     });
     console.log("servicesToTrack: ", servicesToTrack)
     return (

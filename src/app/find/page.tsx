@@ -23,23 +23,8 @@ import DeparturesComboBoxFormField from "./departuresComboBoxFormField";
 
 
 export default function Home() {
-    const sp = useSearchParams()
-    const aimStation = sp.get('dest');
-    const aimStationName = findStationNameByCode(aimStation ? aimStation : '');
-    console.log("aimStationName: ", aimStationName)
     //header form stuff
     const formSchema = z.object({ dest: z.string().length(3).or(z.string().length(0)), dep: z.literal("London Euston") });
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            dest: aimStation || '',
-            dep: 'London Euston'
-        }
-    })
-    function onSubmit(data: z.infer<typeof formSchema>) {
-        console.log("onSubmit called with data: ", data)
-        window.location.href = `/find?dest=${data.dest}`
-    }
     function handleBeatTheRushClick() {
         //shake the cards of class departureCard
 
@@ -85,20 +70,33 @@ export default function Home() {
             destinationStationCode: "LOAD"
         },
     ]);
+    const [aimStation, setAimStation] = useState<{ name: string, code: string }>({ name: "", code: "" });
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            dest: '',
+            dep: 'London Euston'
+        }
+    })
+    async function onSubmit(data: z.infer<typeof formSchema>) {
+        console.log("onSubmit called with data: ", data)
+        const aimStationCode = data.dest;
+        if (aimStationCode) {
+            const services = await getServiceList(aimStationCode);
+            setRenderedDepartures(services.slice(0, 8));
+        } else {
+            setRenderedDepartures(departures);
+        }
+        setAimStation({ name: findStationNameByCode(aimStationCode), code: aimStationCode });
+    }
     //select the string station codes for easy appending to the URL
     const [selectedDepartures, setSelectedDepartures] = useState<string[]>([]);
     const [error, setError] = useState<string | null>(null);
     useEffect(() => {
         async function main() {
             const allServices = await getServiceList();
-            if (aimStation) {
-                const services = await getServiceList(aimStation);
-                setRenderedDepartures(services.slice(0, 8));
-            } else {
-                setRenderedDepartures(allServices);
-            }
             setDepartures(allServices);
-            //when there's an aim station, get results via that station and limit results to 8
+            setRenderedDepartures(allServices);
         }
         main()
     }, []);
@@ -145,11 +143,12 @@ export default function Home() {
                     <h2 className="font-semibold">{aimStation ? "Results" : "Departing soon"}</h2>
                     <div className="flex flex-col gap-4">
                         {renderedDepartures.map((departure, index) => {
-                            const selectedDepInfo = "T" + departure.scheduledDepartureTime.replace(":", "") + "D" + departure.destinationStationCode + "A" + aimStation;
+                            const selectedDepInfo = "T-" + departure.scheduledDepartureTime.replace(":", "") + "D-" + departure.destinationStationCode + (aimStation.code ? "A-" + aimStation.code : "");
+                            console.log("selectedDepInfo: ", selectedDepInfo)
                             if (departure.destinationStationName == "LOAD") return <div key={"load-" + index} className="bg-zinc-200 animate animate-pulse h-20 w-full"></div>
                             return <DepartureCard key={departure.scheduledDepartureTime + departure.destinationStationName} onClick={() => {
                                 setSelectedDepartures(prev => addIfNewOrRemoveIfExistingItemFromArray(prev, selectedDepInfo))
-                            }} className={`${selectedDepartures.includes(selectedDepInfo) ? "!bg-blue-300" : ""} ${error && "animate-[shake] duration-700 animate-once transition-colors bg-red-400"}`} via={aimStationName == departure.destinationStationName ? undefined : aimStationName || undefined} service={departure} />
+                            }} className={`${selectedDepartures.includes(selectedDepInfo) ? "!bg-blue-300" : ""} ${error && "animate-[shake] duration-700 animate-once transition-colors bg-red-400"}`} via={aimStation.name == departure.destinationStationName ? undefined : aimStation.name || undefined} service={departure} />
                         }
                         )
                         }
