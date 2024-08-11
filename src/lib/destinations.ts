@@ -7,7 +7,7 @@ export const findDestinationCodeByName = (stationName: string) => {
     const station = stationNamesWithCodes.find(station => station.StationName === stationName) || { Code: "" };
     return station.Code
 }
-export const findDestinationNameByCode = (stationCode: string) => {
-    const station = stationNamesWithCodes.find(station => station.Code === stationCode) || { StationName: "" };
+export const findDestinationNameByCode = (destinationStationCode: string) => {
+    const station = stationNamesWithCodes.find(station => station.Code === destinationStationCode) || { StationName: "" };
     return station.StationName
 }

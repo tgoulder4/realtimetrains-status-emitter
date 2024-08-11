@@ -23,21 +23,21 @@ export const getServiceList = async (dest?: string): Promise<Service[]> => {
         const list = $(".service").map((i, service) => {
             const status = $(service).find(".status").text();
             const platform = $(service).find(".platform").text();
-            //departureTime is in format HHMM so we need to insert a colon in the middle
-            const departureTime = $(service).find(".time").text().replace(/(\d{2})(\d{2})/, "$1:$2");
+            //scheduledDepartureTime is in format HHMM so we need to insert a colon in the middle
+            const scheduledDepartureTime = $(service).find(".time").text().replace(/(\d{2})(\d{2})/, "$1:$2");
             const destinationStationName = $(service).find('.location')
                 .clone() // Clone the element to ensure the original HTML is not modified
                 .children('.addl').remove().end() // Remove the children with class 'addl'
                 .text() // Extract the text content
                 .trim(); // Trim any extra whitespace
-            const stationCode = findDestinationCodeByName(destinationStationName);
-            return { status, platform, departureTime, destinationStationName, stationCode };
+            const destinationStationCode = findDestinationCodeByName(destinationStationName);
+            return { status, platform, scheduledDepartureTime, destinationStationName, destinationStationCode };
         }).get();
         console.log("list returned: ", list)
         return list;
 
     } catch (e) {
         console.error(e);
-        return [{ status: 'Error', platform: '0', departureTime: '--', destinationStationName: '--', stationCode: '--' }]
+        return [{ status: 'Error', platform: '0', scheduledDepartureTime: '--', destinationStationName: '--', destinationStationCode: '--' }]
     }
 }

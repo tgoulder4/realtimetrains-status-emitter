@@ -38,7 +38,7 @@ function DeparturesComboBoxFormField({
             name="dest"
             render={({ field }) => (
                 <FormItem className="flex flex-col w-full">
-                    <Popover className="w-full">
+                    <Popover>
                         <PopoverTrigger asChild>
                             <FormControl>
                                 <Button

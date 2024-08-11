@@ -10,7 +10,7 @@ import CheckingAgainTimer from './checkingAgainTimer';
 import { io } from 'socket.io-client'
 import { TrackStateSchema } from '@/lib/schemas';
 type Props = {
-    servicesToTrack: { destCode: string, destName: string, depTime: Service['departureTime'] }[]
+    servicesToTrack: { destCode: string, destName: string, scheduledDepartureTime: Service['scheduledDepartureTime'] }[]
 }
 
 function MainTrackingArea({ servicesToTrack }: Props) {
@@ -66,10 +66,10 @@ function MainTrackingArea({ servicesToTrack }: Props) {
             <div className="flex flex-col items-center gap-3 transition-all">
                 <DepartureCard shouldntDisplace className='w-full' service={{
                     destinationStationName: destName,
-                    departureTime: servicesToTrack[0].depTime,
+                    scheduledDepartureTime: servicesToTrack[0].scheduledDepartureTime,
                     platform: "1",
                     status: "On time",
-                    stationCode: ''
+                    destinationStationCode: ''
                 }} />
                 <div className="hidden bg-yellow-800 bg-red-800 bg-green-800 bg-slate-800"></div>
                 <div className={`p-5 w-full statusCard text-white flex flex-col items-center transition-colors ${getColourFromStatus(status)}`}>

@@ -23,7 +23,12 @@ async function TrackPage({ searchParams }: Props) {
     const servicesToTrack = trains.split('+').map((train) => {
         const [depTime, destCode] = train.slice(1).split('D');
         const destName = findDestinationNameByCode(destCode);
-        return { depTime: { delay: 0, time: depTime }, destCode, destName }
+        return {
+            scheduledDepartureTime:
+                //insert a  : in the middle of the string
+                depTime.slice(0, 2) + ":" + depTime.slice(2)
+            , destCode, destName
+        }
     });
     console.log("servicesToTrack: ", servicesToTrack)
     return (
@@ -35,7 +40,7 @@ async function TrackPage({ searchParams }: Props) {
                     <div className="flex flex-row justify-start w-full gap-2">
                         {servicesToTrack.map((service, index) =>
                             //switcher
-                            <div className="flex flex-col gap-3">
+                            <div key={service.destCode + service.scheduledDepartureTime} className="flex flex-col gap-3">
                                 <h3>{service.destName}</h3>
                                 <div className="h-3 w-full bg-white/20"></div>
                             </div>)

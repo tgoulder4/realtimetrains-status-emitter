@@ -49,17 +49,17 @@ export default function Home() {
     const [departures, setDepartures] = useState<Service[]>([
         {
             destinationStationName: "Birmingham New Street",
-            departureTime: "12:00",
+            scheduledDepartureTime: "12:00",
             platform: "1",
             status: "On time",
-            stationCode: "BHM"
+            destinationStationCode: "BHM"
         },
         {
             destinationStationName: "Manchester Piccadilly",
-            departureTime: "12:00",
+            scheduledDepartureTime: "12:00",
             platform: "1",
             status: "On time",
-            stationCode: 'MAN'
+            destinationStationCode: 'MAN'
         }
     ]);
     //select the string station codes for easy appending to the URL
@@ -68,12 +68,13 @@ export default function Home() {
     useEffect(() => {
         async function main() {
             const services = await getServiceList(destination ? destination : undefined);
+
             setDepartures(destination ? services.slice(0, 8) : services);
         }
         main()
     }, []);
     return (
-        <main className="flex h-full flex-col pb-24">
+        <main className="flex min-h-fit flex-col">
             <div className={`hidden ${maxWidthClassNames}`}></div>
             <div className={`navArea sticky top-0 left-0 z-10 w-full pt-8 pb-4 md:pt-16 bg-zinc-900`}>
                 <div className={`${maxWidthClassNames} flex flex-col gap-8 items-center`}>
@@ -101,7 +102,7 @@ export default function Home() {
                                 <div className="pl-[17px] flex flex-row gap-2">
                                     <div className={`w-full flex flex-row items-center gap-2`}>
                                         <p className="opacity-40  text-white">To:</p>
-                                        <DeparturesComboBoxFormField onSubmit={onSubmit} _options={findUniquelyNamedDepartures(departures).map(station => ({ label: station.destinationStationName, value: station.stationCode }))} form={form} />
+                                        <DeparturesComboBoxFormField onSubmit={onSubmit} _options={findUniquelyNamedDepartures(departures).map(station => ({ label: station.destinationStationName, value: station.destinationStationCode }))} form={form} />
                                     </div>
                                 </div>
                             </div>
@@ -110,28 +111,32 @@ export default function Home() {
                     </Form>
                 </div>
             </div>
-            <div className={`${maxWidthClassNames} flex flex-col h-full justify-between`}>
+            <div className={`${maxWidthClassNames}  flex flex-col h-full justify-between`}>
                 <div className="px-12 pt-8 flex flex-col h-full gap-4">
                     <h2 className="font-semibold">{destination ? "Results" : "Departing soon"}</h2>
                     <div className="flex flex-col gap-4">
-                        {departures.map(departure =>
-                            <DepartureCard onClick={() => {
-                                setSelectedDepartures(prev => addIfNewOrRemoveIfExistingItemFromArray(prev, departure.stationCode))
-                            }} className={`${selectedDepartures.includes(departure.stationCode) ? "!bg-blue-300" : ""} ${error && "animate-[shake] duration-700 animate-once transition-colors bg-red-400"}`} via={destination || undefined} service={departure} />)
+                        {departures.map(departure => {
+                            const selectedDepInfo = "T" + departure.scheduledDepartureTime.replace(":", "") + "D" + departure.destinationStationCode;
+                            return <DepartureCard key={departure.scheduledDepartureTime + departure.destinationStationName} onClick={() => {
+                                setSelectedDepartures(prev => addIfNewOrRemoveIfExistingItemFromArray(prev, selectedDepInfo))
+                            }} className={`${selectedDepartures.includes(selectedDepInfo) ? "!bg-blue-300" : ""} ${error && "animate-[shake] duration-700 animate-once transition-colors bg-red-400"}`} via={destination || undefined} service={departure} />
+                        }
+                        )
                         }
                     </div>
                 </div>
-                <div className="px-10 grid place-items-center">
-                    <Button onClick={() => {
-                        if (selectedDepartures.length == 0) {
-                            setError("Please select at least one departure");
-                        } else {
-                            window.location.href = `/track?trains=${selectedDepartures.map(code => `T${departures.find(dep => dep.stationCode == code)?.departureTime}D${code}`).join('+')}`
-                        }
-                    }} className={`animate-in fixed bottom-12 left-1/2 text-lg font-semibold ${selectedDepartures.length > 0 ? "bg-green-900 border-b-8 border-green-950 hover:border-b-0 -translate-y-2" : ""}  px-12 py-8  transition-transform ease-in text-white`}>
-                        Beat The Rush! {selectedDepartures.length > 0 && `(${selectedDepartures.length})`}
-                    </Button>
-                </div>
+                {/* <div className="grid place-items-center"> */}
+                <Button onClick={() => {
+                    if (selectedDepartures.length == 0) {
+                        setError("Please select at least one departure");
+                    } else {
+                        window.location.href = `/track?trains=${selectedDepartures.join("+")
+                            }`
+                    }
+                }} className={`animate-in fixed bottom-12 left-[calc(50%_-_120px)] text-lg font-semibold ${selectedDepartures.length > 0 ? "bg-green-900 border-b-8 border-green-950 hover:border-b-0 -translate-y-2" : ""}  px-12 py-8  transition-transform ease-in text-white`}>
+                    Beat The Rush! {selectedDepartures.length > 0 && `(${selectedDepartures.length})`}
+                </Button>
+                {/* </div> */}
             </div>
         </main >
     );

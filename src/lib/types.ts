@@ -4,9 +4,9 @@ import { TrackStateSchema } from "./schemas"
 export type Service = {
     status: string,
     platform: string,
-    departureTime: { delay: number, time: string },
+    scheduledDepartureTime: string,
     destinationStationName: string,
-    stationCode: string,
+    destinationStationCode: string,
     provider?: string
 }
 export type TrackState = z.infer<typeof TrackStateSchema>

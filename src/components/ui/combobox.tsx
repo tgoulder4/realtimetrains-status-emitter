@@ -25,7 +25,7 @@ export function ComboBox({ options, selectAWhat, name }: { options: { label: str
     const [value, setValue] = React.useState("")
 
     return (
-        <Popover className={"flex-1"} open={open} onOpenChange={setOpen}>
+        <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
                 <Button
                     variant="outline"
