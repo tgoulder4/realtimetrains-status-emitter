@@ -1,0 +1,2 @@
+- We're setting up Websocket on this new branch.
+  - If socketIo remains an unfathomable solution then attempt any other ws that accepts objects as transfer.
