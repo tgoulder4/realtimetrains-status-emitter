@@ -17,22 +17,22 @@ import { applicationName } from "@/app-config";
 import { Input } from "@/components/ui/input";
 import DepartureCard, { CardPrim } from "../Cards";
 import { Button } from "@/components/ui/button";
-import { checkTrueDestinationName, findDestinationCodeByName, findDestinationNameByCode } from "@/lib/destinations";
+import { checkTrueStationName, findStationCodeByName, findStationNameByCode } from "@/lib/destinations";
 import { findUniquelyNamedDepartures } from "@/lib/departures";
 import DeparturesComboBoxFormField from "./departuresComboBoxFormField";
 
 
 export default function Home() {
     const sp = useSearchParams()
-    const destination = sp.get('dest');
-    const destinationName = findDestinationNameByCode(destination ? destination : '');
-    console.log("destinationName: ", destinationName)
+    const aimStation = sp.get('dest');
+    const aimStationName = findStationNameByCode(aimStation ? aimStation : '');
+    console.log("aimStationName: ", aimStationName)
     //header form stuff
     const formSchema = z.object({ dest: z.string().length(3).or(z.string().length(0)), dep: z.literal("London Euston") });
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            dest: destination || '',
+            dest: aimStation || '',
             dep: 'London Euston'
         }
     })
@@ -62,14 +62,43 @@ export default function Home() {
             destinationStationCode: 'MAN'
         }
     ]);
+    const [renderedDepartures, setRenderedDepartures] = useState<Service[]>([
+        {
+            destinationStationName: "LOAD",
+            scheduledDepartureTime: "LOAD",
+            platform: "LOAD",
+            status: "LOAD",
+            destinationStationCode: "LOAD"
+        },
+        {
+            destinationStationName: "LOAD",
+            scheduledDepartureTime: "LOAD",
+            platform: "LOAD",
+            status: "LOAD",
+            destinationStationCode: "LOAD"
+        },
+        {
+            destinationStationName: "LOAD",
+            scheduledDepartureTime: "LOAD",
+            platform: "LOAD",
+            status: "LOAD",
+            destinationStationCode: "LOAD"
+        },
+    ]);
     //select the string station codes for easy appending to the URL
     const [selectedDepartures, setSelectedDepartures] = useState<string[]>([]);
     const [error, setError] = useState<string | null>(null);
     useEffect(() => {
         async function main() {
-            const services = await getServiceList(destination ? destination : undefined);
-
-            setDepartures(destination ? services.slice(0, 8) : services);
+            const allServices = await getServiceList();
+            if (aimStation) {
+                const services = await getServiceList(aimStation);
+                setRenderedDepartures(services.slice(0, 8));
+            } else {
+                setRenderedDepartures(allServices);
+            }
+            setDepartures(allServices);
+            //when there's an aim station, get results via that station and limit results to 8
         }
         main()
     }, []);
@@ -113,13 +142,14 @@ export default function Home() {
             </div>
             <div className={`${maxWidthClassNames}  flex flex-col h-full justify-between`}>
                 <div className="px-12 pt-8 flex flex-col h-full gap-4">
-                    <h2 className="font-semibold">{destination ? "Results" : "Departing soon"}</h2>
+                    <h2 className="font-semibold">{aimStation ? "Results" : "Departing soon"}</h2>
                     <div className="flex flex-col gap-4">
-                        {departures.map(departure => {
-                            const selectedDepInfo = "T" + departure.scheduledDepartureTime.replace(":", "") + "D" + departure.destinationStationCode;
+                        {renderedDepartures.map(departure => {
+                            const selectedDepInfo = "T" + departure.scheduledDepartureTime.replace(":", "") + "D" + departure.destinationStationCode + "A" + aimStation;
+                            if (departure.destinationStationName == "LOAD") return <div className="bg-zinc-200 animate animate-pulse h-20 w-full"></div>
                             return <DepartureCard key={departure.scheduledDepartureTime + departure.destinationStationName} onClick={() => {
                                 setSelectedDepartures(prev => addIfNewOrRemoveIfExistingItemFromArray(prev, selectedDepInfo))
-                            }} className={`${selectedDepartures.includes(selectedDepInfo) ? "!bg-blue-300" : ""} ${error && "animate-[shake] duration-700 animate-once transition-colors bg-red-400"}`} via={destination || undefined} service={departure} />
+                            }} className={`${selectedDepartures.includes(selectedDepInfo) ? "!bg-blue-300" : ""} ${error && "animate-[shake] duration-700 animate-once transition-colors bg-red-400"}`} via={aimStationName == departure.destinationStationName ? undefined : aimStationName || undefined} service={departure} />
                         }
                         )
                         }
