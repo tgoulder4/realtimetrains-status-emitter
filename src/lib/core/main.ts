@@ -1,8 +1,8 @@
 'use server'
 import { cache } from "react";
 import cheerio from 'cheerio'
-import { findStationCodeByName } from "@/lib/map";
 import { Service } from "@/lib/types";
+import { findDestinationCodeByName } from "../destinations";
 
 export const getServiceList = async (dest?: string): Promise<Service[]> => {
     console.log("getServiceList called with dest: ", dest)
@@ -30,7 +30,7 @@ export const getServiceList = async (dest?: string): Promise<Service[]> => {
                 .children('.addl').remove().end() // Remove the children with class 'addl'
                 .text() // Extract the text content
                 .trim(); // Trim any extra whitespace
-            const stationCode = findStationCodeByName(destinationStationName);
+            const stationCode = findDestinationCodeByName(destinationStationName);
             return { status, platform, departureTime, destinationStationName, stationCode };
         }).get();
         console.log("list returned: ", list)

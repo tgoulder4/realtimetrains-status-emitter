@@ -1,18 +1,12 @@
+import { z } from "zod"
+import { TrackStateSchema } from "./schemas"
+
 export type Service = {
     status: string,
     platform: string,
-    departureTime: string,
+    departureTime: { delay: number, time: string },
     destinationStationName: string,
     stationCode: string,
     provider?: string
 }
-export type TrackState = {
-    data: {
-        status: string,
-        platform: string,
-        platformHasChanged?: boolean,
-        minutesUntilDeparture?: number,
-    }, hidden: {
-        timeTillRefresh: number
-    }
-}
+export type TrackState = z.infer<typeof TrackStateSchema>

@@ -67,16 +67,16 @@ export default function Home() {
     const [error, setError] = useState<string | null>(null);
     useEffect(() => {
         async function main() {
-            // const services = await getServiceList(destination ? destination : undefined);
-            // setDepartures(destination ? services.slice(0, 8) : services);
+            const services = await getServiceList(destination ? destination : undefined);
+            setDepartures(destination ? services.slice(0, 8) : services);
         }
         main()
     }, []);
     return (
         <main className="flex h-full flex-col pb-24">
             <div className={`hidden ${maxWidthClassNames}`}></div>
-            <div className={`navArea w-full pt-8 pb-4 md:pt-20 bg-zinc-900`}>
-                <div className={`${maxWidthClassNames} flex flex-col gap-4 items-center`}>
+            <div className={`navArea sticky top-0 left-0 z-10 w-full pt-8 pb-4 md:pt-16 bg-zinc-900`}>
+                <div className={`${maxWidthClassNames} flex flex-col gap-8 items-center`}>
                     <h2 className="font-semibold text-white text-2xl">{applicationName}</h2>
                     <Form {...form}>
                         <form className="w-full" onSubmit={form.handleSubmit(onSubmit)}>
@@ -128,7 +128,7 @@ export default function Home() {
                         } else {
                             window.location.href = `/track?trains=${selectedDepartures.map(code => `T${departures.find(dep => dep.stationCode == code)?.departureTime}D${code}`).join('+')}`
                         }
-                    }} className={`animate-in text-lg font-semibold ${selectedDepartures.length > 0 ? "bg-green-900 border-b-8 border-green-950 hover:border-b-0 -translate-y-2" : ""}  px-12 py-8  transition-transform ease-in text-white`}>
+                    }} className={`animate-in fixed bottom-12 left-1/2 text-lg font-semibold ${selectedDepartures.length > 0 ? "bg-green-900 border-b-8 border-green-950 hover:border-b-0 -translate-y-2" : ""}  px-12 py-8  transition-transform ease-in text-white`}>
                         Beat The Rush! {selectedDepartures.length > 0 && `(${selectedDepartures.length})`}
                     </Button>
                 </div>
