@@ -101,7 +101,7 @@ export default function Home() {
         main()
     }, []);
     return (
-        <main className="flex min-h-fit flex-col">
+        <main className="flex min-h-fit flex-col pb-48">
             <div className={`hidden ${maxWidthClassNames}`}></div>
             <div className={`navArea sticky top-0 left-0 z-10 w-full pt-8 pb-4 md:pt-16 bg-zinc-900`}>
                 <div className={`${maxWidthClassNames} flex flex-col gap-8 items-center`}>
