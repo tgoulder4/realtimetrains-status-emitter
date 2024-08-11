@@ -7,19 +7,21 @@ import { maxWidthClassNames } from '@/lib/layout';
 import DepartureCard from '../Cards';
 import { getColourFromStatus, getDescriptionFromStatus, getGlyphFromStatus, getIntuitiveStatusFromStatus } from './getRenderInfoFromState';
 import CheckingAgainTimer from './checkingAgainTimer';
-import { io } from 'socket.io-client'
 import { TrackStateSchema } from '@/lib/schemas';
+import { getTimeDestAimInfoFromUrl, TGetTimeDestAimInfoFromUrl, TParsedTrainInfo } from './parseServiceInfoFromUrl';
 type Props = {
-    servicesToTrack: { destCode: string, destName: string, scheduledDepartureTime: Service['scheduledDepartureTime'] }[]
+    serviceToTrack: TParsedTrainInfo;
 }
 
-function MainTrackingArea({ servicesToTrack }: Props) {
+function MainTrackingArea({ serviceToTrack }: Props) {
+    const {
+        aimStation,
+        departure: { depDestinationStationName, depDestinationStation }, scheduledDepartureTime
+    } = serviceToTrack;
     const [currentServiceState, setCurrentServiceState] = useState<TrackState>({
         data: {
-            status: "Prepare",
+            status: "Go",
             platform: "0",
-            dest: servicesToTrack[0].destCode,
-            destName: servicesToTrack[0].destName
         },
         hidden: {
             timeTillRefresh: 0,
@@ -31,33 +33,31 @@ function MainTrackingArea({ servicesToTrack }: Props) {
         platform,
         platformHasChanged,
         minutesUntilDeparture,
-        dest,
-        destName
     } = currentServiceState.data;
     useEffect(() => {
-        const socket = io();
-        socket.on('trackUpdate', (data: TrackState) => {
-            console.log("Received data from socket server: ", data);
-            const res = TrackStateSchema.safeParse(data);
-            if (!res.success) {
-                console.error("")
-                setCurrentServiceState({
-                    data: {
-                        status: "Error",
-                        platform: "0",
-                        dest: servicesToTrack[0].destCode,
-                        destName: servicesToTrack[0].destName
-                    },
-                    hidden: {
-                        timeTillRefresh: 0,
-                        error: res.error.errors
-                    }
-                })
-                setCurrentServiceState(data)
-            }
-        })
+        // const socket = io({ port: 3001 });
+        // socket.on('trackUpdate', (data: TrackState) => {
+        //     console.log("Received data from socket server: ", data);
+        //     const res = TrackStateSchema.safeParse(data);
+        //     if (!res.success) {
+        //         console.error("")
+        //         setCurrentServiceState({
+        //             data: {
+        //                 status: "Error",
+        //                 platform: "0",
+        //                 dest: servicesToTrack[0].destCode,
+        //                 destName: servicesToTrack[0].destName
+        //             },
+        //             hidden: {
+        //                 timeTillRefresh: 0,
+        //                 error: res.error.errors
+        //             }
+        //         })
+        //         setCurrentServiceState(data)
+        //     }
+        // })
         return () => {
-            socket.disconnect()
+            // socket.disconnect()
         }
     }, [])
     //url like http://localhost:3000/track?trains=1940BHM+1200MAN
@@ -65,8 +65,8 @@ function MainTrackingArea({ servicesToTrack }: Props) {
         <div className={`flex h-full w-full flex-col py-8 bg-slate-100 ${maxWidthClassNames}`}>
             <div className="flex flex-col items-center gap-3 transition-all">
                 <DepartureCard shouldntDisplace className='w-full' service={{
-                    destinationStationName: destName,
-                    scheduledDepartureTime: servicesToTrack[0].scheduledDepartureTime,
+                    destinationStationName: depDestinationStationName,
+                    scheduledDepartureTime: scheduledDepartureTime,
                     platform: "1",
                     status: "On time",
                     destinationStationCode: ''
