@@ -9,67 +9,79 @@ import { getColourFromStatus, getDescriptionFromStatus, getGlyphFromStatus, getI
 import CheckingAgainTimer from './checkingAgainTimer';
 import { TrackStateSchema } from '@/lib/schemas';
 import { getTimeDestAimInfoFromUrl, TGetTimeDestAimInfoFromUrl, TParsedTrainInfo } from './parseServiceInfoFromUrl';
+import { hc } from 'hono/client'
+import { dissectOneTrainInfoFromUrl, dissectTrainInfoFromUrl } from './dissectServicesToTrack';
+import { useServerAction } from "zsa-react";
+import { getTrackStateSA } from './actions';
 type Props = {
-    serviceToTrack: TParsedTrainInfo;
+    serviceToTrack: string;
 }
 
 function MainTrackingArea({ serviceToTrack }: Props) {
     const {
         aimStation,
         departure: { depDestinationStationName, depDestinationStation }, scheduledDepartureTime
-    } = serviceToTrack;
-    const [currentServiceState, setCurrentServiceState] = useState<TrackState>({
+    } = dissectOneTrainInfoFromUrl(serviceToTrack);
+    const [currentTrackingState, setCurrentTrackingState] = useState<TrackState>({
         data: {
             status: "Go",
             platform: "0",
         },
         hidden: {
             timeTillRefresh: 0,
-
         }
     });
     const {
         status, //Wait, Go, Changed, Error
         platform,
         platformHasChanged,
-        minutesUntilDeparture,
-    } = currentServiceState.data;
-    useEffect(() => {
-        // const socket = io({ port: 3001 });
-        // socket.on('trackUpdate', (data: TrackState) => {
-        //     console.log("Received data from socket server: ", data);
-        //     const res = TrackStateSchema.safeParse(data);
-        //     if (!res.success) {
-        //         console.error("")
-        //         setCurrentServiceState({
-        //             data: {
-        //                 status: "Error",
-        //                 platform: "0",
-        //                 dest: servicesToTrack[0].destCode,
-        //                 destName: servicesToTrack[0].destName
-        //             },
-        //             hidden: {
-        //                 timeTillRefresh: 0,
-        //                 error: res.error.errors
-        //             }
-        //         })
-        //         setCurrentServiceState(data)
-        //     }
-        // })
-        return () => {
-            // socket.disconnect()
+    } = currentTrackingState.data;
+    const { execute, isPending } = useServerAction(getTrackStateSA);
+    async function getTrackingState() {
+        try {
+            const res = (await execute({ journeyInCondensedURLformat: serviceToTrack, prevState: currentTrackingState }));
+            const data = res[0];
+
+            const parseResult = TrackStateSchema.safeParse(data);
+            if (parseResult.success) {
+                const TrackState = parseResult.data;
+                return TrackState;
+            } else {
+                console.error("")
+                throw new Error(parseResult.error.errors[0].message);
+            }
+        } catch (e) {
+            return {
+                data: {
+                    status: "Error",
+                    platform: "0",
+                },
+                hidden: {
+                    timeTillRefresh: 0,
+                    error: e
+                }
+            } as TrackState
         }
+    }
+    useEffect(() => {
+        async function main() {
+            const newState = await getTrackingState();
+            setCurrentTrackingState(newState);
+        }
+        // setInterval(async()=>{
+        //     main();
+        // }, 10000)
+        main();
     }, [])
     //url like http://localhost:3000/track?trains=1940BHM+1200MAN
     return (
         <div className={`flex h-full w-full flex-col py-8 bg-slate-100 ${maxWidthClassNames}`}>
             <div className="flex flex-col items-center gap-3 transition-all">
                 <DepartureCard shouldntDisplace className='w-full' service={{
-                    destinationStationName: depDestinationStationName,
+                    destination: { name: depDestinationStationName, code: depDestinationStation },
                     scheduledDepartureTime: scheduledDepartureTime,
-                    platform: "1",
+                    platform: "0",
                     status: "On time",
-                    destinationStationCode: ''
                 }} />
                 <div className="hidden bg-yellow-800 bg-red-800 bg-green-800 bg-slate-800"></div>
                 <div className={`p-5 w-full statusCard text-white flex flex-col items-center transition-colors ${getColourFromStatus(status)}`}>
@@ -86,9 +98,9 @@ function MainTrackingArea({ serviceToTrack }: Props) {
                             <h3 className='w-full text-center'>{getDescriptionFromStatus(status)}</h3>
                         </div>
                     </div>
-                    <CheckingAgainTimer startTime={currentServiceState.hidden.timeTillRefresh} />
+                    <CheckingAgainTimer startTime={currentTrackingState.hidden.timeTillRefresh} />
                 </div>
-                {currentServiceState.hidden.error && <div className="bg-white text-red-800 p-5">{currentServiceState.hidden.error}</div>}
+                {currentTrackingState.hidden.error && <div className="bg-white text-red-800 p-5">{currentTrackingState.hidden.error}</div>}
             </div>
         </div>
     )
