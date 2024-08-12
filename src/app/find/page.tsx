@@ -35,34 +35,54 @@ export default function Home() {
         {
             destination: { name: "Birmingham New Street", code: "BHM" },
             scheduledDepartureTime: "12:00",
-            platform: "1",
-            status: "On time",
+            platform: {
+                number: "1",
+                type: "confirmedAndChanged"
+            },
+            status: "Wait",
+            provider: "Avanti West Coast"
         },
         {
             destination: { name: "Birmingham New Street", code: "BHM" },
-            scheduledDepartureTime: "12:00",
-            platform: "1",
-            status: "On time",
+            scheduledDepartureTime: "13:00",
+            platform: {
+                number: "1",
+                type: "confirmedAndChanged"
+            },
+            status: "Wait",
+            provider: "Avanti West Coast"
         }
     ]);
     const [renderedDepartures, setRenderedDepartures] = useState<Service[]>([
         {
             destination: { name: "LOAD", code: "LOAD" },
             scheduledDepartureTime: "LOAD",
-            platform: "LOAD",
-            status: "LOAD",
+            platform: {
+                number: "LOAD",
+                type: "confirmedAndChanged"
+            },
+            status: "Go",
+            provider: "Avanti West Coast"
         },
         {
             destination: { name: "LOAD", code: "LOAD" },
             scheduledDepartureTime: "LOAD",
-            platform: "LOAD",
-            status: "LOAD",
+            platform: {
+                number: "LOAD",
+                type: "confirmedAndChanged"
+            },
+            status: "Go",
+            provider: "Avanti West Coast"
         },
         {
             destination: { name: "LOAD", code: "LOAD" },
             scheduledDepartureTime: "LOAD",
-            platform: "LOAD",
-            status: "LOAD",
+            platform: {
+                number: "LOAD",
+                type: "confirmedAndChanged"
+            },
+            status: "Go",
+            provider: "Avanti West Coast"
         },
     ]);
     const [aimStation, setAimStation] = useState<{ name: string, code: string }>({ name: "", code: "" });
@@ -142,23 +162,28 @@ export default function Home() {
                             const selectedDepInfo = "T-" + departure.scheduledDepartureTime.replace(":", "") + "D-" + destination.code + (aimStation.code ? "A-" + aimStation.code : "");
                             console.log("selectedDepInfo: ", selectedDepInfo)
                             if (departure.destination.name == "LOAD") return <div key={"load-" + index} className="bg-zinc-200 animate animate-pulse h-20 w-full"></div>
-                            return <DepartureCard key={departure.scheduledDepartureTime + departure.destination.name} onClick={() => {
-                                setSelectedDepartures(prev => addIfNewOrRemoveIfExistingItemFromArray(prev, selectedDepInfo))
-                            }} className={`${selectedDepartures.includes(selectedDepInfo) ? "!bg-blue-300" : ""} ${error && "animate-[shake] duration-700 animate-once transition-colors bg-red-400"}`} via={aimStation.name == destination.name ? undefined : aimStation.name || undefined} service={departure} />
+                            return <DepartureCard
+                                key={departure.scheduledDepartureTime + departure.destination.name}
+                                onClick={() => { setSelectedDepartures(prev => addIfNewOrRemoveIfExistingItemFromArray(prev, selectedDepInfo)) }}
+                                className={`${selectedDepartures.includes(selectedDepInfo) ? "!bg-blue-300" : ""} ${error && "animate-[shake] duration-700 animate-once transition-colors bg-red-400"}`}
+                                partialDepartureInfo={{
+                                    destination: departure.destination,
+                                    scheduledDepartureTime: departure.scheduledDepartureTime,
+                                    provider: departure.provider,
+                                    via: aimStation.name || undefined
+                                }} />
                         }
                         )
                         }
                     </div>
                 </div>
                 {/* <div className="grid place-items-center"> */}
-                <Button onClick={() => {
-                    if (selectedDepartures.length == 0) {
-                        setError("Please select at least one departure");
-                    } else {
-                        window.location.href = `/track?trains=${selectedDepartures.join("+")
-                            }`
-                    }
-                }} className={`animate-in fixed bottom-12 left-[calc(50%_-_120px)] text-lg font-semibold ${selectedDepartures.length > 0 ? "bg-green-900 border-b-8 border-green-950 hover:border-b-0 -translate-y-2" : ""}  px-12 py-8  transition-transform ease-in text-white`}>
+                <Button
+                    onClick={() => {
+                        if (selectedDepartures.length == 0) { setError("Please select at least one departure"); }
+                        else { window.location.href = `/track?trains=${selectedDepartures.join("+")}` }
+                    }}
+                    className={`animate-in fixed bottom-12 left-[calc(50%_-_120px)] text-lg font-semibold ${selectedDepartures.length > 0 ? "bg-green-900 border-b-8 border-green-950 hover:border-b-0 -translate-y-2" : ""}  px-12 py-8  transition-transform ease-in text-white`}>
                     Beat The Rush! {selectedDepartures.length > 0 && `(${selectedDepartures.length})`}
                 </Button>
                 {/* </div> */}

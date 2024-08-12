@@ -1,8 +1,9 @@
 import { findStationCodeByName, findStationNameByCode } from "@/lib/destinations";
-export function dissectOneTrainInfoFromUrl(train: string) {
+import { Journey } from "@/lib/types";
+export function dissectOneTrainInfoFromUrl(train: string): Journey {
     const matches = {
         depTime: train.match(/T-(\d{4})/)?.[1],
-        depDestinationStation: train.match(/D-(\w{3})/)?.[1],
+        code: train.match(/D-(\w{3})/)?.[1],
         aimStationCode: train.match(/A-(\w{3})/)?.[1]
     };
     for (const key in matches) {
@@ -11,9 +12,8 @@ export function dissectOneTrainInfoFromUrl(train: string) {
         }
     }
     const service = {
-        departure: { depDestinationStation: matches.depDestinationStation as string, depDestinationStationName: findStationNameByCode(matches.depDestinationStation!) as string },
-        scheduledDepartureTime: matches.depTime!.slice(0, 2) + ":" + matches.depTime!.slice(2),
-        aimStation: { code: matches.aimStationCode as string, name: findStationNameByCode(matches.aimStationCode!) }
+        departure: { code: matches.code as string, name: findStationNameByCode(matches.code!) as string, time: matches.depTime as string },
+        aimStation: matches.aimStationCode ? { code: matches.aimStationCode as string, name: findStationNameByCode(matches.aimStationCode!) } : undefined
     }
     return service;
 }

@@ -10,7 +10,14 @@ export function findUniquelyNamedDepartures(srvcs: Service[]): Service[] {
         const stationName = station.destination.name;
         //if stationanme contains a comma or an and symbol throw an error
         if (stationName.includes(',') || stationName.includes('&')) {
-            return { destination: { name: "MULTIDEST", code: '' }, scheduledDepartureTime: "--", platform: "0", status: "Error" };
+            return {
+                destination: {
+                    name: "MULTIDEST", code: '',
+                }, scheduledDepartureTime: "--", platform: {
+                    number: "--", type: "confirmedAndChanged" as any
+                }, status: "Error" as any,
+                provider: "Error"
+            };
         } else {
             return station
         }
