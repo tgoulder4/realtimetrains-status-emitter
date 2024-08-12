@@ -5,9 +5,11 @@ export const statusUpdateSchema = z.object({ status: z.string(), platform: z.num
 
 export const TrackStateSchema = z.object({
     data: z.object({
-        status: z.string(),
-        platform: z.string(),
-        platformHasChanged: z.boolean().optional(),
+        status: z.enum(["Wait", "Go", "Changed", "Error"]),
+        platform: z.object({ number: z.string(), type: z.enum(["confirmedAndChanged", "confirmedAndNotChanged", "expected"]) }),
+        scheduledDepartureTime: z.string(),
+        destination: z.object({ name: z.string(), code: z.string() }),
+        provider: z.string()
     }),
     hidden: z.object({
         timeTillRefresh: z.number(),

@@ -4,7 +4,9 @@ import { Badge } from "@/components/ui/badge"
 import { checkStationIsPopular } from '@/lib/utils'
 
 type Props = {
-    service: Service,
+    destination: Service["destination"],
+    scheduledDepartureTime: string,
+    provider: string,
     via?: string,
     isPopular?: boolean,
     className?: string,
@@ -14,14 +16,7 @@ type Props = {
 export function CardPrim({ children, shouldDisplaceOnHover, className, onClick }: { children: React.ReactNode, shouldDisplaceOnHover?: boolean, className?: string, onClick?: () => void }) {
     return <div onClick={onClick} className={`cursor-pointer flex flex-row items-center gap-4 px-4 py-5 ${shouldDisplaceOnHover ? "transform hover:translate-y-1 transition duration-100 border-b-4 hover:border-0 border-black/10 " : ""} ${className}`}>{children}</div>
 }
-function DepartureCard({ service, via, isPopular, className, onClick, shouldntDisplace }: Props) {
-    const {
-        status,
-        platform,
-        scheduledDepartureTime,
-        destination,
-        provider
-    } = service;
+function DepartureCard({ scheduledDepartureTime, provider, destination, via, isPopular, className, onClick, shouldntDisplace }: Props) {
     const { name, code } = destination;
     return (
         <CardPrim onClick={onClick} className={`bg-white h-20 ${className}`} shouldDisplaceOnHover={!shouldntDisplace}>

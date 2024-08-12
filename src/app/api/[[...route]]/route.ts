@@ -3,6 +3,7 @@ import { Hono } from 'hono'
 import { upgradeWebSocket } from 'hono/cloudflare-workers'
 import { handle } from 'hono/vercel'
 const app = new Hono().basePath('/api')
+    //USE FOR TESTING ONLY
     .get('/admin/trackingState', async (c) => {
         console.log("api endpoint called")
         const ts = await getTrackStateCA({
@@ -17,12 +18,6 @@ const app = new Hono().basePath('/api')
         return c.json(ts);
     })
 
-// const obj = { data: 5 };
-// function startTimer() {
-//     return setInterval(() => {
-//         obj.data = Math.random();
-//     }, 1000);
-// }
 export const GET = handle(app)
 export const POST = handle(app)
 export type AppType = typeof app;

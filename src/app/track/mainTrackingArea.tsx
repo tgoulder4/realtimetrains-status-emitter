@@ -37,9 +37,9 @@ function MainTrackingArea({ serviceToTrack }: Props) {
         platformHasChanged,
     } = currentTrackingState.data;
     const { execute, isPending } = useServerAction(getTrackStateSA);
-    async function getTrackingState(journeyInCondensedURLformat: string, prevState: TrackState) {
+    async function getTrackingState() {
         try {
-            const res = (await execute({ journeyInCondensedURLformat, prevState }));
+            const res = (await execute({ journeyInCondensedURLformat: serviceToTrack, prevState: currentTrackingState }));
             const data = res[0];
 
             const parseResult = TrackStateSchema.safeParse(data);
@@ -64,11 +64,14 @@ function MainTrackingArea({ serviceToTrack }: Props) {
         }
     }
     useEffect(() => {
-        async function getTrackState() {
-            const newState = await getTrackingState(serviceToTrack, currentTrackingState);
+        async function main() {
+            const newState = await getTrackingState();
             setCurrentTrackingState(newState);
         }
-        getTrackState();
+        // setInterval(async()=>{
+        //     main();
+        // }, 10000)
+        main();
     }, [])
     //url like http://localhost:3000/track?trains=1940BHM+1200MAN
     return (
@@ -77,7 +80,7 @@ function MainTrackingArea({ serviceToTrack }: Props) {
                 <DepartureCard shouldntDisplace className='w-full' service={{
                     destination: { name: depDestinationStationName, code: depDestinationStation },
                     scheduledDepartureTime: scheduledDepartureTime,
-                    platform: { number: "0", type: "expected" },
+                    platform: "0",
                     status: "On time",
                 }} />
                 <div className="hidden bg-yellow-800 bg-red-800 bg-green-800 bg-slate-800"></div>
