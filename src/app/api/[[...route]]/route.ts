@@ -6,15 +6,14 @@ const app = new Hono().basePath('/api')
     //USE FOR TESTING ONLY
     .get('/admin/trackingState', async (c) => {
         console.log("api endpoint called")
-        const ts = await getTrackStateCA({
-            data: {
-                status: "Prepare",
-                platform: "0",
-            },
-            hidden: {
-                timeTillRefresh: 0,
-            }
-        }, "T-1716D-BHMA-WFJ");
+        const ts = await getTrackStateCA(
+            {
+                departure: {
+                    code: "EUS",
+                    time: "13:00",
+                    name: "London Euston"
+                },
+            });
         return c.json(ts);
     })
 
