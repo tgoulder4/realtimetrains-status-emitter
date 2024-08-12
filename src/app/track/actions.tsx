@@ -1,4 +1,4 @@
-import { TrackStateSchema } from "@/lib/schemas";
+import { JourneySchema, TrackStateSchema } from "@/lib/schemas";
 import { TrackState } from "@/lib/types";
 import { unauthenticatedAction } from "@/lib/safe-action";
 import { z } from "zod";
@@ -8,10 +8,10 @@ import { getTrackStateCA } from "@/core-actions/track";
 
 export const getTrackStateSA = unauthenticatedAction
     .createServerAction()
-    .input(z.object({ prevState: TrackStateSchema, journeyInCondensedURLformat: z.string() }))
-    .output(TrackStateSchema)
+    .input(z.object({ journey: JourneySchema }))
     .handler(async ({ input }) => {
         console.log("getTrackState called with input: ", input)
-        const ts = await getTrackStateCA(input.journeyInCondensedURLformat);
-        return ts;
+        const ts = await getTrackStateCA(input.journey);
+        console.log("getTrackState returning: ", ts);
+        return ts as TrackState;
     })

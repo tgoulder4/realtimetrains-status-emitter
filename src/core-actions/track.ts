@@ -1,16 +1,17 @@
 import { dissectOneTrainInfoFromUrl } from "@/app/track/dissectServicesToTrack";
-import { TrackState } from "@/lib/types";
+import { Journey, Service, TrackState } from "@/lib/types";
 import { getServiceListCA } from "./main";
 
-export async function getTrackStateCA(journeyInCondensedURLformat: string) {
-    console.log("dissecting journey info from url: ", journeyInCondensedURLformat);
-    const journeyInfo = dissectOneTrainInfoFromUrl(journeyInCondensedURLformat);
-    console.log("journeyInfo: ", journeyInfo);
-    const serviceList = await getServiceListCA(journeyInfo.departure.depDestinationStation);
-    console.log("serviceList: ", serviceList);
-    const info = serviceList.find(service => (service.destination.code === journeyInfo.aimStation.code) && service.scheduledDepartureTime == journeyInfo.scheduledDepartureTime)!;
+export async function getTrackStateCA(journey: Journey): Promise<TrackState> {
+    const {
+        departure,
+    } = journey
+    const serviceList = await getServiceListCA(departure.code);
+    console.log("departure: ", departure, "serviceList: ", serviceList);
+    const correspondingJourney = serviceList.find(service => (service.destination.code == departure.code && service.scheduledDepartureTime == departure.time));
+    if (!correspondingJourney) throw new Error("Journey not found in RTT");
     const ts: TrackState = {
-        data: info,
+        data: correspondingJourney as Service,
         hidden: {
             timeTillRefresh: 5000,
             error: undefined

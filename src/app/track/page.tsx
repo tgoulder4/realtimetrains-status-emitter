@@ -16,16 +16,16 @@ type Props = {
 
 function TrackPage({ }: Props) {
     const sp = useSearchParams();
-    const trains = sp.get('trains');
-    console.log("trains found in url: ", trains)
-    if (!trains) {
+    const journeysInCondensedURLformat = sp.get('trains');
+    // console.log("trains found in url: ", journeysInCondensedURLformat)
+    if (!journeysInCondensedURLformat) {
         console.error("No trains to track")
         redirect('/404');
     }
     const [selectedServiceToTrack, setSelectedServiceToTrack] = useState(0);
     //url like http://localhost:3000/track?trains=T-1940D-BHMA-MAN
-    const servicesToTrack = dissectTrainInfoFromUrl(trains);
-    console.log("servicesToTrack: ", servicesToTrack)
+    const servicesToTrack = dissectTrainInfoFromUrl(journeysInCondensedURLformat);
+    // console.log("servicesToTrack: ", servicesToTrack)
     return (
         <main className="flex h-full flex-col pb-48">
             <div className={`hidden ${maxWidthClassNames}`}></div>
@@ -35,8 +35,8 @@ function TrackPage({ }: Props) {
                     <div className="flex flex-row justify-start w-full gap-2">
                         {servicesToTrack.length > 1 && servicesToTrack.map((service, index) =>
                             //switcher
-                            <div onClick={() => { setSelectedServiceToTrack(index) }} key={service.aimStation.name + service.scheduledDepartureTime} className="flex cursor-pointer hover:bg-white/5 flex-col gap-3">
-                                <h3>{service.aimStation.name ? "Via " + service.aimStation.name : service.departure.depDestinationStationName} </h3>
+                            <div onClick={() => { setSelectedServiceToTrack(index) }} key={service.departure.code + service.departure.time} className="flex cursor-pointer hover:bg-white/5 flex-col gap-3">
+                                {service.aimStation && <h3>{service.aimStation.name ? "Via " + service.aimStation.name : service.departure.name} </h3>}
                                 <div className="h-3 w-full bg-white/20"></div>
                             </div>)
                         }
@@ -44,7 +44,7 @@ function TrackPage({ }: Props) {
                     </div>
                 </div>
             </div>
-            <MainTrackingArea serviceToTrack={trains} />
+            <MainTrackingArea condensedURLserviceToTrack={journeysInCondensedURLformat} />
         </main>
     )
 }
