@@ -170,7 +170,7 @@ export default function Home() {
                                     destination: departure.destination,
                                     scheduledDepartureTime: departure.scheduledDepartureTime,
                                     provider: departure.provider,
-                                    via: aimStation.name == destination.name ? undefined : aimStation.name || undefined
+                                    via: aimStation.name || undefined
                                 }} />
                         }
                         )

@@ -23,15 +23,15 @@ function DepartureCard({ partialDepartureInfo, isPopular, className, onClick, sh
     return (
         <CardPrim onClick={onClick} className={`bg-white h-20 ${className}`} shouldDisplaceOnHover={!shouldntDisplace}>
             <h2 className={`text-xl font-bold text-black`}>{scheduledDepartureTime}</h2>
-            <div className="flex flex-col items-start">
+            <div className="flex flex-col items-start w-full">
                 <h3 className='font-bold'>{name}</h3>
-                <div className="flex flex-row justify-between w-full">
+                <div className="flex flex-row justify-between items-end w-full">
                     {via &&
-                        <div className="flex flex-row  gap-2">
+                        <div className="flex flex-row w-full  gap-2">
                             <p className='opacity-50'>Via {via}</p>
                             {isPopular ? <Badge className='bg-[#D2F3FA]' variant="default">Badge</Badge> : <></>}
                         </div>}
-                    {provider && <p className='opacity-50'>{provider}</p>}
+                    {provider && <p className='opacity-50 w-full text-end'>{provider}</p>}
                 </div>
             </div>
         </CardPrim>
