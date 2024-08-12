@@ -27,7 +27,7 @@ function TrackPage({ }: Props) {
     const servicesToTrack = dissectTrainInfoFromUrl(journeysInCondensedURLformat);
     // console.log("servicesToTrack: ", servicesToTrack)
     return (
-        <main className="flex h-full flex-col pb-48">
+        <main className="flex h-fit flex-col pb-48">
             <div className={`hidden ${maxWidthClassNames}`}></div>
             <div className={`navArea sticky top-0 w-full pt-8 pb-0 md:pt-16 bg-zinc-900 text-white`}>
                 <div className={`${maxWidthClassNames} flex flex-col justify-between gap-8 items-center`}>
