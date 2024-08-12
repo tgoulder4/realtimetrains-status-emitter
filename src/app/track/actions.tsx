@@ -12,6 +12,6 @@ export const getTrackStateSA = unauthenticatedAction
     .output(TrackStateSchema)
     .handler(async ({ input }) => {
         console.log("getTrackState called with input: ", input)
-        const ts = await getTrackStateCA(input.prevState, input.journeyInCondensedURLformat);
+        const ts = await getTrackStateCA(input.journeyInCondensedURLformat);
         return ts;
     })

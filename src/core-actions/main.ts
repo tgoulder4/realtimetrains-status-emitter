@@ -44,6 +44,8 @@ export const getServiceListCA = async (dest?: string): Promise<Service[]> => {
                 .children('.addl').remove().end() // Remove the children with class 'addl'
                 .text() // Extract the text content
                 .trim(); // Trim any extra whitespace
+            //provider has class .secline and is in the form 'Avanti WC Pendolino · 9 coaches'. get 'Avanti WC Pendolino' only
+            const provider = $(service).find('.secline').text().split('·')[0].trim();
             const destination = {
                 name: destinationStationName,
                 code: findStationCodeByName(destinationStationName)
@@ -51,13 +53,13 @@ export const getServiceListCA = async (dest?: string): Promise<Service[]> => {
             //scheduledDepartureTime is in format HHMM so we need to insert a colon in the middle
             const scheduledDepartureTime = $(service).find(".time").text().replace(/(\d{2})(\d{2})/, "$1:$2");
 
-            return { status, platform, scheduledDepartureTime, destination };
+            return { status, platform, scheduledDepartureTime, destination, provider };
         }).get();
         console.log("list returned: ", list)
         return list;
 
     } catch (e) {
         console.error(e);
-        return [{ status: 'Error', platform: "0", scheduledDepartureTime: '--', destination: { name: '', code: '' } }]
+        return [{ status: 'Error', platform: { number: "0", type: "expected" }, scheduledDepartureTime: '--', destination: { name: '', code: '' } }]
     }
 }
