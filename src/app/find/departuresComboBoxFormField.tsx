@@ -16,7 +16,6 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, For
 import { UseFormReturn } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { Service } from '@/lib/types'
 import { Check, ChevronsUpDown } from 'lucide-react'
 type Props = {
     form: UseFormReturn<any>,
