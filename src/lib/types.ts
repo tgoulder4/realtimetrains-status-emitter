@@ -2,7 +2,7 @@ import { z } from "zod"
 import { TrackStateSchema } from "./schemas"
 
 export type Service = {
-    status: string,
+    status: z.infer<typeof TrackStateSchema>["data"]["status"],
     platform: z.infer<typeof TrackStateSchema>["data"]["platform"],
     scheduledDepartureTime: string,
     destination: { name: string, code: string },
