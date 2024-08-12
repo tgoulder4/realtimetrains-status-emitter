@@ -9,7 +9,7 @@ function checkIfClassInPlatformSpan($: cheerio.Root, service: cheerio.Element, s
 export const getServiceListCA = async (dest?: string): Promise<Service[]> => {
     console.log("getServiceListCA called with dest: ", dest)
     try {
-        const url = process.env.NODEENV == "production" ? `https://www.realtimetrains.co.uk/search/simple/gb-nr:EUS${dest ? `/to/gb-nr:${dest}` : ''}` : "http://localhost:3000/tests/departuresNoAim";
+        const url = process.env.NODE_ENV == "production" ? `https://www.realtimetrains.co.uk/search/simple/gb-nr:EUS${dest ? `/to/gb-nr:${dest}` : ''}` : "http://localhost:3000/tests/departuresNoAim";
         console.log("url used: ", url)
         const res = await fetch(url, {
             headers: {
