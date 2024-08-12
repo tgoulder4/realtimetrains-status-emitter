@@ -8,7 +8,6 @@ export const TrackStateSchema = z.object({
         status: z.string(),
         platform: z.string(),
         platformHasChanged: z.boolean().optional(),
-        minutesUntilDeparture: z.number().optional(),
     }),
     hidden: z.object({
         timeTillRefresh: z.number(),

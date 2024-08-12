@@ -9,7 +9,7 @@ import { ComboBox } from "@/components/ui/combobox";
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { getServiceList } from "../../lib/core/main";
+import { getServiceListCA } from "../../core-actions/main";
 import { Service } from "@/lib/types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { maxWidthClassNames } from "@/lib/layout";
@@ -33,41 +33,36 @@ export default function Home() {
 
     const [departures, setDepartures] = useState<Service[]>([
         {
-            destinationStationName: "Birmingham New Street",
+            destination: { name: "Birmingham New Street", code: "BHM" },
             scheduledDepartureTime: "12:00",
             platform: "1",
             status: "On time",
-            destinationStationCode: "BHM"
         },
         {
-            destinationStationName: "Manchester Piccadilly",
+            destination: { name: "Birmingham New Street", code: "BHM" },
             scheduledDepartureTime: "12:00",
             platform: "1",
             status: "On time",
-            destinationStationCode: 'MAN'
         }
     ]);
     const [renderedDepartures, setRenderedDepartures] = useState<Service[]>([
         {
-            destinationStationName: "LOAD",
+            destination: { name: "LOAD", code: "LOAD" },
             scheduledDepartureTime: "LOAD",
             platform: "LOAD",
             status: "LOAD",
-            destinationStationCode: "LOAD"
         },
         {
-            destinationStationName: "LOAD",
+            destination: { name: "LOAD", code: "LOAD" },
             scheduledDepartureTime: "LOAD",
             platform: "LOAD",
             status: "LOAD",
-            destinationStationCode: "LOAD"
         },
         {
-            destinationStationName: "LOAD",
+            destination: { name: "LOAD", code: "LOAD" },
             scheduledDepartureTime: "LOAD",
             platform: "LOAD",
             status: "LOAD",
-            destinationStationCode: "LOAD"
         },
     ]);
     const [aimStation, setAimStation] = useState<{ name: string, code: string }>({ name: "", code: "" });
@@ -82,7 +77,7 @@ export default function Home() {
         console.log("onSubmit called with data: ", data)
         const aimStationCode = data.dest;
         if (aimStationCode) {
-            const services = await getServiceList(aimStationCode);
+            const services = await getServiceListCA(aimStationCode);
             setRenderedDepartures(services.slice(0, 8));
         } else {
             setRenderedDepartures(departures);
@@ -94,7 +89,7 @@ export default function Home() {
     const [error, setError] = useState<string | null>(null);
     useEffect(() => {
         async function main() {
-            const allServices = await getServiceList();
+            const allServices = await getServiceListCA();
             setDepartures(allServices);
             setRenderedDepartures(allServices);
         }
@@ -129,7 +124,7 @@ export default function Home() {
                                 <div className="pl-[17px] flex flex-row gap-2">
                                     <div className={`w-full flex flex-row items-center gap-2`}>
                                         <p className="opacity-40  text-white">To:</p>
-                                        <DeparturesComboBoxFormField onSubmit={onSubmit} _options={findUniquelyNamedDepartures(departures).map(station => ({ label: station.destinationStationName, value: station.destinationStationCode }))} form={form} />
+                                        <DeparturesComboBoxFormField onSubmit={onSubmit} _options={findUniquelyNamedDepartures(departures).map(station => ({ label: station.destination.name, value: station.destination.code }))} form={form} />
                                     </div>
                                 </div>
                             </div>
@@ -143,12 +138,13 @@ export default function Home() {
                     <h2 className="font-semibold">{aimStation ? "Results" : "Departing soon"}</h2>
                     <div className="flex flex-col gap-4">
                         {renderedDepartures.map((departure, index) => {
-                            const selectedDepInfo = "T-" + departure.scheduledDepartureTime.replace(":", "") + "D-" + departure.destinationStationCode + (aimStation.code ? "A-" + aimStation.code : "");
+                            const { destination } = departure;
+                            const selectedDepInfo = "T-" + departure.scheduledDepartureTime.replace(":", "") + "D-" + destination.code + (aimStation.code ? "A-" + aimStation.code : "");
                             console.log("selectedDepInfo: ", selectedDepInfo)
-                            if (departure.destinationStationName == "LOAD") return <div key={"load-" + index} className="bg-zinc-200 animate animate-pulse h-20 w-full"></div>
-                            return <DepartureCard key={departure.scheduledDepartureTime + departure.destinationStationName} onClick={() => {
+                            if (departure.destination.name == "LOAD") return <div key={"load-" + index} className="bg-zinc-200 animate animate-pulse h-20 w-full"></div>
+                            return <DepartureCard key={departure.scheduledDepartureTime + departure.destination.name} onClick={() => {
                                 setSelectedDepartures(prev => addIfNewOrRemoveIfExistingItemFromArray(prev, selectedDepInfo))
-                            }} className={`${selectedDepartures.includes(selectedDepInfo) ? "!bg-blue-300" : ""} ${error && "animate-[shake] duration-700 animate-once transition-colors bg-red-400"}`} via={aimStation.name == departure.destinationStationName ? undefined : aimStation.name || undefined} service={departure} />
+                            }} className={`${selectedDepartures.includes(selectedDepInfo) ? "!bg-blue-300" : ""} ${error && "animate-[shake] duration-700 animate-once transition-colors bg-red-400"}`} via={aimStation.name == destination.name ? undefined : aimStation.name || undefined} service={departure} />
                         }
                         )
                         }

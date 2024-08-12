@@ -7,14 +7,14 @@ import { Service } from "./types";
  */
 export function findUniquelyNamedDepartures(srvcs: Service[]): Service[] {
     return srvcs.map(station => {
-        const stationName = station.destinationStationName;
+        const stationName = station.destination.name;
         //if stationanme contains a comma or an and symbol throw an error
         if (stationName.includes(',') || stationName.includes('&')) {
-            return { destinationStationName: "MULTIDEST", scheduledDepartureTime: "--", platform: "0", status: "Error", destinationStationCode: "--" };
+            return { destination: { name: "MULTIDEST", code: '' }, scheduledDepartureTime: "--", platform: "0", status: "Error" };
         } else {
             return station
         }
     }).filter((value, index, self) => {
-        return srvcs.findIndex(station => station.destinationStationName === value.destinationStationName) === index;
+        return srvcs.findIndex(station => station.destination.name === value.destination.name) === index;
     })
 }
