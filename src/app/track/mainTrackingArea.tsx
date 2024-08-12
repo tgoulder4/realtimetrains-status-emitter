@@ -80,7 +80,7 @@ function MainTrackingArea({ condensedURLserviceToTrack }: Props) {
             setCurrentTrackingState(newState);
         }
         const timer = setInterval(async () => {
-            main();
+            await main();
         }, currentTrackingState.hidden.timeTillRefresh)
         main();
 
