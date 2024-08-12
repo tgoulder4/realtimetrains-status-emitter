@@ -19,15 +19,15 @@ function DepartureCard({ service, via, isPopular, className, onClick, shouldntDi
         status,
         platform,
         scheduledDepartureTime,
-        destinationStationName,
-        destinationStationCode,
+        destination,
         provider
     } = service;
+    const { name, code } = destination;
     return (
         <CardPrim onClick={onClick} className={`bg-white h-20 ${className}`} shouldDisplaceOnHover={!shouldntDisplace}>
             <h2 className={`text-xl font-bold text-black`}>{scheduledDepartureTime}</h2>
             <div className="flex flex-col items-start">
-                <h3 className='font-bold'>{destinationStationName}</h3>
+                <h3 className='font-bold'>{name}</h3>
                 <div className="flex flex-row justify-between w-full">
                     {via &&
                         <div className="flex flex-row  gap-2">
