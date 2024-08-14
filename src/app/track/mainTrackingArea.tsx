@@ -1,10 +1,10 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import WebSocket from 'ws';
 import { env } from '@/env';
 import { Journey, Service, TrackState } from '@/lib/types';
 import { maxWidthClassNames } from '@/lib/layout';
-import DepartureCard from '../Cards';
+import DepartureCard from '../DepartureCard';
 import { getColourFromStatus, getDescriptionFromStatus, getGlyphFromStatus, getIntuitiveStatusFromStatus } from './getRenderInfoFromState';
 import CheckingAgainTimer from './checkingAgainTimer';
 import { TrackStateSchema } from '@/lib/schemas';
@@ -13,11 +13,12 @@ import { hc } from 'hono/client'
 import { dissectOneTrainInfoFromUrl } from './dissectServicesToTrack';
 import { useServerAction } from "zsa-react";
 import { getTrackStateSA } from './actions';
+import { randomBytes } from 'crypto';
 type Props = {
-    condensedURLserviceToTrack: string;
+    serviceToTrack: Journey;
 }
 
-function MainTrackingArea({ condensedURLserviceToTrack }: Props) {
+function MainTrackingArea({ serviceToTrack }: Props) {
     const [currentTrackingState, setCurrentTrackingState] = useState<TrackState>({
         data: {
             status: "Prepare",
@@ -30,14 +31,15 @@ function MainTrackingArea({ condensedURLserviceToTrack }: Props) {
             scheduledDepartureTime: "--",
         },
         hidden: {
-            timeTillRefresh: 30000,
+            timeTillRefresh: 0,
+            updateKey: randomBytes(16).toString('hex')
         }
     });
     const { execute, isPending } = useServerAction(getTrackStateSA);
 
     async function getTrackingState(serviceToTrack: Journey) {
         try {
-            console.log("executing getTrackStateSA with: ", serviceToTrack);
+            // console.log("executing getTrackStateSA with: ", serviceToTrack);
             const res = (await execute({ journey: serviceToTrack }));
             console.log("res: ", res);
             const data = res[0];
@@ -66,29 +68,26 @@ function MainTrackingArea({ condensedURLserviceToTrack }: Props) {
                     scheduledDepartureTime: "--",
                 },
                 hidden: {
-                    timeTillRefresh: 1000000000,
+                    timeTillRefresh: 0,
                     error: e
                 }
             } as TrackState
         }
     }
     useEffect(() => {
-        const serviceToTrack = dissectOneTrainInfoFromUrl(condensedURLserviceToTrack);
-        // console.log("serviceToTrack: ", serviceToTrack);
+        let timer: NodeJS.Timeout;
+        main();
+        if (currentTrackingState.hidden.timeTillRefresh == 0) return;
+        timer = setInterval(async () => { await main() }, currentTrackingState.hidden.timeTillRefresh);
         async function main() {
+            // console.log("main called with timeTillRefresh: ", currentTrackingState.hidden.timeTillRefresh)
             const newState = await getTrackingState(serviceToTrack);
             setCurrentTrackingState(newState);
         }
-        const timer = setInterval(async () => {
-            await main();
-        }, currentTrackingState.hidden.timeTillRefresh)
-        main();
-
-        return () => {
-            clearInterval(timer);
-        }
-    }, [])
+        return () => clearInterval(timer);
+    }, [currentTrackingState.data.status])
     //url like http://localhost:3000/track?trains=1940BHM+1200MAN
+    console.log("currentTrackingState: ", currentTrackingState)
     const {
         destination,
         scheduledDepartureTime,
@@ -119,7 +118,7 @@ function MainTrackingArea({ condensedURLserviceToTrack }: Props) {
                             <h3 className='w-full text-center'>{getDescriptionFromStatus(status)}</h3>
                         </div>
                     </div>
-                    <CheckingAgainTimer startTime={currentTrackingState.hidden.timeTillRefresh} />
+                    {status !== "Go" && <CheckingAgainTimer updateKey={currentTrackingState.hidden.updateKey} startTime={currentTrackingState.hidden.timeTillRefresh} />}
                 </div>
                 {process.env.NODE_ENV == "development" && currentTrackingState.hidden.error && <div className="bg-white text-red-800 p-5">{String(currentTrackingState.hidden.error)}</div>}
             </div>

@@ -14,6 +14,7 @@ export const TrackStateSchema = z.object({
     hidden: z.object({
         timeTillRefresh: z.number(),
         error: z.any().optional(),
+        updateKey: z.string()
     })
 })
 export const JourneySchema = z.object({

@@ -15,7 +15,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { maxWidthClassNames } from "@/lib/layout";
 import { applicationName } from "@/app-config";
 import { Input } from "@/components/ui/input";
-import DepartureCard, { CardPrim } from "../Cards";
+import DepartureCard, { CardPrim } from "../DepartureCard";
 import { Button } from "@/components/ui/button";
 import { checkTrueStationName, findStationCodeByName, findStationNameByCode } from "@/lib/destinations";
 import { findUniquelyNamedDepartures } from "@/lib/departures";
@@ -119,7 +119,7 @@ export default function Home() {
         <main className="flex min-h-fit flex-col pb-48">
             <div className={`hidden ${maxWidthClassNames}`}></div>
             <div className={`navArea sticky top-0 left-0 z-10 w-full pt-8 pb-4 md:pt-16 bg-zinc-900`}>
-                <div className={`${maxWidthClassNames} flex flex-col gap-8 items-center`}>
+                <div className={`${maxWidthClassNames} flex flex-col gap-8 items-center px-8 pt-8 md:px-16 md:mx-auto md:pt-0`}>
                     <h2 className="font-semibold text-white text-2xl">{applicationName}</h2>
                     <Form {...form}>
                         <form className="w-full" onSubmit={form.handleSubmit(onSubmit)}>
@@ -163,6 +163,7 @@ export default function Home() {
                             console.log("selectedDepInfo: ", selectedDepInfo)
                             if (departure.destination.name == "LOAD") return <div key={"load-" + index} className="bg-zinc-200 animate animate-pulse h-20 w-full"></div>
                             return <DepartureCard
+                                status={departure.status}
                                 key={departure.scheduledDepartureTime + departure.destination.name}
                                 onClick={() => { setSelectedDepartures(prev => addIfNewOrRemoveIfExistingItemFromArray(prev, selectedDepInfo)) }}
                                 className={`${selectedDepartures.includes(selectedDepInfo) ? "!bg-blue-300" : ""} ${error && "animate-[shake] duration-700 animate-once transition-colors bg-red-400"}`}
