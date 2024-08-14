@@ -102,7 +102,7 @@ function MainTrackingArea({ serviceToTrack }: Props) {
                 <div className="flex flex-row w-full gap-3">
                     <DepartureCard shouldntDisplace className='w-full flex-[5]' partialDepartureInfo={{
                         destination: { name: destination.name, code: destination.code },
-                        scheduledDepartureTime,
+                        scheduledDepartureTime: scheduledDepartureTime.slice(0, 2) + ":" + scheduledDepartureTime.slice(2),
                         provider
                     }} />
                 </div>
