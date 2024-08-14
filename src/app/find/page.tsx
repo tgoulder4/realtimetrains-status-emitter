@@ -160,7 +160,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
                 </div>
             </div>
             <div className={`${maxWidthClassNames}  flex flex-col h-full justify-between`}>
-                <div className="px-12 pt-8 flex flex-col h-full gap-4">
+                <div className="px-4 lg:px-12 pt-8 flex flex-col h-full gap-4">
                     <h2 className="font-semibold">{aimStation ? "Results" : "Departing soon"}</h2>
                     <div className="flex flex-col gap-4">
                         {renderedDepartures.map((departure, index) => {
