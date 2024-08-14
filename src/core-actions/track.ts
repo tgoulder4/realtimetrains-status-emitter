@@ -30,7 +30,10 @@ export async function getTrackStateCA(journey: Journey): Promise<TrackState> {
                 return 0;
             case "Wait":
                 // console.log("nextCheckingTimeTwentyBeforeDep: ", nextCheckingTimeTwentyBeforeDep);
-                return diff < 0 ? 10000 : diff;
+
+                //this diff calculation is returning positive in production, but negative in dev. I don't know why.
+                // return diff < 0 ? 10000 : diff;
+                return 10000
             default:
                 return 0;
         }
