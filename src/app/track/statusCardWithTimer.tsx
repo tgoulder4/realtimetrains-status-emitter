@@ -61,12 +61,11 @@ function StatusCardWithTimer({
                         <h1 className='text-[11.25rem]'>{platform.number}</h1>
                     </div>
                     <div className="-mt-12 -mb-3 z-20">
-                        {status !== "Go" && status !== "Error" && <p className='text-black/20  font-bold' style={{ opacity: 1 }}>Checking again {timeToRender ? `in ${timeToRender >= 0 ? (timeToRender / 1000) : 0}s` :
+                        {status !== "Go" && status !== "Error" && <p className='text-black/20  font-bold' style={{ opacity: 1 }}>Checking again {timeToRender >= 0 ? `in ${timeToRender >= 0 ? (timeToRender / 1000) : 0}s` :
                             //given time to render is in seconds, add it to the current time and show it in HH:MM
                             `at ${dateToRender}`}</p>}
                     </div>
                     <div className="p-5 w-full z-20 ">
-
                         <div className="py-3 grid place-items-center bg-white/10 w-full" style={{ opacity: timeToRender <= 1 ? 20 : 1 }}>{getIntuitiveStatusFromStatus(status)} {platform.type == "confirmedAndChanged" && "- The platform has changed"}</div>
                     </div>
                 </div>

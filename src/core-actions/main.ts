@@ -9,7 +9,7 @@ function checkIfClassInPlatformSpan($: cheerio.Root, service: cheerio.Element, s
 export const getServiceListCA = async (dest?: string): Promise<Service[]> => {
     console.log("getServiceListCA called with dest: ", dest)
     try {
-        const url = false ? `https://www.realtimetrains.co.uk/search/simple/gb-nr:EUS${dest ? `/to/gb-nr:${dest}` : ''}` : "http://localhost:3002/tests/departuresNoAim";
+        const url = true ? `https://www.realtimetrains.co.uk/search/simple/gb-nr:EUS${dest ? `/to/gb-nr:${dest}` : ''}` : "http://localhost:3002/tests/departuresNoAim";
         console.log("url used: ", url)
         const res = await fetch(url, {
             headers: {
@@ -25,18 +25,21 @@ export const getServiceListCA = async (dest?: string): Promise<Service[]> => {
         const list = $(".service").map((i, service) => {
             //expected platofrms have a class of ex. confirmedAndChanged platforms have a class of c, confirmedAndUnchanged have a class of a
             //platform numbers are found in .platform span
-            let status;
-            let platformType;
-            if (checkIfClassInPlatformSpan($, service, "a")) {
+            let status: Service["status"];
+            let platformType: Service['platform']['type'];
+            if (checkIfClassInPlatformSpan($, service, "a") && !checkIfClassInPlatformSpan($, service, "c")) {
                 platformType = "confirmedAndNotChanged"
                 status = "Go"
             }
-            if (checkIfClassInPlatformSpan($, service, "c")) {
+            else if (checkIfClassInPlatformSpan($, service, "c") && checkIfClassInPlatformSpan($, service, "a")) {
                 status = "Go",
                     platformType = "confirmedAndChanged"
             } else if (checkIfClassInPlatformSpan($, service, "ex")) {
                 status = "Wait",
                     platformType = "expected"
+            } else {
+                status = 'Error'
+                platformType = 'expected'
             }
             const platform = {
                 number: $(service).find(".platform").text(),
