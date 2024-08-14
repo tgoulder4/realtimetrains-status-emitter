@@ -169,7 +169,7 @@ export default function Home() {
                                 className={`${selectedDepartures.includes(selectedDepInfo) ? "!bg-blue-300" : ""} ${error && "animate-[shake] duration-700 animate-once transition-colors bg-red-400"}`}
                                 partialDepartureInfo={{
                                     destination: departure.destination,
-                                    scheduledDepartureTime: departure.scheduledDepartureTime,
+                                    scheduledDepartureTime: departure.scheduledDepartureTime.slice(0, 2) + ":" + departure.scheduledDepartureTime.slice(2),
                                     provider: departure.provider,
                                     via: aimStation.name || undefined
                                 }} />
@@ -184,7 +184,7 @@ export default function Home() {
                         if (selectedDepartures.length == 0) { setError("Please select at least one departure"); }
                         else { window.location.href = `/track?trains=${selectedDepartures.join("+")}` }
                     }}
-                    className={`animate-in fixed bottom-12 left-[calc(50%_-_120px)] text-lg font-semibold ${selectedDepartures.length > 0 ? "bg-green-900 border-b-8 border-green-950 hover:border-b-0 -translate-y-2" : ""}  px-12 py-8  transition-transform ease-in text-white`}>
+                    className={`animate-in fixed bottom-12 left-[calc(50%_-_120px)] right-[calc(50%_-_120px)] text-center text-lg font-semibold ${selectedDepartures.length > 0 ? "bg-green-900 border-b-8 border-green-950 hover:border-b-0 -translate-y-2" : ""}  px-12 py-8  transition-transform ease-in text-white`}>
                     Beat The Rush! {selectedDepartures.length > 0 && `(${selectedDepartures.length})`}
                 </Button>
                 {/* </div> */}

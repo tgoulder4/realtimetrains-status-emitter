@@ -2,7 +2,7 @@ import React from 'react'
 import { Service } from '@/lib/types'
 import { Badge } from "@/components/ui/badge"
 import { checkStationIsPopular } from '@/lib/utils'
-import { getColourFromStatus } from './track/getRenderInfoFromState'
+import { getColourFromStatus, getGlyphFromStatus } from './track/getRenderInfoFromState'
 
 type Props = {
     partialDepartureInfo: {
@@ -24,10 +24,13 @@ function DepartureCard({ partialDepartureInfo, isPopular, status, className, onC
     const { destination: { name, code }, scheduledDepartureTime, provider, via } = partialDepartureInfo
     return (
         <CardPrim onClick={onClick} className={`bg-white h-fit ${className}`} shouldDisplaceOnHover={!shouldntDisplace}>
-            {status && <div className={`h-8 w-8 ${getColourFromStatus(status)}`} ></div>}
+
             <h2 className={`text-xl font-bold text-black`}>{scheduledDepartureTime}</h2>
             <div className="flex flex-col items-start w-full">
-                <h3 className='font-bold'>{name}</h3>
+                <div className="w-full flex flex-row justify-between">
+                    <h3 className='font-bold'>{name}</h3>
+                    {status && getGlyphFromStatus(status)}
+                </div>
                 <div className="flex flex-row justify-between items-end w-full">
                     {via &&
                         <div className="flex flex-row w-full  gap-2">
