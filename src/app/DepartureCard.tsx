@@ -25,12 +25,17 @@ function DepartureCard({ partialDepartureInfo, isPopular, status, className, onC
     return (
         <CardPrim onClick={onClick} className={`bg-white h-fit ${className}`} shouldDisplaceOnHover={!shouldntDisplace}>
 
-            <h2 className={`text-xl font-bold text-black`}>{scheduledDepartureTime}</h2>
+            <h2 className={`text-xl font-bold text-black`}>{scheduledDepartureTime
+
+            }</h2>
             <div className="flex flex-col items-start w-full">
                 <div className="w-full flex flex-row items-center justify-between">
-                    <h3 className='font-bold w-full'>{name}</h3>
-                    {status && getGlyphFromStatus(status)}
-                    {!via && provider && <p className='opacity-50 w-full text-end ml-4'>{provider}</p>}
+                    <div className="flex flex-row items-center gap-2">
+                        <h3 className='font-bold w-max'>{name}</h3>
+                        {status && getGlyphFromStatus(status)}
+
+                    </div>
+                    {!via && provider && <p className='opacity-50 text-end ml-4'>{provider}</p>}
                 </div>
                 {via && <div className="flex flex-row justify-between items-end w-full">
 

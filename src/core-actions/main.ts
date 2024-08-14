@@ -58,8 +58,8 @@ export const getServiceListCA = async (dest?: string): Promise<Service[]> => {
             const scheduledDepartureTime = $(service).find(".time").text();
             // .replace(/(\d{2})(\d{2})/, "$1:$2");
 
-            //provider is in format <div class="secline">Avanti WC Pendolino · 9 coaches</div>, we need "Avanti WC Pendolino"
-            const provider = $(service).find(".secline").text().split("·")[0].trim();
+            //provider is in format <div class="secline">Avanti WC Pendolino · 9 coaches</div>, we need "Avanti WC Pendolino", remove 'service' from the end
+            const provider = $(service).find(".secline").text().split("·")[0].trim().replace(" service", "");
 
             return { status, platform, scheduledDepartureTime, destination, provider } as Service;
         }).get();
