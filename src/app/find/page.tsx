@@ -21,6 +21,7 @@ import { checkTrueStationName, findStationCodeByName, findStationNameByCode } fr
 import { findUniquelyNamedDepartures } from "@/lib/departures";
 import DeparturesComboBoxFormField from "./departuresComboBoxFormField";
 import HeaderLogoWithName from "../track/LogoWithName";
+import { toast } from "sonner";
 
 
 export default function Home({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
@@ -111,7 +112,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
     useEffect(() => {
         console.log("searchParams: ", searchParams)
         if (searchParams.err) {
-            alert(searchParams.err);
+            toast.error(searchParams.err as string);
         }
         async function main() {
             const allServices = await getServiceListCA();
@@ -186,7 +187,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
                 {/* <div className="grid place-items-center"> */}
                 <Button
                     onClick={() => {
-                        if (selectedDepartures.length == 0) { setNoSelectionError("Please select at least one departure"); }
+                        if (selectedDepartures.length == 0) { toast.error("Please select at least one departure"); setNoSelectionError("Please select at least one departure"); }
                         else { window.location.href = `/track?trains=${selectedDepartures.join("+")}` }
                     }}
                     className={`animate-in fixed bottom-12 left-[calc(50%_-_120px)] right-[calc(50%_-_120px)] text-center text-lg font-semibold ${selectedDepartures.length > 0 ? "bg-green-900 border-b-8 border-green-950 hover:border-b-0 -translate-y-2" : ""}  px-12 py-8  transition-transform ease-in text-white`}>

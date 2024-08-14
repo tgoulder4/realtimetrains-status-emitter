@@ -61,7 +61,7 @@ function StatusCardWithTimer({
                         <h1 className='text-[11.25rem]'>{platform.number}</h1>
                     </div>
                     <div className="-mt-12 -mb-3 z-20">
-                        {status !== "Go" && status !== "Error" && <p className='text-black/20  font-bold' style={{ opacity: 1 }}>Checking again {timeToRender >= 0 ? `in ${timeToRender >= 0 ? (timeToRender / 1000) : 0}s` :
+                        {status !== "Go" && status !== "Error" && <p className='text-black/20  font-bold' style={{ opacity: 1 }}>Checking again {((startTime <= 21000)) ? `in ${timeToRender / 1000}s` :
                             //given time to render is in seconds, add it to the current time and show it in HH:MM
                             `at ${dateToRender}`}</p>}
                     </div>
