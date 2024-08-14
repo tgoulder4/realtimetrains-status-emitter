@@ -23,13 +23,13 @@ export function CardPrim({ children, shouldDisplaceOnHover, isLoading, className
 function DepartureCard({ partialDepartureInfo, isPopular, status, className, onClick, shouldntDisplace }: Props) {
     const { destination: { name, code }, scheduledDepartureTime, provider, via } = partialDepartureInfo
     return (
-        <CardPrim isLoading={partialDepartureInfo.destination.name == "--"} onClick={onClick} className={`bg-white h-20 ${className}`} shouldDisplaceOnHover={!shouldntDisplace}>
+        <CardPrim isLoading={partialDepartureInfo.destination.name == "--"} onClick={onClick} className={`bg-white h-fit ${className}`} shouldDisplaceOnHover={!shouldntDisplace}>
 
             {(partialDepartureInfo.destination.name !== "--") && <><h2 className={`text-xl font-bold text-black`}>{scheduledDepartureTime
 
             }</h2>
                 <div className="flex flex-col items-start w-full">
-                    <div className="w-full flex flex-row items-center justify-between">
+                    <div className="w-full flex flex-col md:flex-row md:items-center justify-between">
                         <div className="flex flex-row items-center gap-2">
                             <h3 className='font-bold w-max'>{name}</h3>
                             {status && getGlyphFromStatus(status)}
@@ -37,7 +37,7 @@ function DepartureCard({ partialDepartureInfo, isPopular, status, className, onC
                         </div>
                         {!via && provider && <p className='opacity-50 text-end ml-4'>{provider}</p>}
                     </div>
-                    {via && <div className="flex flex-row justify-between items-end w-full">
+                    {via && <div className="flex flex-col md:flex-row justify-between items-end w-full">
 
                         <div className="flex flex-row w-full  gap-2">
                             <p className='opacity-50'>Via {via}</p>
