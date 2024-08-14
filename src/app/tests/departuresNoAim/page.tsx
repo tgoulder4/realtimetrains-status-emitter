@@ -3,6 +3,16 @@ import React from 'react'
 type Props = {}
 
 function DeparturesNoAimPage({ }: Props) {
+    var d = new Date();
+    //add 30 mins to current time
+    var h: string | number = d.getHours();
+    var m: string | number = d.getMinutes();
+    const timeOffsetInMinutes = 20;
+    h = m + timeOffsetInMinutes >= 60 ? h + 1 : h
+    m = m + timeOffsetInMinutes >= 60 ? m + 30 - 60 : m + timeOffsetInMinutes;
+    h = h < 10 ? '0' + h : h;
+    m = m < 10 ? '0' + m : m;
+    console.log("h: ", h, "m: ", m);
     return (
         <>
             {/* saved from url=(0056)https://www.realtimetrains.co.uk/search/simple/gb-nr:EUS */}
@@ -212,7 +222,7 @@ function DeparturesNoAimPage({ }: Props) {
                                         <div className="location">
                                             <span>Tring </span>
                                             <div className="addl">
-                                                <div className="secline">GO UNCHANGED TEST SERVICE West Midlands Trains service</div>
+                                                <div className="secline">GO UNCHANGED TEST SERVICE West Midlands Trains</div>
                                             </div>
                                         </div>
                                         <div className="platformbox">
@@ -231,7 +241,26 @@ function DeparturesNoAimPage({ }: Props) {
                                             <span>Watford Junction</span>
                                             <div className="addl">
 
-                                                <div className="secline">WAIT TEST SERVICE London Overground service</div>
+                                                <div className="secline">WAIT TEST SERVICE London Overground</div>
+                                            </div>
+                                        </div>
+                                        <div className="platformbox">
+                                            <div className="platform c">
+                                                <span className="ex ">9</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a
+                                        className="service "
+                                        href="https://www.realtimetrains.co.uk/service/gb-nr:P89897/2024-08-12"
+                                    >
+                                        <div className="time">{h}{m}</div>
+                                        <div className="notion" />
+                                        <div className="location">
+                                            <span>Watford Junction</span>
+                                            <div className="addl">
+
+                                                <div className="secline">WAIT FUTURE-to-SOON transition Avanti west coast</div>
                                             </div>
                                         </div>
                                         <div className="platformbox">

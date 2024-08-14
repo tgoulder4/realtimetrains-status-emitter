@@ -13,7 +13,7 @@ export const getServiceListCA = async (dest?: string): Promise<Service[]> => {
         let res: Response;
         if (env.NODE_ENV === 'development') {
             console.log("fetching from localhost")
-            res = await fetch("http://localhost:3002/tests/departuresNoAim",
+            res = await fetch("http://localhost:3000/tests/departuresNoAim",
                 {
                     headers: {
                         "Access-Control-Allow-Headers": "Content-Type",
