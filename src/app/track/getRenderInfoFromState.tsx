@@ -12,6 +12,20 @@ export function getColourFromStatus(status: string) {
             return "bg-red-800";
     }
 }
+export function getHexColourFromStatus(status: string) {
+    switch (status) {
+        case "Wait":
+            return "#854d0e";
+        case "Go":
+            return "#166534";
+        case "Prepare":
+            return "#1e293b";
+        case "Error":
+            return "#991b1b";
+        default:
+            return "#991b1b";
+    }
+}
 export function getIntuitiveStatusFromStatus(status: string) {
     switch (status) {
         case "Wait":

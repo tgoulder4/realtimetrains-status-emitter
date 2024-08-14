@@ -98,11 +98,15 @@ function MainTrackingArea({ serviceToTrack }: Props) {
     return (
         <div className={`flex h-full w-full flex-col py-8 bg-slate-100 ${maxWidthClassNames}`}>
             <div className="flex flex-col items-center gap-3 transition-all">
-                <DepartureCard shouldntDisplace className='w-full' partialDepartureInfo={{
-                    destination: { name: destination.name, code: destination.code },
-                    scheduledDepartureTime,
-                    provider
-                }} />
+                <div className="flex flex-row w-full gap-3">
+                    <DepartureCard shouldntDisplace className='w-full flex-[5]' partialDepartureInfo={{
+                        destination: { name: destination.name, code: destination.code },
+                        scheduledDepartureTime,
+                        provider
+                    }} />
+
+                    {status !== "Go" && <CheckingAgainTimer status={currentTrackingState.data.status} updateKey={currentTrackingState.hidden.updateKey} startTime={currentTrackingState.hidden.timeTillRefresh} />}
+                </div>
                 <div className="hidden bg-yellow-800 bg-red-800 bg-green-800 bg-slate-800"></div>
                 <div className={`p-5 w-full statusCard text-white flex flex-col items-center animate transition-colors ${getColourFromStatus(status)}`}>
                     <div className="flex flex-col items-center mt-3">
@@ -118,7 +122,6 @@ function MainTrackingArea({ serviceToTrack }: Props) {
                             <h3 className='w-full text-center'>{getDescriptionFromStatus(status)}</h3>
                         </div>
                     </div>
-                    {status !== "Go" && <CheckingAgainTimer updateKey={currentTrackingState.hidden.updateKey} startTime={currentTrackingState.hidden.timeTillRefresh} />}
                 </div>
                 {process.env.NODE_ENV == "development" && currentTrackingState.hidden.error && <div className="bg-white text-red-800 p-5">{String(currentTrackingState.hidden.error)}</div>}
             </div>
