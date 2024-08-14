@@ -30,8 +30,7 @@ export async function getTrackStateCA(journey: Journey): Promise<TrackState> {
                 return 0;
             case "Wait":
                 // console.log("nextCheckingTimeTwentyBeforeDep: ", nextCheckingTimeTwentyBeforeDep);
-                // return diff < 0 ? 10000 : diff;
-                return 10000
+                return diff < 0 ? 10000 : diff;
             default:
                 return 0;
         }
