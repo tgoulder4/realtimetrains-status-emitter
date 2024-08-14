@@ -1,1 +1,1 @@
-export const waitingThreshholdInMilliseconds = 210000; 
+export const howManyMinutesPriorToDepartureToStartPolling = 30; 
