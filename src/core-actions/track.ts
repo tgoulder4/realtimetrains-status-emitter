@@ -7,16 +7,43 @@ export async function getTrackStateCA(journey: Journey): Promise<TrackState> {
         departure,
     } = journey
     const serviceList = await getServiceListCA(departure.code);
-    console.log("departure: ", departure, "serviceList: ", serviceList);
+    // console.log("departure: ", departure, "serviceList: ", serviceList);
     const correspondingJourney = serviceList.find(service => (service.destination.code == departure.code && service.scheduledDepartureTime == departure.time));
-    if (!correspondingJourney) throw new Error("Journey not found in RTT");
+    if (!correspondingJourney) throw new Error("We couldn't find the journey.");
+    function getTimeTilRefresh() {
+        const depHours = parseInt(correspondingJourney!.scheduledDepartureTime.slice(0, 2));
+        const depMins = parseInt(correspondingJourney!.scheduledDepartureTime.slice(2));
+        var d = new Date();
+        d.setHours(depHours, depMins - 20, 0, 0);
+        console.log("d.getHours(): ", d.getHours(), "d.getMinutes(): ", d.getMinutes());
+        const timeUntilTwentyMinsBefore = d.getTime() - Date.now();
+        console.log("timeDifferenceInSeconds: ", timeUntilTwentyMinsBefore);
+
+        switch (correspondingJourney!.status) {
+            case "Go":
+                return 0;
+            case "Wait":
+                //start checking 20 mins before departure time in format HHMM
+                return timeUntilTwentyMinsBefore < 210000 ? 10000 : timeUntilTwentyMinsBefore;
+            case "Changed":
+                return 30000;
+            case "Error":
+                return 0;
+            case "Wait":
+                // console.log("nextCheckingTimeTwentyBeforeDep: ", nextCheckingTimeTwentyBeforeDep);
+                return timeUntilTwentyMinsBefore < 210000 ? 10000 : timeUntilTwentyMinsBefore;
+            default:
+                return 0;
+        }
+    }
     const ts: TrackState = {
         data: correspondingJourney as Service,
         hidden: {
-            timeTillRefresh: 5000,
+            timeTillRefresh: getTimeTilRefresh(),
+            updateKey: Math.random().toString(36).substring(7),
             error: undefined
         }
     }
-    console.log("getTrackStateCA returning: ", ts);
+    // console.log("getTrackStateCA returning: ", ts);
     return ts;
 }

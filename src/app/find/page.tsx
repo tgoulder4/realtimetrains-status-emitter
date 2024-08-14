@@ -3,7 +3,7 @@ import { stationNamesWithCodes } from "@/lib/map";
 import cheerio from 'cheerio'
 import { useServerAction } from 'zsa-react'
 import { addIfNewOrRemoveIfExistingItemFromArray, cn } from "@/lib/utils";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '@/components/ui/form'
 import { ComboBox } from "@/components/ui/combobox";
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -15,14 +15,16 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { maxWidthClassNames } from "@/lib/layout";
 import { applicationName } from "@/app-config";
 import { Input } from "@/components/ui/input";
-import DepartureCard, { CardPrim } from "../Cards";
+import DepartureCard, { CardPrim } from "../DepartureCard";
 import { Button } from "@/components/ui/button";
 import { checkTrueStationName, findStationCodeByName, findStationNameByCode } from "@/lib/destinations";
 import { findUniquelyNamedDepartures } from "@/lib/departures";
 import DeparturesComboBoxFormField from "./departuresComboBoxFormField";
+import HeaderLogoWithName from "../track/LogoWithName";
+import { toast } from "sonner";
 
 
-export default function Home() {
+export default function Home({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
     //header form stuff
     const formSchema = z.object({ dest: z.string().length(3).or(z.string().length(0)), dep: z.literal("London Euston") });
     function handleBeatTheRushClick() {
@@ -106,8 +108,12 @@ export default function Home() {
     }
     //select the string station codes for easy appending to the URL
     const [selectedDepartures, setSelectedDepartures] = useState<string[]>([]);
-    const [error, setError] = useState<string | null>(null);
+    const [noSelectionError, setNoSelectionError] = useState<string | null>(null);
     useEffect(() => {
+        console.log("searchParams: ", searchParams)
+        if (searchParams.err) {
+            toast.error(searchParams.err as string);
+        }
         async function main() {
             const allServices = await getServiceListCA();
             setDepartures(allServices);
@@ -119,8 +125,8 @@ export default function Home() {
         <main className="flex min-h-fit flex-col pb-48">
             <div className={`hidden ${maxWidthClassNames}`}></div>
             <div className={`navArea sticky top-0 left-0 z-10 w-full pt-8 pb-4 md:pt-16 bg-zinc-900`}>
-                <div className={`${maxWidthClassNames} flex flex-col gap-8 items-center`}>
-                    <h2 className="font-semibold text-white text-2xl">{applicationName}</h2>
+                <div className={`${maxWidthClassNames} flex flex-col gap-8 items-center px-8 pt-8 md:px-16 md:mx-auto md:pt-0`}>
+                    <HeaderLogoWithName pageTitle={`${applicationName}`} />
                     <Form {...form}>
                         <form className="w-full" onSubmit={form.handleSubmit(onSubmit)}>
                             <div className="w-full flex flex-col gap-4">
@@ -163,12 +169,13 @@ export default function Home() {
                             console.log("selectedDepInfo: ", selectedDepInfo)
                             if (departure.destination.name == "LOAD") return <div key={"load-" + index} className="bg-zinc-200 animate animate-pulse h-20 w-full"></div>
                             return <DepartureCard
+                                status={departure.status}
                                 key={departure.scheduledDepartureTime + departure.destination.name}
                                 onClick={() => { setSelectedDepartures(prev => addIfNewOrRemoveIfExistingItemFromArray(prev, selectedDepInfo)) }}
-                                className={`${selectedDepartures.includes(selectedDepInfo) ? "!bg-blue-300" : ""} ${error && "animate-[shake] duration-700 animate-once transition-colors bg-red-400"}`}
+                                className={`${selectedDepartures.includes(selectedDepInfo) ? "!bg-blue-300" : ""} ${noSelectionError && "animate-[shake] duration-700 animate-once transition-colors bg-red-400"}`}
                                 partialDepartureInfo={{
                                     destination: departure.destination,
-                                    scheduledDepartureTime: departure.scheduledDepartureTime,
+                                    scheduledDepartureTime: departure.scheduledDepartureTime.slice(0, 2) + ":" + departure.scheduledDepartureTime.slice(2),
                                     provider: departure.provider,
                                     via: aimStation.name || undefined
                                 }} />
@@ -180,10 +187,10 @@ export default function Home() {
                 {/* <div className="grid place-items-center"> */}
                 <Button
                     onClick={() => {
-                        if (selectedDepartures.length == 0) { setError("Please select at least one departure"); }
+                        if (selectedDepartures.length == 0) { toast.error("Please select at least one departure"); setNoSelectionError("Please select at least one departure"); }
                         else { window.location.href = `/track?trains=${selectedDepartures.join("+")}` }
                     }}
-                    className={`animate-in fixed bottom-12 left-[calc(50%_-_120px)] text-lg font-semibold ${selectedDepartures.length > 0 ? "bg-green-900 border-b-8 border-green-950 hover:border-b-0 -translate-y-2" : ""}  px-12 py-8  transition-transform ease-in text-white`}>
+                    className={`animate-in fixed bottom-12 left-[calc(50%_-_120px)] right-[calc(50%_-_120px)] text-center text-lg font-semibold ${selectedDepartures.length > 0 ? "bg-green-900 border-b-8 border-green-950 hover:border-b-0 -translate-y-2" : ""}  px-12 py-8  transition-transform ease-in text-white`}>
                     Beat The Rush! {selectedDepartures.length > 0 && `(${selectedDepartures.length})`}
                 </Button>
                 {/* </div> */}
