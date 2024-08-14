@@ -55,17 +55,17 @@ function StatusCardWithTimer({
                         width: `${((timeToRender / startTime) * 100)}%`,
                         backgroundColor: timeToRender <= -1 ? "#991b1b" : (timeToRender == startTime && startTime > 0) ? 'green' : `${changeColour(getHexColourFromStatus(status)).lighten(1).setAlpha((timeToRender / startTime) + 0.1)}`
                     }}></div>
-                    <div className={`flex z-50 pt-5 flex-col items-center mt-3 `}>
+                    <div className={`flex z-20 pt-5 flex-col items-center mt-3 `}>
                         <h2 className='font-semibold -mb-10'>Platform</h2>
 
                         <h1 className='text-[11.25rem]'>{platform.number}</h1>
                     </div>
-                    <div className="-mt-12 -mb-3 z-50">
+                    <div className="-mt-12 -mb-3 z-20">
                         {status !== "Go" && status !== "Error" && <p className='text-black/20  font-bold' style={{ opacity: 1 }}>Checking again {timeToRender ? `in ${timeToRender >= 0 ? (timeToRender / 1000) : 0}s` :
                             //given time to render is in seconds, add it to the current time and show it in HH:MM
                             `at ${dateToRender}`}</p>}
                     </div>
-                    <div className="p-5 w-full z-50 ">
+                    <div className="p-5 w-full z-20 ">
 
                         <div className="py-3 grid place-items-center bg-white/10 w-full" style={{ opacity: timeToRender <= 1 ? 20 : 1 }}>{getIntuitiveStatusFromStatus(status)} {platform.type == "confirmedAndChanged" && "- The platform has changed"}</div>
                     </div>
