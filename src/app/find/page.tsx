@@ -124,7 +124,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
     return (
         <main className="flex min-h-fit flex-col pb-48">
             <div className={`hidden ${maxWidthClassNames}`}></div>
-            <div className={`navArea sticky top-0 left-0 z-10 w-full pt-8 pb-4 md:pt-16 bg-zinc-900`}>
+            <div className={`navArea sticky top-0 left-0 z-10 w-full pt-8 md:pt-16 pb-4  bg-zinc-900`}>
                 <div className={`${maxWidthClassNames} flex flex-col gap-8 items-center px-8 pt-8 md:px-16 md:mx-auto md:pt-0`}>
                     <HeaderLogoWithName pageTitle={`${applicationName}`} />
                     <Form {...form}>
