@@ -53,7 +53,7 @@ function StatusCardWithTimer({
                 <div className={` relative w-full overflow-hidden statusCard text-white flex flex-col items-center animate transition-colors ${getColourFromStatus(status)}`}>
                     <div className="absolute z-10 transition-all duration-700 h-full" style={{
                         width: `${((timeToRender / startTime) * 120)}%`,
-                        backgroundColor: timeToRender <= -1 ? "#991b1b" : (timeToRender == startTime && startTime > 0) ? 'green' : `${changeColour(getHexColourFromStatus(status)).lighten(1).setAlpha((timeToRender / startTime) + 0.1)}`
+                        backgroundColor: (timeToRender <= -1 && status !== "Go") ? "#991b1b" : (timeToRender == startTime && startTime >= 0) ? 'green' : `${changeColour(getHexColourFromStatus(status)).lighten(1).setAlpha((timeToRender / startTime) + 0.1)}`
                     }}></div>
                     <div className={`flex z-20 pt-5 flex-col items-center mt-3 `}>
                         <h2 className='font-semibold -mb-10'>Platform</h2>
