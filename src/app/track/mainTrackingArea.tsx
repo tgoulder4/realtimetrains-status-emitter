@@ -78,7 +78,7 @@ function MainTrackingArea({ serviceToTrack }: Props) {
     useEffect(() => {
         let timer: NodeJS.Timeout;
         main();
-        if (currentTrackingState.hidden.timeTillRefresh == 0) return;
+        if (currentTrackingState.hidden.timeTillRefresh <= 1000) return;
         timer = setInterval(async () => { await main() }, currentTrackingState.hidden.timeTillRefresh);
         async function main() {
             // console.log("main called with timeTillRefresh: ", currentTrackingState.hidden.timeTillRefresh)
@@ -111,7 +111,9 @@ function MainTrackingArea({ serviceToTrack }: Props) {
                 <div className="w-full flex flex-col  md:flex-row gap-3">
                     <div className="bg-black/5 w-full grid place-items-center py-5">
                         <div className="w-1/2 max-w-xl items-center flex flex-col gap-2">
-                            {getGlyphFromStatus(status)}
+                            <div className="h-2">
+                                {getGlyphFromStatus(status)}
+                            </div>
                             <h3 className='w-full text-center'>{getDescriptionFromStatus(status)}</h3>
                         </div>
                     </div>

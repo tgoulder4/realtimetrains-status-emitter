@@ -43,14 +43,14 @@ export function getIntuitiveStatusFromStatus(status: string) {
 export function getGlyphFromStatus(status: string) {
     switch (status) {
         case "Wait":
-            return <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            return <svg width="24" height="24" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M11.6667 2.3335H16.3333" stroke="black" strokeOpacity="0.45" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                 <path d="M14 16.3335L17.5 12.8335" stroke="black" strokeOpacity="0.45" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                 <path d="M14 25.6667C19.1546 25.6667 23.3333 21.488 23.3333 16.3333C23.3333 11.1787 19.1546 7 14 7C8.84533 7 4.66666 11.1787 4.66666 16.3333C4.66666 21.488 8.84533 25.6667 14 25.6667Z" stroke="black" strokeOpacity="0.45" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
 
         case "Go":
-            return <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            return <svg width="24" height="24" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M21 7L8.16671 19.8333L2.33337 14" stroke="black" strokeOpacity="0.45" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                 <path d="M25.6666 11.6665L16.9166 20.4165L15.1666 18.6665" stroke="black" strokeOpacity="0.45" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
