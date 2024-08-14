@@ -18,19 +18,20 @@ export async function getTrackStateCA(journey: Journey): Promise<TrackState> {
         console.log("d.getHours(): ", d.getHours(), "d.getMinutes(): ", d.getMinutes());
         const timeDifferenceInMilliseconds = d.getTime() - Date.now();
         console.log("timeDifferenceInSeconds: ", timeDifferenceInMilliseconds);
+
         switch (correspondingJourney!.status) {
             case "Go":
                 return 0;
             case "Prepare":
                 //start checking 20 mins before departure time in format HHMM
-                return timeDifferenceInMilliseconds;
+                return timeDifferenceInMilliseconds < 210000 ? 10000 : timeDifferenceInMilliseconds;
             case "Changed":
                 return 30000;
             case "Error":
                 return 0;
             case "Wait":
                 // console.log("nextCheckingTimeTwentyBeforeDep: ", nextCheckingTimeTwentyBeforeDep);
-                return timeDifferenceInMilliseconds;
+                return timeDifferenceInMilliseconds < 210000 ? 10000 : timeDifferenceInMilliseconds;
             default:
                 return 0;
         }

@@ -111,7 +111,7 @@ function MainTrackingArea({ serviceToTrack }: Props) {
                 <div className="w-full flex flex-col  md:flex-row gap-3">
                     <div className="bg-black/5 w-full grid place-items-center py-5">
                         <div className="w-1/2 max-w-xl items-center flex flex-col gap-2">
-                            <div className="h-2">
+                            <div className="h-2 mb-4">
                                 {getGlyphFromStatus(status)}
                             </div>
                             <h3 className='w-full text-center'>{getDescriptionFromStatus(status)}</h3>
