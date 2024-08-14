@@ -9,7 +9,7 @@ export async function getTrackStateCA(journey: Journey): Promise<TrackState> {
     const serviceList = await getServiceListCA(departure.code);
     // console.log("departure: ", departure, "serviceList: ", serviceList);
     const correspondingJourney = serviceList.find(service => (service.destination.code == departure.code && service.scheduledDepartureTime == departure.time));
-    if (!correspondingJourney) throw new Error("Journey not found in RTT");
+    if (!correspondingJourney) throw new Error("We couldn't find the journey.");
     function getTimeTilRefresh() {
         const depHours = parseInt(correspondingJourney!.scheduledDepartureTime.slice(0, 2));
         const depMins = parseInt(correspondingJourney!.scheduledDepartureTime.slice(2));
