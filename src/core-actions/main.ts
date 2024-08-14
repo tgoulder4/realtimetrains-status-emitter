@@ -3,22 +3,33 @@ import { cache } from "react";
 import cheerio from 'cheerio'
 import { Service } from "@/lib/types";
 import { findStationCodeByName } from "../lib/destinations";
+import { env } from "@/env";
 function checkIfClassInPlatformSpan($: cheerio.Root, service: cheerio.Element, str: string) {
     return $(service).find(".platform span").attr("class")?.includes(str)
 }
 export const getServiceListCA = async (dest?: string): Promise<Service[]> => {
     console.log("getServiceListCA called with dest: ", dest)
     try {
-        const url = true ? `https://www.realtimetrains.co.uk/search/simple/gb-nr:EUS${dest ? `/to/gb-nr:${dest}` : ''}` : "http://localhost:3002/tests/departuresNoAim";
-        console.log("url used: ", url)
-        const res = await fetch(url, {
-            headers: {
-                "Access-Control-Allow-Headers": "Content-Type",
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
-            },
-            // mode: 'no-cors',
-        });
+        let res: Response;
+        if (env.NODE_ENV === 'development') {
+            console.log("fetching from localhost")
+            res = await fetch("http://localhost:3000/tests/departuresNoAim",
+                {
+                    headers: {
+                        "Access-Control-Allow-Headers": "Content-Type",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+                    },
+                }
+            )
+        } else {
+            //fetch via proxy to rtt
+            res = await fetch('https://proxy.scrapeops.io/v1/?' + new URLSearchParams({
+                api_key: env.SCRAPEOPS_API_KEY,
+                url: `https://www.realtimetrains.co.uk/search/simple/gb-nr:EUS${dest ? `/to/gb-nr:${dest}` : ''}`
+            }))
+        }
+        if (!res.ok) throw new Error("Failed to fetch data. Code RES_NOT_OK")
         console.log("res: ", res)
         const html = await res.text();
         const $ = cheerio.load(html);
