@@ -14,6 +14,7 @@ import { dissectOneTrainInfoFromUrl } from './dissectServicesToTrack';
 import { useServerAction } from "zsa-react";
 import { getTrackStateSA } from './actions';
 import { randomBytes } from 'crypto';
+import StatusCardWithTimer from './statusCardWithTimer';
 type Props = {
     serviceToTrack: Journey;
 }
@@ -104,17 +105,9 @@ function MainTrackingArea({ serviceToTrack }: Props) {
                         scheduledDepartureTime,
                         provider
                     }} />
-
-                    {status !== "Go" && <CheckingAgainTimer status={currentTrackingState.data.status} updateKey={currentTrackingState.hidden.updateKey} startTime={currentTrackingState.hidden.timeTillRefresh} />}
                 </div>
                 <div className="hidden bg-yellow-800 bg-red-800 bg-green-800 bg-slate-800"></div>
-                <div className={`p-5 w-full statusCard text-white flex flex-col items-center animate transition-colors ${getColourFromStatus(status)}`}>
-                    <div className="flex flex-col items-center mt-3">
-                        <h2 className='font-semibold -mb-10'>Platform</h2>
-                        <h1 className='text-[11.25rem]'>{platform.number}</h1>
-                    </div>
-                    <div className="py-3 grid place-items-center bg-white/10 w-full">{getIntuitiveStatusFromStatus(status)}</div>
-                </div>
+                <StatusCardWithTimer status={status} platform={platform} updateKey={currentTrackingState.hidden.updateKey} startTime={currentTrackingState.hidden.timeTillRefresh} />
                 <div className="w-full flex flex-col  md:flex-row gap-3">
                     <div className="bg-black/5 w-full grid place-items-center py-5">
                         <div className="w-1/2 max-w-xl items-center flex flex-col gap-2">
