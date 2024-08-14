@@ -1,3 +1,4 @@
+'use server'
 import { dissectOneTrainInfoFromUrl } from "@/app/track/dissectServicesToTrack";
 import { Journey, Service, TrackState } from "@/lib/types";
 import { getServiceListCA } from "./main";
@@ -11,7 +12,7 @@ export async function getTrackStateCA(journey: Journey): Promise<TrackState> {
     console.log("departure: ", departure, "serviceList: ", serviceList);
     const correspondingJourney = serviceList.find(service => (service.destination.code == departure.code && service.scheduledDepartureTime == departure.time));
     if (!correspondingJourney) throw new Error("We couldn't find the journey.");
-    function getTimeTilRefresh() {
+    function getMillisecondsTilRefresh() {
         const depHours = parseInt(correspondingJourney!.scheduledDepartureTime.slice(0, 2));
         const depMins = parseInt(correspondingJourney!.scheduledDepartureTime.slice(2));
         var d = new Date();
@@ -37,12 +38,12 @@ export async function getTrackStateCA(journey: Journey): Promise<TrackState> {
                 return 0;
         }
     }
-    const timeTilRefresh = getTimeTilRefresh();
-    console.log("getTimeTilRefresh returning: ", timeTilRefresh);
+    const timeTilRefresh = getMillisecondsTilRefresh();
+    console.log("getMillisecondsTilRefresh returning: ", timeTilRefresh);
     const ts: TrackState = {
         data: correspondingJourney as Service,
         hidden: {
-            timeTillRefresh: getTimeTilRefresh(),
+            timeTillRefresh: getMillisecondsTilRefresh(),
             updateKey: Math.random().toString(36).substring(7),
             error: undefined
         }
