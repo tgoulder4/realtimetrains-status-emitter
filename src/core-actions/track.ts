@@ -22,7 +22,7 @@ export async function getTrackStateCA(journey: Journey): Promise<TrackState> {
         switch (correspondingJourney!.status) {
             case "Go":
                 return 0;
-            case "Prepare":
+            case "Wait":
                 //start checking 20 mins before departure time in format HHMM
                 return timeUntilTwentyMinsBefore < 210000 ? 10000 : timeUntilTwentyMinsBefore;
             case "Changed":
