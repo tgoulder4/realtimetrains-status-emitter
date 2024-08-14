@@ -5,8 +5,155 @@ type Props = {}
 function DeparturesNoAimPage({ }: Props) {
     return (
         <>
+            {/* saved from url=(0056)https://www.realtimetrains.co.uk/search/simple/gb-nr:EUS */}
+            <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta httpEquiv="x-ua-compatible" content="ie=edge" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <meta name="author" content="Realtime Trains" />
+            <meta
+                name="description"
+                content="Live train departures from London Euston. From Realtime Trains, an independent source of train running info for Great Britain."
+            />
+            <meta
+                property="og:title"
+                content="Realtime Trains | Live Departures from London Euston"
+            />
+            <meta
+                property="twitter:title"
+                content="Realtime Trains | Live Departures from London Euston"
+            />
+            <title>Realtime Trains | Live Departures from London Euston</title>
+            {/* preloads */}
+            <link
+                rel="preload"
+                href="https://www.realtimetrains.co.uk/assets/fonts/riftsoft-bold-webfont.woff"
+                as="font"
+                type="font/woff2"
+                crossOrigin=""
+            />
+            <link
+                rel="preload"
+                href="https://www.realtimetrains.co.uk/assets/fonts/uraniamed-webfont.woff2"
+                as="font"
+                type="font/woff2"
+                crossOrigin=""
+            />
+            <link
+                rel="stylesheet"
+                href="./Realtime Trains _ Live Departures from London Euston_files/app-b1a659b9.css"
+            />
+            {/* ad load here */}
+            <meta className="foundation-mq" name="foundation-mq" content="" />
+            <style
+                type="text/css"
+                dangerouslySetInnerHTML={{
+                    __html:
+                        ' .qc-cmp-button.qc-cmp-secondary-button:hover {    background-color: #368bd6 !important;    border-color: transparent !important;  }  .qc-cmp-button.qc-cmp-secondary-button:hover {    color: #ffffff !important;  }  .qc-cmp-button.qc-cmp-secondary-button {    color: #368bd6 !important;  }  .qc-cmp-button.qc-cmp-secondary-button {    background-color: #eee !important;    border-color: transparent !important;  } #qc-cmp2-ui * { font-family: urania,"Helvetica Neue",Helvetica,Roboto,Arial,sans-serif !important;}'
+                }}
+            />
+            <div className="ad-load-header" />
+            {/* Default favicon */}
+            <link
+                rel="icon"
+                href="https://www.realtimetrains.co.uk/assets/img/favicon/favicon-32-e1e094d9.png"
+                sizes="32x32"
+            />
+            <link
+                rel="icon"
+                href="https://www.realtimetrains.co.uk/assets/img/favicon/favicon-128-f0525294.png"
+                sizes="128x128"
+            />
+            <link
+                rel="icon"
+                href="https://www.realtimetrains.co.uk/assets/img/favicon/favicon-196-46828a3b.png"
+                sizes="196x196"
+            />
+            {/* iOS */}
+            <link
+                rel="apple-touch-icon"
+                href="https://www.realtimetrains.co.uk/assets/img/favicon/favicon-152-8742b687.png"
+                sizes="152x152"
+            />
+            <link
+                rel="apple-touch-icon"
+                href="https://www.realtimetrains.co.uk/assets/img/favicon/favicon-180-ddf7b4d0.png"
+                sizes="180x180"
+            />
+            {/* Android */}
+            <link
+                rel="shortcut icon"
+                href="https://www.realtimetrains.co.uk/assets/img/favicon/favicon-196-46828a3b.png"
+                sizes="196x196"
+            />
+            <div className="top-bar-container">
+                <div className="row column">
+                    <div className="top-bar">
+                        <div className="top-bar-title">
+                            <div className="logo-container">
+                                <a href="https://www.realtimetrains.co.uk/">
+                                    <div className="logo" aria-label="RTT Logo" />
+                                </a>
+                            </div>
+                        </div>
+                        <div
+                            className="text-right responsive-menu"
+                            data-responsive-toggle="top-bar-items"
+                            style={{ display: "none" }}
+                        >
+                            <div className="title-bar-title" id="title-bar-title">
+                                Menu
+                            </div>
+                            <button
+                                className="menu-icon"
+                                type="button"
+                                data-toggle="top-bar-items"
+                                aria-labelledby="title-bar-title"
+                            />
+                        </div>
+                        <div id="top-bar-items">
+                            <div className="top-bar-left">
+                                <ul className="menu">
+                                    <li>
+                                        <a href="https://blog.realtimetrains.com/">News</a>
+                                    </li>
+                                    <li className="active">
+                                        <a href="https://www.realtimetrains.co.uk/search/">Search</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.realtimetrains.co.uk/about/">Contact</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://shop.realtimetrains.com/">Shop</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div className="top-bar-right">
+                                <form
+                                    method="get"
+                                    action="https://www.realtimetrains.co.uk/search/handler"
+                                >
+                                    <ul className="menu">
+                                        <li>
+                                            <input
+                                                type="search"
+                                                placeholder="Quick Search"
+                                                name="qsearch"
+                                            />
+                                        </li>
+                                        <li>
+                                            <button className="button" type="submit">
+                                                Go
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="spacer" />
             <main>
-
                 <div className="grid-container">
                     <div className="panelcontainer small-right">
                         <div className="panel large">
@@ -14,19 +161,19 @@ function DeparturesNoAimPage({ }: Props) {
                                 <div className="header-text">
                                     <h3>
                                         London Euston
-                                        <small>around 1700 on 10/08/2024</small>
+                                        <small>Live Departures</small>
                                     </h3>
                                 </div>
                                 <div className="toggle-box">
                                     <div className="toggle">
                                         <div className="active">Departures</div>
-                                        <a href="https://www.realtimetrains.co.uk/search/simple/gb-nr:EUS/2024-08-10/1700/arrivals">
+                                        <a href="https://www.realtimetrains.co.uk/search/simple/gb-nr:EUS/arrivals">
                                             Arrivals
                                         </a>
                                     </div>
                                     <div className="toggle">
                                         <div className="active">Simple</div>
-                                        <a href="https://www.realtimetrains.co.uk/search/detailed/gb-nr:EUS/2024-08-10/1700">
+                                        <a href="https://www.realtimetrains.co.uk/search/detailed/gb-nr:EUS">
                                             Detailed
                                         </a>
                                     </div>{" "}
@@ -36,110 +183,36 @@ function DeparturesNoAimPage({ }: Props) {
                                 <div className="servicelist">
                                     <a
                                         className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C21822/2024-08-10#allox_id=0"
+                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C22003/2024-08-12#allox_id=0"
                                     >
-                                        <div className="time">1633</div>
+                                        <div className="time">1316</div>
                                         <div className="notion" />
                                         <div className="location">
-                                            <span>Manchester Piccadilly</span>
+                                            <span>Birmingham New Street</span>
                                             <div className="addl">
-                                                Departed on time
-                                                <div className="secline">Avanti WC Pendolino · 9 coaches</div>
+
+                                                <div className="secline">
+                                                    CHANGED TEST SERVICE Avanti WC Pendolino · 9 coaches
+                                                </div>
                                             </div>
                                         </div>
                                         <div className="platformbox">
                                             <div className="platform c">
-                                                <span className="a c">3</span>
+                                                <span className="a c">1</span>
                                             </div>
                                         </div>
                                     </a>
+
                                     <a
                                         className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C77106/2024-08-10"
+                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C78334/2024-08-12"
                                     >
-                                        <div className="time">1639</div>
+                                        <div className="time">1324</div>
                                         <div className="notion" />
                                         <div className="location">
-                                            <span>Milton Keynes Central</span>
+                                            <span>Tring </span>
                                             <div className="addl">
-                                                Departed on time
-                                                <div className="secline">West Midlands Trains service</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a ">10</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C22090/2024-08-10#allox_id=0"
-                                    >
-                                        <div className="time">1640</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Edinburgh</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">Avanti WC Pendolino · 9 coaches</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a ">4</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C31509/2024-08-10#allox_id=0"
-                                    >
-                                        <div className="time">1643</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Liverpool Lime Street</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">Avanti WC Pendolino · 9 coaches</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a c">5</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:P89937/2024-08-10"
-                                    >
-                                        <div className="time">1645</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Watford Junction</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">London Overground service</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a ">9</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C75970/2024-08-10"
-                                    >
-                                        <div className="time">1646</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Crewe</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">West Midlands Trains service</div>
+                                                <div className="secline">GO UNCHANGED TEST SERVICE West Midlands Trains service</div>
                                             </div>
                                         </div>
                                         <div className="platformbox">
@@ -150,605 +223,25 @@ function DeparturesNoAimPage({ }: Props) {
                                     </a>
                                     <a
                                         className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C31585/2024-08-10#allox_id=0"
+                                        href="https://www.realtimetrains.co.uk/service/gb-nr:P89897/2024-08-12"
                                     >
-                                        <div className="time">1653</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Manchester Piccadilly</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">
-                                                    Avanti WC Pendolino · 11 coaches
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a ">2</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C78349/2024-08-10"
-                                    >
-                                        <div className="time">1654</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Tring</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">West Midlands Trains service</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a ">11</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C76174/2024-08-10"
-                                    >
-                                        <div className="time">1656</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Birmingham New Street</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">West Midlands Trains service</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a ">7</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:P89940/2024-08-10"
-                                    >
-                                        <div className="time">1700</div>
+                                        <div className="time">1330</div>
                                         <div className="notion" />
                                         <div className="location">
                                             <span>Watford Junction</span>
                                             <div className="addl">
-                                                Departed on time
-                                                <div className="secline">London Overground service</div>
+
+                                                <div className="secline">WAIT TEST SERVICE London Overground service</div>
                                             </div>
                                         </div>
                                         <div className="platformbox">
                                             <div className="platform c">
-                                                <span className="a ">9</span>
+                                                <span className="ex ">9</span>
                                             </div>
                                         </div>
                                     </a>
-                                    <a
-                                        className="service cancelled"
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C21764/2024-08-10"
-                                    >
-                                        <div className="time">1702</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Chester</span>
-                                            <div className="addl">
-                                                Cancelled (issue with train crew)
-                                                <div className="secline">Avanti West Coast service</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform">
-                                                <i className="glyphicons glyphicons-triangle-alert" />
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C77114/2024-08-10"
-                                    >
-                                        <div className="time">1709</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Milton Keynes Central</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">West Midlands Trains service</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a ">10</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C22018/2024-08-10#allox_id=0"
-                                    >
-                                        <div className="time">1710</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Birmingham New Street</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">
-                                                    Avanti WC Pendolino · 11 coaches
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a ">15</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:P89943/2024-08-10"
-                                    >
-                                        <div className="time">1715</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Watford Junction</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">London Overground service</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a ">9</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C22020/2024-08-10#allox_id=0"
-                                    >
-                                        <div className="time">1716</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Birmingham New Street</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">Avanti WC Pendolino · 9 coaches</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a ">13</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service cancelled"
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C76178/2024-08-10"
-                                    >
-                                        <div className="time">1723</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Birmingham New Street</span>
-                                            <div className="addl">
-                                                Cancelled (inbound service late)
-                                                <div className="secline">West Midlands Trains service</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform">
-                                                <i className="glyphicons glyphicons-triangle-alert" />
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C78353/2024-08-10"
-                                    >
-                                        <div className="time">1724</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Tring</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">West Midlands Trains service</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a ">11</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:P89946/2024-08-10"
-                                    >
-                                        <div className="time">1730</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Watford Junction</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">London Overground service</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a ">9</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C21869/2024-08-10#allox_id=0"
-                                    >
-                                        <div className="time">1730</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Glasgow Central</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">Avanti WC Pendolino · 9 coaches</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a c">6</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C21824/2024-08-10#allox_id=0"
-                                    >
-                                        <div className="time">1733</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Manchester Piccadilly</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">
-                                                    Avanti WC Pendolino · 11 coaches
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a ">3</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C77120/2024-08-10"
-                                    >
-                                        <div className="time">1739</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Milton Keynes Central</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">West Midlands Trains service</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a ">8</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C32328/2024-08-10#allox_id=0"
-                                    >
-                                        <div className="time">1740</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Preston</span>
-                                            <div className="addl">
-                                                Departed at 1741
-                                                <div className="secline">
-                                                    Avanti WC Pendolino · 11 coaches
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a c">14</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C31512/2024-08-10#allox_id=0"
-                                    >
-                                        <div className="time">1743</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Liverpool Lime Street</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">Avanti WC Pendolino · 9 coaches</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a ">1</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:P89949/2024-08-10"
-                                    >
-                                        <div className="time">1745</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Watford Junction</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">London Overground service</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a ">9</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C75974/2024-08-10"
-                                    >
-                                        <div className="time">1746</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Crewe</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">West Midlands Trains service</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a c">5</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C31594/2024-08-10#allox_id=0"
-                                    >
-                                        <div className="time">1753</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Manchester Piccadilly</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">
-                                                    Avanti WC Pendolino · 11 coaches
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a ">2</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C78357/2024-08-10"
-                                    >
-                                        <div className="time">1754</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Tring</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">West Midlands Trains service</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a ">11</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C76180/2024-08-10"
-                                    >
-                                        <div className="time">1756</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Birmingham New Street</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">West Midlands Trains service</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a ">7</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:P89952/2024-08-10"
-                                    >
-                                        <div className="time">1800</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Watford Junction</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">London Overground service</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a ">9</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C21765/2024-08-10#allox_id=0"
-                                    >
-                                        <div className="time">1802</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Holyhead</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">Avanti WC Voyager · 10 coaches</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a c">6</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C31791/2024-08-10"
-                                    >
-                                        <div className="time">1802</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Chester</span>
-                                            <div className="addl">
-                                                Starts here
-                                                <div className="secline">Avanti West Coast service</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="ex ">5</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service cancelled"
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C77126/2024-08-10"
-                                    >
-                                        <div className="time">1809</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Milton Keynes Central</span>
-                                            <div className="addl">
-                                                Cancelled (issue with train crew)
-                                                <div className="secline">West Midlands Trains service</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform">
-                                                <i className="glyphicons glyphicons-triangle-alert" />
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C22023/2024-08-10#allox_id=0"
-                                    >
-                                        <div className="time">1810</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Wolverhampton</span>
-                                            <div className="addl">
-                                                Departed at 1814
-                                                <div className="secline">
-                                                    Avanti WC Pendolino · 11 coaches
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a c">4</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:P89744/2024-08-10"
-                                    >
-                                        <div className="time">1815</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Watford Junction</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">London Overground service</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a ">9</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service cancelled"
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C22042/2024-08-10"
-                                    >
-                                        <div className="time">1816</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Birmingham New Street</span>
-                                            <div className="addl">
-                                                Cancelled (problem with doors)
-                                                <div className="secline">Avanti West Coast service</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform">
-                                                <i className="glyphicons glyphicons-triangle-alert" />
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C78360/2024-08-10"
-                                    >
-                                        <div className="time">1822</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Tring</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">West Midlands Trains service</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a ">11</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C76183/2024-08-10"
-                                    >
-                                        <div className="time">1823</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Northampton</span>
-                                            <div className="addl">
-                                                Departed on time
-                                                <div className="secline">West Midlands Trains service</div>
-                                            </div>
-                                        </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a ">12</span>
-                                            </div>
-                                        </div>
-                                    </a>{" "}
+
+                                    {" "}
                                 </div>
                             </div>
                         </div>
@@ -844,7 +337,7 @@ function DeparturesNoAimPage({ }: Props) {
                                                     name="when_date"
                                                     placeholder="Today"
                                                     autoComplete="off"
-                                                    defaultValue="10/08/2024"
+                                                    defaultValue=""
                                                 />
                                             </label>
                                         </div>
@@ -856,7 +349,7 @@ function DeparturesNoAimPage({ }: Props) {
                                                     placeholder="Now"
                                                     autoComplete="off"
                                                     name="when_time"
-                                                    defaultValue={1700}
+                                                    defaultValue=""
                                                 />
                                             </label>
                                         </div>
@@ -879,11 +372,11 @@ function DeparturesNoAimPage({ }: Props) {
                                                         name="call_previous"
                                                         defaultValue=""
                                                         autoComplete="off"
-                                                        id="x5bwqsqfkl9"
+                                                        id="b9taifcm36"
                                                         className="tt-input"
                                                         spellCheck="false"
                                                         dir="auto"
-                                                        aria-owns="x5bwqsqfkl9_listbox"
+                                                        aria-owns="b9taifcm36_listbox"
                                                         role="combobox"
                                                         aria-autocomplete="list"
                                                         aria-expanded="false"
@@ -927,7 +420,7 @@ function DeparturesNoAimPage({ }: Props) {
                                                     <div
                                                         role="listbox"
                                                         className="tt-menu"
-                                                        id="x5bwqsqfkl9_listbox"
+                                                        id="b9taifcm36_listbox"
                                                         style={{
                                                             position: "absolute",
                                                             top: "100%",
@@ -938,7 +431,7 @@ function DeparturesNoAimPage({ }: Props) {
                                                     >
                                                         <div
                                                             role="presentation"
-                                                            className="tt-dataset tt-dataset-x5bwqsqfkl9_stations"
+                                                            className="tt-dataset tt-dataset-b9taifcm36_stations"
                                                         />
                                                     </div>
                                                 </span>
@@ -957,11 +450,11 @@ function DeparturesNoAimPage({ }: Props) {
                                                         name="call_subsequent"
                                                         defaultValue=""
                                                         autoComplete="off"
-                                                        id="5jo7esv98qc"
+                                                        id="ekyof2kxy38"
                                                         className="tt-input"
                                                         spellCheck="false"
                                                         dir="auto"
-                                                        aria-owns="5jo7esv98qc_listbox"
+                                                        aria-owns="ekyof2kxy38_listbox"
                                                         role="combobox"
                                                         aria-autocomplete="list"
                                                         aria-expanded="false"
@@ -1005,7 +498,7 @@ function DeparturesNoAimPage({ }: Props) {
                                                     <div
                                                         role="listbox"
                                                         className="tt-menu"
-                                                        id="5jo7esv98qc_listbox"
+                                                        id="ekyof2kxy38_listbox"
                                                         style={{
                                                             position: "absolute",
                                                             top: "100%",
@@ -1016,7 +509,7 @@ function DeparturesNoAimPage({ }: Props) {
                                                     >
                                                         <div
                                                             role="presentation"
-                                                            className="tt-dataset tt-dataset-5jo7esv98qc_stations"
+                                                            className="tt-dataset tt-dataset-ekyof2kxy38_stations"
                                                         />
                                                     </div>
                                                 </span>
@@ -1045,8 +538,139 @@ function DeparturesNoAimPage({ }: Props) {
                     </div>
                 </div>
             </main>
+            <footer>
+                <hr />
+                <div className="grid-container">
+                    <div className="grid-x grid-y-margin">
+                        <div className="small-6 medium-3 large-auto cell">
+                            <h5>
+                                <a href="https://www.realtimetrains.co.uk/search/">
+                                    View The Trains
+                                </a>
+                            </h5>
+                            <ul className="no-bullet">
+                                <li>
+                                    <a href="https://www.realtimetrains.co.uk/search/simple/">
+                                        Simple
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.realtimetrains.co.uk/search/detailed/">
+                                        Detailed
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="small-6 medium-3 large-auto cell">
+                            <h5>
+                                <a href="https://www.realtimetrains.co.uk/about/developer/">
+                                    Data Feeds
+                                </a>
+                            </h5>
+                            <ul className="no-bullet">
+                                <li>
+                                    <a href="https://api.rtt.io/">API Portal</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.realtimetrains.co.uk/about/developer/pull/docs/">
+                                        API Documentation
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="small-6 medium-3 large-auto cell">
+                            <h5>Help</h5>
+                            <ul className="no-bullet">
+                                <li>
+                                    <a href="https://www.realtimetrains.co.uk/about/trackyourtrain/">
+                                        Track Your Train
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.realtimetrains.co.uk/about/knowyourtrain/">
+                                        Know Your Train
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="small-6 medium-3 large-auto cell">
+                            <h5>
+                                <a href="https://www.realtimetrains.co.uk/about/">About us</a>
+                            </h5>
+                            <ul className="no-bullet">
+                                <li>
+                                    <a href="https://www.realtimetrains.co.uk/about/faq/">FAQs</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.realtimetrains.co.uk/about/contact/">
+                                        Contact us
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div className="row align-middle">
+                    <div className="medium-10 column">
+                        <ul className="footer-inline">
+                            <li>
+                                <a href="https://www.realtimetrains.co.uk/legal/">
+                                    Terms &amp; Conditions
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.realtimetrains.co.uk/legal/privacy/">
+                                    Privacy Policy
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="https://www.realtimetrains.co.uk/search/simple/gb-nr:EUS#/"
+                                >
+                                    Privacy Settings
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.realtimetrains.co.uk/legal/cookies/">
+                                    Cookie Policy
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.realtimetrains.co.uk/about/status/">
+                                    Site Status
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.realtimetrains.co.uk/about/jobs/">Vacancies</a>
+                            </li>
+                        </ul>
+                        <div className="copyright">
+                            Realtime Trains, © 2011-2023 swlines Ltd, its partners and{" "}
+                            <a href="https://www.realtimetrains.co.uk/about/sources/">
+                                data sources
+                            </a>
+                            . All rights reserved.
+                        </div>
+                    </div>
+                    <div className="medium-2 show-for-medium column icons text-right">
+                        <a href="https://discord.gg/mh3Rm9g9rG">
 
+                        </a>
+                        <a href="https://www.facebook.com/realtimetrains">
+
+                        </a>
+                    </div>
+                </div>
+                <div className="ad-unit stickyspacer" />
+            </footer>
+            <iframe
+                name="__tcfapiLocator"
+                style={{ display: "none" }}
+                src="./Realtime Trains _ Live Departures from London Euston_files/saved_resource.html"
+            />
         </>
+
 
     )
 }

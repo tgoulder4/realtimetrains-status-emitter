@@ -10,8 +10,8 @@ export const getTrackStateSA = unauthenticatedAction
     .createServerAction()
     .input(z.object({ journey: JourneySchema }))
     .handler(async ({ input }) => {
-        console.log("getTrackState called with input: ", input)
+        // console.log("getTrackState called with input: ", input)
         const ts = await getTrackStateCA(input.journey);
-        console.log("getTrackState returning: ", ts);
+        // console.log("getTrackState returning: ", ts);
         return ts as TrackState;
     })
