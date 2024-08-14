@@ -39,24 +39,18 @@ function MainTrackingArea({ serviceToTrack }: Props) {
     const { execute, isPending } = useServerAction(getTrackStateSA);
 
     async function getTrackingState(serviceToTrack: Journey) {
-        try {
-            // console.log("executing getTrackStateSA with: ", serviceToTrack);
-            const res = (await execute({ journey: serviceToTrack }));
-            console.log("res: ", res);
-            const data = res[0];
-            console.log("data: ", data);
 
-            const parseResult = TrackStateSchema.safeParse(data);
-            if (parseResult.success) {
-                const TrackState = parseResult.data;
-                return TrackState;
-            } else {
-                const error = parseResult.error.errors[0];
-                console.error(error)
-                throw new Error(error.message);
-            }
-        } catch (e) {
-            console.log(e)
+        // console.log("executing getTrackStateSA with: ", serviceToTrack);
+        const res = (await execute({ journey: serviceToTrack }));
+        console.log("res: ", res);
+        const data = res[0];
+        console.log("data: ", data);
+
+        const parseResult = TrackStateSchema.safeParse(data);
+        if (parseResult.success) {
+            const TrackState = parseResult.data;
+            return TrackState;
+        } else {
             return {
                 data: {
                     status: "Error",
@@ -70,10 +64,11 @@ function MainTrackingArea({ serviceToTrack }: Props) {
                 },
                 hidden: {
                     timeTillRefresh: 0,
-                    error: e
+                    error: res[1]?.message
                 }
             } as TrackState
         }
+
     }
     useEffect(() => {
         let timer: NodeJS.Timeout;
@@ -87,6 +82,14 @@ function MainTrackingArea({ serviceToTrack }: Props) {
         }
         return () => clearInterval(timer);
     }, [currentTrackingState.data.status])
+    useEffect(() => {
+        const error = currentTrackingState.hidden.error
+        if (error) {
+            if (typeof window !== undefined) {
+                window.location.href = '/find?err=' + error
+            }
+        }
+    }, [currentTrackingState.hidden.error])
     //url like http://localhost:3000/track?trains=1940BHM+1200MAN
     console.log("currentTrackingState: ", currentTrackingState)
     const {
