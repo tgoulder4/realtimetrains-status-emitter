@@ -13,7 +13,7 @@ export const getTrackStateSA = unauthenticatedAction
     .input(z.object({ journey: JourneySchema }))
     .handler(async ({ input }) => {
         // console.log("getTrackState called with input: ", input)
-        await rateLimitByKey({ key: "getTrackState", window: 10000, limit: 1 });
+        await rateLimitByKey({ key: "getTrackState", window: 10000, limit: 10 });
         const ts = await getTrackStateCA(input.journey);
         // console.log("getTrackState returning: ", ts);
         return ts as TrackState;

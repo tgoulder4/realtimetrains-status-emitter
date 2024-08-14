@@ -68,7 +68,7 @@ export async function rateLimitByKey({
     }
 
     tracker.count++;
-
+    console.log("tracker.count: ", tracker.count, " limit: ", limit);
     if (tracker.count > limit) {
         throw new RateLimitError();
     }

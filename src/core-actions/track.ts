@@ -7,7 +7,7 @@ export async function getTrackStateCA(journey: Journey): Promise<TrackState> {
         departure,
     } = journey
     const serviceList = await getServiceListCA(departure.code);
-    // console.log("departure: ", departure, "serviceList: ", serviceList);
+    console.log("departure: ", departure, "serviceList: ", serviceList);
     const correspondingJourney = serviceList.find(service => (service.destination.code == departure.code && service.scheduledDepartureTime == departure.time));
     if (!correspondingJourney) throw new Error("We couldn't find the journey.");
     function getTimeTilRefresh() {
@@ -24,14 +24,14 @@ export async function getTrackStateCA(journey: Journey): Promise<TrackState> {
                 return 0;
             case "Wait":
                 //start checking 20 mins before departure time in format HHMM
-                return timeUntilTwentyMinsBefore < 210000 ? 10000 : timeUntilTwentyMinsBefore;
+                return timeUntilTwentyMinsBefore > 10000 ? timeUntilTwentyMinsBefore : 10000;
             case "Changed":
                 return 30000;
             case "Error":
                 return 0;
             case "Wait":
                 // console.log("nextCheckingTimeTwentyBeforeDep: ", nextCheckingTimeTwentyBeforeDep);
-                return timeUntilTwentyMinsBefore < 210000 ? 10000 : timeUntilTwentyMinsBefore;
+                return timeUntilTwentyMinsBefore > 10000 ? timeUntilTwentyMinsBefore : 10000;
             default:
                 return 0;
         }
