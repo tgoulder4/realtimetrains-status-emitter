@@ -27,12 +27,6 @@ import { toast } from "sonner";
 export default function Home({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
     //header form stuff
     const formSchema = z.object({ dest: z.string().length(3).or(z.string().length(0)), dep: z.literal("London Euston") });
-    function handleBeatTheRushClick() {
-        //shake the cards of class departureCard
-
-    }
-
-
     const [departures, setDepartures] = useState<Service[]>([
         {
             destination: { name: "Birmingham New Street", code: "BHM" },

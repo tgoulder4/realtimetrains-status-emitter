@@ -7,9 +7,9 @@ function DeparturesNoAimPage({ }: Props) {
     //add 30 mins to current time
     var h: string | number = d.getHours();
     var m: string | number = d.getMinutes();
-    const timeOffsetInMinutes = 20;
+    const timeOffsetInMinutes = 40;
     h = m + timeOffsetInMinutes >= 60 ? h + 1 : h
-    m = m + timeOffsetInMinutes >= 60 ? m + 30 - 60 : m + timeOffsetInMinutes;
+    m = m + timeOffsetInMinutes >= 60 ? m + timeOffsetInMinutes - 60 : m + timeOffsetInMinutes;
     h = h < 10 ? '0' + h : h;
     m = m < 10 ? '0' + m : m;
     console.log("h: ", h, "m: ", m);
