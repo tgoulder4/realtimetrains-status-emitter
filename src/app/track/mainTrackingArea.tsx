@@ -73,7 +73,7 @@ function MainTrackingArea({ serviceToTrack }: Props) {
     useEffect(() => {
         let timer: NodeJS.Timeout;
         main();
-        if (currentTrackingState.hidden.timeTillRefresh <= 1000) return;
+        if (currentTrackingState.hidden.timeTillRefresh <= 1000) return; //safe guard: do not remove
         timer = setInterval(async () => { await main() }, currentTrackingState.hidden.timeTillRefresh);
         async function main() {
             // console.log("main called with timeTillRefresh: ", currentTrackingState.hidden.timeTillRefresh)
