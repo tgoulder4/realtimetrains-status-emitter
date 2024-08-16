@@ -4,6 +4,7 @@ import cheerio from 'cheerio'
 import { Service } from "@/lib/types";
 import { findStationCodeByName } from "../lib/destinations";
 import { env } from "@/env";
+import { getTimeInMsUntilStartPolling } from "./track";
 function checkIfClassInPlatformSpan($: cheerio.Root, service: cheerio.Element, str: string) {
     return $(service).find(".platform span").attr("class")?.includes(str)
 }
@@ -33,28 +34,12 @@ export const getServiceListCA = async (dest?: string): Promise<Service[]> => {
         console.log("res: ", res)
         const html = await res.text();
         const $ = cheerio.load(html);
+        let status: Service["status"];
+        let platformType: Service['platform']['type'];
         const list = $(".service").map((i, service) => {
-            //expected platofrms have a class of ex. confirmedAndChanged platforms have a class of c, confirmedAndUnchanged have a class of a
-            //platform numbers are found in .platform span
-            let status: Service["status"];
-            let platformType: Service['platform']['type'];
-            if (checkIfClassInPlatformSpan($, service, "a") && !checkIfClassInPlatformSpan($, service, "c")) {
-                platformType = "confirmedAndNotChanged"
-                status = "Go"
-            }
-            else if (checkIfClassInPlatformSpan($, service, "c") && checkIfClassInPlatformSpan($, service, "a")) {
-                status = "Go",
-                    platformType = "confirmedAndChanged"
-            } else if (checkIfClassInPlatformSpan($, service, "ex")) {
-                status = "Wait",
-                    platformType = "expected"
-            } else {
-                status = 'Error'
-                platformType = 'expected'
-            }
             const platform = {
                 number: $(service).find(".platform").text(),
-                type: platformType
+                type: ""
             }
             const destinationStationName = $(service).find('.location')
                 .clone() // Clone the element to ensure the original HTML is not modified
@@ -65,16 +50,35 @@ export const getServiceListCA = async (dest?: string): Promise<Service[]> => {
                 name: destinationStationName,
                 code: findStationCodeByName(destinationStationName)
             }
-            //scheduledDepartureTime is in format HHMM so we need to insert a colon in the middle
             const scheduledDepartureTime = $(service).find(".time").text();
-            // .replace(/(\d{2})(\d{2})/, "$1:$2");
-
-            //provider is in format <div class="secline">Avanti WC Pendolino · 9 coaches</div>, we need "Avanti WC Pendolino", remove 'service' from the end
             const provider = $(service).find(".secline").text().split("·")[0].trim().replace(" service", "");
+            let status: Service["status"];
+            let platformType: Service['platform']['type'];
+            if (checkIfClassInPlatformSpan($, service, "a") && !checkIfClassInPlatformSpan($, service, "c")) {
+                platformType = "confirmedAndNotChanged"
+                status = "Go"
+            }
+            else if (checkIfClassInPlatformSpan($, service, "c") && checkIfClassInPlatformSpan($, service, "a")) {
+                status = "Go",
+                    platformType = "confirmedAndChanged"
+            } else if (checkIfClassInPlatformSpan($, service, "ex")) {
+                const timeTilPollingBegin = getTimeInMsUntilStartPolling(parseInt(scheduledDepartureTime.slice(0, 2)), parseInt(scheduledDepartureTime.slice(2)));
+                console.log("TimeTilPollingBegin: ", timeTilPollingBegin)
+                if (timeTilPollingBegin <= 0) {
+                    status = "Wait"
+                } else {
+                    console.log("TimeTilPollingBegin: ", timeTilPollingBegin)
+                    status = "Prepare"
+                }
+                platformType = "expected"
+            } else {
+                status = 'Error'
+                platformType = 'expected'
+            }
 
             return { status, platform, scheduledDepartureTime, destination, provider } as Service;
         }).get();
-        console.log("list returned: ", list)
+        // console.log("list returned: ", list)
         return list;
 
     } catch (e) {

@@ -13,6 +13,7 @@ function DeparturesNoAimPage({ }: Props) {
     h = h < 10 ? '0' + h : h;
     m = m < 10 ? '0' + m : m;
     console.log("h: ", h, "m: ", m);
+
     return (
         <>
             {/* saved from url=(0056)https://www.realtimetrains.co.uk/search/simple/gb-nr:EUS */}
@@ -202,7 +203,8 @@ function DeparturesNoAimPage({ }: Props) {
                                             <div className="addl">
 
                                                 <div className="secline">
-                                                    CHANGED TEST SERVICE Avanti WC Pendolino · 9 coaches
+                                                    {/* CHANGED TEST SERVICE  */}
+                                                    Avanti WC Pendolino · 9 coaches
                                                 </div>
                                             </div>
                                         </div>
@@ -222,7 +224,9 @@ function DeparturesNoAimPage({ }: Props) {
                                         <div className="location">
                                             <span>Tring </span>
                                             <div className="addl">
-                                                <div className="secline">GO UNCHANGED TEST SERVICE West Midlands Trains</div>
+                                                <div className="secline">
+                                                    {/* GO UNCHANGED TEST SERVICE  */}
+                                                    West Midlands Trains</div>
                                             </div>
                                         </div>
                                         <div className="platformbox">
@@ -241,7 +245,9 @@ function DeparturesNoAimPage({ }: Props) {
                                             <span>Watford Junction</span>
                                             <div className="addl">
 
-                                                <div className="secline">WAIT TEST SERVICE London Overground</div>
+                                                <div className="secline">
+                                                    {/* WAIT TEST SERVICE  */}
+                                                    London Overground</div>
                                             </div>
                                         </div>
                                         <div className="platformbox">
@@ -260,7 +266,9 @@ function DeparturesNoAimPage({ }: Props) {
                                             <span>Watford Junction</span>
                                             <div className="addl">
 
-                                                <div className="secline">WAIT FUTURE-to-SOON transition Avanti west coast</div>
+                                                <div className="secline">
+                                                    {/* WAIT FUTURE-to-SOON transition  */}
+                                                    Avanti west coast</div>
                                             </div>
                                         </div>
                                         <div className="platformbox">

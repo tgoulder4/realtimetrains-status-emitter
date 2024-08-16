@@ -97,6 +97,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
     })
     async function onSubmit(data: z.infer<typeof formSchema>) {
         console.log("onSubmit called with data: ", data)
+        setSelectedDepartures([])
         setRenderedDepartures([
             {
                 destination: { name: "LOAD", code: "LOAD" },
@@ -198,12 +199,16 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
                         {renderedDepartures.map((departure, index) => {
                             const { destination } = departure;
                             const selectedDepInfo = "T-" + departure.scheduledDepartureTime.replace(":", "") + "D-" + destination.code + (aimStation.code ? "A-" + aimStation.code : "");
-                            console.log("selectedDepInfo: ", selectedDepInfo)
                             if (departure.destination.name == "LOAD") return <div key={"load-" + index} className="bg-zinc-200 animate animate-pulse h-20 w-full"></div>
                             return <DepartureCard
                                 status={departure.status}
                                 key={departure.scheduledDepartureTime + departure.destination.name}
-                                onClick={() => { setSelectedDepartures(prev => addIfNewOrRemoveIfExistingItemFromArray(prev, selectedDepInfo)) }}
+                                onClick={() => {
+                                    setSelectedDepartures(
+                                        // prev => addIfNewOrRemoveIfExistingItemFromArray(prev, selectedDepInfo)
+                                        [selectedDepInfo]
+                                    )
+                                }}
                                 className={`${selectedDepartures.includes(selectedDepInfo) ? "!bg-blue-300" : ""} ${noSelectionError && "animate-[shake] duration-700 animate-once transition-colors bg-red-400"}`}
                                 partialDepartureInfo={{
                                     destination: departure.destination,
@@ -223,7 +228,8 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
                         else { window.location.href = `/track?trains=${selectedDepartures.join("+")}` }
                     }}
                     className={`animate-in fixed bottom-12 left-[calc(50%_-_120px)] right-[calc(50%_-_120px)] text-center text-lg font-semibold ${selectedDepartures.length > 0 ? "bg-green-900 border-b-8 border-green-950 hover:border-b-0 -translate-y-2" : ""}  px-12 py-8  transition-transform ease-in text-white`}>
-                    Beat The Rush! {selectedDepartures.length > 0 && `(${selectedDepartures.length})`}
+                    Beat The Rush!
+                    {/* {selectedDepartures.length > 0 && `(${selectedDepartures.length})` } */}
                 </Button>
                 {/* </div> */}
             </div>

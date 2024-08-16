@@ -33,7 +33,6 @@ function DepartureCard({ partialDepartureInfo, isPopular, status, className, onC
                         <div className="flex flex-row items-center gap-2">
                             <h3 className='font-bold w-max'>{name}</h3>
                             {status && getGlyphFromStatus(status)}
-
                         </div>
                         {!via && provider && <p className='opacity-50 text-end ml-4'>{provider}</p>}
                     </div>
