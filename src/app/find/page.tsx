@@ -97,6 +97,38 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
     })
     async function onSubmit(data: z.infer<typeof formSchema>) {
         console.log("onSubmit called with data: ", data)
+        setRenderedDepartures([
+            {
+                destination: { name: "LOAD", code: "LOAD" },
+                scheduledDepartureTime: "LOAD",
+                platform: {
+                    number: "LOAD",
+                    type: "confirmedAndChanged"
+                },
+                status: "Go",
+                provider: "Avanti West Coast"
+            },
+            {
+                destination: { name: "LOAD", code: "LOAD" },
+                scheduledDepartureTime: "LOAD",
+                platform: {
+                    number: "LOAD",
+                    type: "confirmedAndChanged"
+                },
+                status: "Go",
+                provider: "Avanti West Coast"
+            },
+            {
+                destination: { name: "LOAD", code: "LOAD" },
+                scheduledDepartureTime: "LOAD",
+                platform: {
+                    number: "LOAD",
+                    type: "confirmedAndChanged"
+                },
+                status: "Go",
+                provider: "Avanti West Coast"
+            },
+        ])
         const aimStationCode = data.dest;
         if (aimStationCode) {
             const services = await getServiceListCA(aimStationCode);
