@@ -1,3 +1,5 @@
+import { howManyMinutesPriorToDepartureToStartPolling } from "@/lib/constants";
+
 export function getColourFromStatus(status: string) {
     switch (status) {
         case "Wait":
@@ -73,7 +75,7 @@ export function getDescriptionFromStatus(status: string) {
         case "Go":
             return "No more waiting! Got what it takes to be the first onboard?";
         case "Prepare":
-            return "You got us. We’re preparing the platform for you. Refresh the page within an hour of the train's scheduled departure.";
+            return "We're preparing the platform for you and will automatically update you as soon as the current time is within " + howManyMinutesPriorToDepartureToStartPolling + " minutes of departure.";
         case "Error":
             return "There was an error. Sorry about that.";
         default:

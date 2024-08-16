@@ -4,6 +4,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import { getColourFromStatus, getHexColourFromStatus, getIntuitiveStatusFromStatus } from './getRenderInfoFromState'
 import { changeColour } from '@/lib/colours'
 import { howManyMinutesPriorToDepartureToStartPolling } from '@/lib/constants'
+import { toast } from 'sonner'
+
 
 type Props = {
     startTime: number,
@@ -13,10 +15,10 @@ type Props = {
 }
 function getCheckingAgainText(status: Service['status'], timeToRender: number, timeRemaining: number, startTimeInMs: number) {
     {
-        if (startTimeInMs < 0) {
+        if (timeToRender <= -5000) {
             return 'Still checking...'
         }
-        else if (startTimeInMs == 0) {
+        else if (timeToRender <= 0) {
             return 'Checking...'
         }
         else if (((startTimeInMs <= howManyMinutesPriorToDepartureToStartPolling * 60 * 1000))) {
@@ -28,7 +30,7 @@ function getCheckingAgainText(status: Service['status'], timeToRender: number, t
             const d = new Date();
             d.setMilliseconds(d.getMilliseconds() + timeRemaining);
             console.log("d.getHours(): ", d.getHours(), "d.getMinutes(): ", d.getMinutes())
-            return `Checking again at ${d.getHours()}:${d.getMinutes()}`
+            return `Checking again at ${d.getHours() < 10 ? '0' + d.getHours() : d.getHours()}:${d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes()}`
         }
     }
 }
@@ -42,14 +44,22 @@ function StatusCardWithTimer({
     const [timeToRender, setTimeToRender] = useState(timeRemainingRef.current);
     const intervalRef = useRef<NodeJS.Timeout>();
     useEffect(() => {
-        console.log("startTime or updateKey changed")
+        //THIS USEEFFECT SHOULD BE MERGED WITH THE OTHER ONE.
         timeRemainingRef.current = startTime;
         intervalRef.current = setInterval(() => {
+            //MESSY SOLUTION
+            if (status == "Go") clearInterval(intervalRef.current);
+
             console.log("startTime: ", startTime)
             console.log("updateKey: ", updateKey)
             console.log("timeRemaining: ", timeRemainingRef.current)
             timeRemainingRef.current = timeRemainingRef.current - 1000;
-            timeRemainingRef.current < 15000 && setTimeToRender(timeRemainingRef.current)
+            timeRemainingRef.current < 15000 && setTimeToRender(timeRemainingRef.current);
+            if (timeRemainingRef.current == -5000) {
+                toast.error("Something's off track.", { duration: 28000, })
+            } else if (timeRemainingRef.current == -30000) {
+                if (typeof window !== undefined) window.location.href = '/find?err=Something%20went%20wrong.%20Please%20try%20tracking%20again.'
+            }
         }, 1000);
         return () => clearInterval(intervalRef.current)
     }, [startTime, updateKey]);
@@ -69,7 +79,7 @@ function StatusCardWithTimer({
                         <h1 className='text-[11.25rem]'>{platform.number}</h1>
                     </div>
                     <div className="-mt-12 -mb-3 z-20">
-                        {status !== "Go" && status !== "Error" && <p className='text-black/20  font-bold' style={{ opacity: 1 }}>{getCheckingAgainText(status, timeToRender, timeRemainingRef.current, startTime)}</p>}
+                        {status !== "Go" && status !== "Error" && <p className='text-white/50  font-bold' style={{ opacity: 1 }}>{getCheckingAgainText(status, timeToRender, timeRemainingRef.current, startTime)}</p>}
                     </div>
                     <div className="p-5 w-full z-20 ">
                         <div className="py-3 grid place-items-center bg-white/10 w-full" style={{ opacity: timeToRender <= 1 ? 20 : 1 }}>{getIntuitiveStatusFromStatus(status)} {platform.type == "confirmedAndChanged" && "- The platform has changed"}</div>

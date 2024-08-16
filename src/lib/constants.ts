@@ -1,1 +1,1 @@
-export const howManyMinutesPriorToDepartureToStartPolling = 31; 
+export const howManyMinutesPriorToDepartureToStartPolling = 30; 

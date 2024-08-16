@@ -198,12 +198,16 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
                         {renderedDepartures.map((departure, index) => {
                             const { destination } = departure;
                             const selectedDepInfo = "T-" + departure.scheduledDepartureTime.replace(":", "") + "D-" + destination.code + (aimStation.code ? "A-" + aimStation.code : "");
-                            console.log("selectedDepInfo: ", selectedDepInfo)
                             if (departure.destination.name == "LOAD") return <div key={"load-" + index} className="bg-zinc-200 animate animate-pulse h-20 w-full"></div>
                             return <DepartureCard
                                 status={departure.status}
                                 key={departure.scheduledDepartureTime + departure.destination.name}
-                                onClick={() => { setSelectedDepartures(prev => addIfNewOrRemoveIfExistingItemFromArray(prev, selectedDepInfo)) }}
+                                onClick={() => {
+                                    setSelectedDepartures(
+                                        // prev => addIfNewOrRemoveIfExistingItemFromArray(prev, selectedDepInfo)
+                                        [selectedDepInfo]
+                                    )
+                                }}
                                 className={`${selectedDepartures.includes(selectedDepInfo) ? "!bg-blue-300" : ""} ${noSelectionError && "animate-[shake] duration-700 animate-once transition-colors bg-red-400"}`}
                                 partialDepartureInfo={{
                                     destination: departure.destination,

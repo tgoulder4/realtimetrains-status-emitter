@@ -15,8 +15,12 @@ export const getTrackStateSA = unauthenticatedAction
     .handler(async ({ input }) => {
         // console.log("getTrackState called with input: ", input)
         await rateLimitByKey({ key: "getTrackState", window: 10000, limit: 10 });
-        const ts = await getTrackStateCA(input.journey);
-        if (ts.hidden.error) redirect('/find?err=' + ts.hidden.error);
+        try {
+            const ts = await getTrackStateCA(input.journey);
+            return ts as TrackState;
+        } catch (e) {
+            console.log("getTrackState error: ", e);
+            redirect('/find?err=' + e);
+        }
         // console.log("getTrackState returning: ", ts);
-        return ts as TrackState;
     })

@@ -6,11 +6,7 @@ import { Journey, Service, TrackState } from '@/lib/types';
 import { maxWidthClassNames } from '@/lib/layout';
 import DepartureCard from '../DepartureCard';
 import { getColourFromStatus, getDescriptionFromStatus, getGlyphFromStatus, getIntuitiveStatusFromStatus } from './getRenderInfoFromState';
-import CheckingAgainTimer from './checkingAgainTimer';
 import { TrackStateSchema } from '@/lib/schemas';
-import { getTimeDestAimInfoFromUrl, TGetTimeDestAimInfoFromUrl, TParsedTrainInfo } from './parseServiceInfoFromUrl';
-import { hc } from 'hono/client'
-import { dissectOneTrainInfoFromUrl } from './dissectServicesToTrack';
 import { useServerAction } from "zsa-react";
 import { getTrackStateSA } from './actions';
 import { randomBytes } from 'crypto';
@@ -73,24 +69,21 @@ function MainTrackingArea({ serviceToTrack }: Props) {
     useEffect(() => {
         let timer: NodeJS.Timeout;
         main();
-        if (currentTrackingState.hidden.timeTillRefresh <= 1000) return; //safe guard: do not remove
+        if (currentTrackingState.hidden.timeTillRefresh < 10000) return; //safe guard: do not remove
         timer = setInterval(async () => { await main() }, currentTrackingState.hidden.timeTillRefresh);
         async function main() {
             // console.log("main called with timeTillRefresh: ", currentTrackingState.hidden.timeTillRefresh)
+            if (currentTrackingState.data.status == "Go") clearInterval(timer);
             const newState = await getTrackStateSA({ journey: serviceToTrack });
+            if (!newState || !newState[0]) {
+                console.error("ERROR FETCHING NEW_TRACK_STATE: ", newState);
+                return
+            };
             console.log("newState: ", newState);
-            setCurrentTrackingState(newState[0]!);
+            setCurrentTrackingState(newState[0]);
         }
         return () => clearInterval(timer);
     }, [currentTrackingState.data.status])
-    useEffect(() => {
-        const error = currentTrackingState.hidden.error
-        if (error) {
-            if (typeof window !== undefined) {
-                window.location.href = '/find?err=' + error
-            }
-        }
-    }, [currentTrackingState.hidden.error])
     //url like http://localhost:3000/track?trains=1940BHM+1200MAN
     console.log("currentTrackingState: ", currentTrackingState)
     const {
@@ -101,7 +94,7 @@ function MainTrackingArea({ serviceToTrack }: Props) {
         platform
     } = currentTrackingState.data;
     return (
-        <div className={`flex h-full w-full flex-col py-8 bg-slate-100 ${maxWidthClassNames}`}>
+        <div className={`flex h-full w-full flex-col px-4 py-8 bg-slate-100 ${maxWidthClassNames}`}>
             <div className="flex flex-col items-center gap-3 transition-all">
                 <div className="flex flex-row w-full gap-3">
                     <DepartureCard shouldntDisplace className='w-full flex-[5]' partialDepartureInfo={{
