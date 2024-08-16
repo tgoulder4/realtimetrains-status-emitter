@@ -11,11 +11,30 @@ import { useServerAction } from "zsa-react";
 import { getTrackStateSA } from './actions';
 import { randomBytes } from 'crypto';
 import StatusCardWithTimer from './statusCardWithTimer';
+import { howManyMinutesPriorToDepartureToStartPolling } from '@/lib/constants';
 type Props = {
     serviceToTrack: Journey;
 }
-
 function MainTrackingArea({ serviceToTrack }: Props) {
+
+    //TOFIX: REPEATED CODE
+    function getTimeInMsUntilStartPolling(depHours: number, depMins: number) {
+        const depHoursInMs = depHours * 60 * 60 * 1000;
+        console.log("depHours: ", depHours);
+        const depMinsInMs = depMins * 60 * 1000;
+        console.log("depMins: ", depMins);
+        //get time now, with hours and minutes in milliseconds
+        const now = new Date();
+        const nowHours = now.getHours();
+        console.log("nowHours: ", nowHours);
+        const nowMins = now.getMinutes();
+        console.log("nowMins: ", nowMins);
+
+        //subtract the current time from the departure time
+        const millisecondsUntilStartPolling = (depHoursInMs + depMinsInMs) - ((nowHours * 60 * 60 * 1000) + (nowMins * 60 * 1000) + (howManyMinutesPriorToDepartureToStartPolling * 60 * 1000));
+        console.log("diff: ", millisecondsUntilStartPolling);
+        return millisecondsUntilStartPolling;
+    }
     const [currentTrackingState, setCurrentTrackingState] = useState<TrackState>({
         data: {
             status: "Prepare",
@@ -32,40 +51,6 @@ function MainTrackingArea({ serviceToTrack }: Props) {
             updateKey: randomBytes(16).toString('hex')
         }
     });
-    const { execute, isPending } = useServerAction(getTrackStateSA);
-
-    async function getTrackingState(serviceToTrack: Journey) {
-
-        // console.log("executing getTrackStateSA with: ", serviceToTrack);
-        const res = (await execute({ journey: serviceToTrack }));
-        console.log("res: ", res);
-        const data = res[0];
-        console.log("data: ", data);
-
-        const parseResult = TrackStateSchema.safeParse(data);
-        if (parseResult.success) {
-            const TrackState = parseResult.data;
-            return TrackState;
-        } else {
-            return {
-                data: {
-                    status: "Error",
-                    platform: {
-                        number: "0",
-                        type: "confirmedAndChanged"
-                    },
-                    destination: { name: "--", code: "--" },
-                    provider: "--",
-                    scheduledDepartureTime: "--",
-                },
-                hidden: {
-                    timeTillRefresh: 0,
-                    error: res[1]?.message
-                }
-            } as TrackState
-        }
-
-    }
     useEffect(() => {
         let timer: NodeJS.Timeout;
         main();
@@ -80,6 +65,17 @@ function MainTrackingArea({ serviceToTrack }: Props) {
                 return
             };
             console.log("newState: ", newState);
+            if (newState[0].data.status == "Prepare") {
+                const millisecondsUntilStartPolling = getTimeInMsUntilStartPolling(parseInt(serviceToTrack.departure.time.slice(0, 2)), parseInt(serviceToTrack.departure.time.slice(2)));
+                console.log("millisecondsUntilStartPolling: ", millisecondsUntilStartPolling)
+                if (millisecondsUntilStartPolling <= 0) {
+                    newState[0].data.status = "Wait"
+                    newState[0].hidden.timeTillRefresh = 10000;
+                } else {
+                    newState[0].data.status = "Prepare"
+                    newState[0].hidden.timeTillRefresh = millisecondsUntilStartPolling;
+                }
+            }
             setCurrentTrackingState(newState[0]);
         }
         return () => clearInterval(timer);

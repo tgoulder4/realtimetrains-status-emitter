@@ -4,7 +4,7 @@ import cheerio from 'cheerio'
 import { Service } from "@/lib/types";
 import { findStationCodeByName } from "../lib/destinations";
 import { env } from "@/env";
-import { getTimeInMsUntilStartPolling } from "./track";
+import { howManyMinutesPriorToDepartureToStartPolling } from "@/lib/constants";
 function checkIfClassInPlatformSpan($: cheerio.Root, service: cheerio.Element, str: string) {
     return $(service).find(".platform span").attr("class")?.includes(str)
 }
@@ -62,14 +62,7 @@ export const getServiceListCA = async (dest?: string): Promise<Service[]> => {
                 status = "Go",
                     platformType = "confirmedAndChanged"
             } else if (checkIfClassInPlatformSpan($, service, "ex")) {
-                const timeTilPollingBegin = getTimeInMsUntilStartPolling(parseInt(scheduledDepartureTime.slice(0, 2)), parseInt(scheduledDepartureTime.slice(2)));
-                console.log("TimeTilPollingBegin: ", timeTilPollingBegin)
-                if (timeTilPollingBegin <= 0) {
-                    status = "Wait"
-                } else {
-                    console.log("TimeTilPollingBegin: ", timeTilPollingBegin)
-                    status = "Prepare"
-                }
+                status = "Prepare"
                 platformType = "expected"
             } else {
                 status = 'Error'
