@@ -14,12 +14,22 @@ export async function getTrackStateCA(journey: Journey): Promise<TrackState> {
     if (!correspondingJourney) throw new Error("We couldn't find the journey.");
     function getMillisecondsTilRefresh() {
         const depHours = parseInt(correspondingJourney!.scheduledDepartureTime.slice(0, 2));
+        const depHoursInMs = depHours * 60 * 60 * 1000;
+        console.log("depHours: ", depHours);
         const depMins = parseInt(correspondingJourney!.scheduledDepartureTime.slice(2));
-        var d = new Date();
-        d.setHours(depHours, depMins - howManyMinutesPriorToDepartureToStartPolling, 0, 0);
-        console.log("d.getHours(): ", d.getHours(), "d.getMinutes(): ", d.getMinutes());
-        const diff = d.getTime() - Date.now();
-        console.log("timeDifferenceInSeconds: ", diff);
+        const depMinsInMs = depMins * 60 * 1000;
+        console.log("depMins: ", depMins);
+        //get time now, with hours and minutes in milliseconds
+        const now = new Date();
+        const nowHours = now.getHours();
+        console.log("nowHours: ", nowHours);
+        const nowMins = now.getMinutes();
+        console.log("nowMins: ", nowMins);
+
+        //subtract the current time from the departure time
+        const millisecondsUntilStartPolling = (depHoursInMs + depMinsInMs) - ((nowHours * 60 * 60 * 1000) + (nowMins * 60 * 1000) + (howManyMinutesPriorToDepartureToStartPolling * 60 * 1000));
+        console.log("diff: ", millisecondsUntilStartPolling);
+
 
         switch (correspondingJourney!.status) {
             case "Go":
@@ -33,7 +43,7 @@ export async function getTrackStateCA(journey: Journey): Promise<TrackState> {
 
                 //this diff calculation is returning positive in production, but negative in dev. I don't know why.
                 // return diff < 0 ? 10000 : diff;
-                return 10000
+                return millisecondsUntilStartPolling < 0 ? 10000 : millisecondsUntilStartPolling;
             default:
                 return 0;
         }
