@@ -14,25 +14,31 @@ type Props = {
     platform: Service['platform']
 }
 function getCheckingAgainText(status: Service['status'], timeToRender: number, timeRemaining: number, startTimeInMs: number) {
-    {
-        if (timeToRender <= -5000) {
-            return 'Still checking...'
-        }
-        else if (timeToRender < 0) {
-            return 'Checking...'
-        }
-        else if (((startTimeInMs <= howManyMinutesPriorToDepartureToStartPolling * 60 * 1000))) {
-            return `Checking again in ${timeToRender / 1000}s`
-        }
-        else {
-            //add the time remaining to the current time then show the time in HH:MM
-            //timeremaining is in ms. convert to minutes and hours then add to current time
-            const d = new Date();
-            d.setMilliseconds(d.getMilliseconds() + timeRemaining);
-            console.log("d.getHours(): ", d.getHours(), "d.getMinutes(): ", d.getMinutes())
-            return `Checking again at ${d.getHours() < 10 ? '0' + d.getHours() : d.getHours()}:${d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes()}`
-        }
+    console.log("timeToRender: ", timeToRender)
+    console.log("timeRemaining: ", timeRemaining)
+    console.log("startTimeInMs: ", startTimeInMs)
+    console.log("howManyMsPriorToDepartureToStartPolling: ", (howManyMinutesPriorToDepartureToStartPolling * 60 * 1000))
+    if (startTimeInMs > 10000) {
+        //add the time remaining to the current time then show the time in HH:MM
+        //timeremaining is in ms. convert to minutes and hours then add to current time
+        const d = new Date();
+        d.setMilliseconds(d.getMilliseconds() + timeRemaining);
+        console.log("d.getHours(): ", d.getHours(), "d.getMinutes(): ", d.getMinutes())
+        return `Checking again at ${d.getHours() < 10 ? '0' + d.getHours() : d.getHours()}:${d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes()}`
     }
+    else if (timeToRender <= -5000) {
+        return 'Still checking...'
+    }
+    else if ((timeToRender < 0) && startTimeInMs > 0) {
+        return 'Checking...'
+    }
+    else if ((startTimeInMs <= 10000)) {
+        return `Checking again in ${timeToRender / 1000}s`
+    }
+    else {
+        return "Error"
+    }
+
 }
 function StatusCardWithTimer({
     startTime,
@@ -46,6 +52,8 @@ function StatusCardWithTimer({
     useEffect(() => {
         //THIS USEEFFECT SHOULD BE MERGED WITH THE OTHER ONE.
         timeRemainingRef.current = startTime;
+
+
         intervalRef.current = setInterval(() => {
             //MESSY SOLUTION
             if (status == "Go") clearInterval(intervalRef.current);
