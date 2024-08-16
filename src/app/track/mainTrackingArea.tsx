@@ -79,9 +79,6 @@ function MainTrackingArea({ serviceToTrack }: Props) {
             // console.log("main called with timeTillRefresh: ", currentTrackingState.hidden.timeTillRefresh)
             const newState = await getTrackStateSA({ journey: serviceToTrack });
             console.log("newState: ", newState);
-            if (newState[1]?.message) {
-                window.location.href = '/find?err=' + newState[1].message
-            }
             setCurrentTrackingState(newState[0]!);
         }
         return () => clearInterval(timer);
