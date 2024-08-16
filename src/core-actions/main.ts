@@ -12,7 +12,7 @@ export const getServiceListCA = async (dest?: string): Promise<Service[]> => {
     console.log("getServiceListCA called with dest: ", dest)
     try {
         let res: Response;
-        if (env.NODE_ENV === 'development') {
+        if (env.NODE_ENV === 'production') {
             console.log("fetching from localhost")
             res = await fetch("http://localhost:3000/tests/departuresNoAim",
                 {
