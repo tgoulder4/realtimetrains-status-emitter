@@ -24,7 +24,7 @@ function getCheckingAgainText(status: Service['status'], timeToRender: number, t
     else if (timeToRender < 0) {
         return 'Checking...'
     }
-    else if (((startTimeInMs < 10000))) {
+    else if (((startTimeInMs <= 10000))) {
         return `Checking again in ${timeToRender / 1000}s`
     }
     else if (startTimeInMs <= (howManyMinutesPriorToDepartureToStartPolling * 60 * 1000)) {
