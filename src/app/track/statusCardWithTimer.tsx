@@ -17,14 +17,13 @@ function getCheckingAgainText(status: Service['status'], timeToRender: number, t
     console.log("timeToRender: ", timeToRender)
     console.log("timeRemaining: ", timeRemaining)
     console.log("startTimeInMs: ", startTimeInMs)
-    console.log("howManyMsPriorToDepartureToStartPolling: ", (howManyMinutesPriorToDepartureToStartPolling * 60 * 1000))
     if (startTimeInMs > 10000) {
         //add the time remaining to the current time then show the time in HH:MM
         //timeremaining is in ms. convert to minutes and hours then add to current time
         const d = new Date();
-        d.setMilliseconds(d.getMilliseconds() + timeRemaining);
+        d.setMilliseconds(d.getMilliseconds() + startTimeInMs);
         console.log("d.getHours(): ", d.getHours(), "d.getMinutes(): ", d.getMinutes())
-        return `Checking again at ${d.getHours() < 10 ? '0' + d.getHours() : d.getHours()}:${d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes()}`
+        return `Checking again at ${d.getHours() < 10 ? "0" + d.getHours() : d.getHours()}:${d.getMinutes() < 10 ? "0" + d.getMinutes() : d.getMinutes()}`
     }
     else if (timeToRender <= -5000) {
         return 'Still checking...'
