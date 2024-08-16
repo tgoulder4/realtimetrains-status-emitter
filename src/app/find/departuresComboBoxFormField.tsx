@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Command,
     CommandEmpty,
@@ -31,13 +31,14 @@ function DeparturesComboBoxFormField({
     const options = [
         { label: "Clear", value: "" },
         ..._options];
+    const [open, setOpen] = useState(false)
     return (
         <FormField
             control={form.control}
             name="dest"
             render={({ field }) => (
                 <FormItem className="flex flex-col w-full">
-                    <Popover>
+                    <Popover open={open} onOpenChange={setOpen}>
                         <PopoverTrigger asChild>
                             <FormControl>
                                 <Button
@@ -72,6 +73,7 @@ function DeparturesComboBoxFormField({
                                                 onSelect={() => {
                                                     form.setValue("dest", option.value);
                                                     form.handleSubmit(onSubmit)();
+                                                    setOpen(false)
                                                 }}
                                             >
                                                 <Check
