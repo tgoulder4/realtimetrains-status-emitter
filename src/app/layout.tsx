@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
 import { Toaster, toast } from 'sonner'
+import { PHProvider } from './providers'
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -17,12 +18,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className + " bg-zinc-100 font-semibold"}>
-        <Toaster className={inter.className} position="top-center" />
-        <Suspense>
+      <PHProvider>
+        <body className={inter.className + " bg-zinc-100 font-semibold"}>
+          <Toaster className={inter.className} position="top-center" />
           {children}
-        </Suspense>
-      </body>
+        </body>
+      </PHProvider>
     </html>
   );
 }

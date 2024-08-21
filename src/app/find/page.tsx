@@ -11,7 +11,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { getServiceListCA } from "../../core-actions/main";
 import { Service } from "@/lib/types";
-import { useRouter, useSearchParams } from "next/navigation";
 import { maxWidthClassNames } from "@/lib/layout";
 import { applicationName } from "@/app-config";
 import { Input } from "@/components/ui/input";
@@ -33,7 +32,6 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
             scheduledDepartureTime: "12:00",
             platform: {
                 number: "1",
-                type: "confirmedAndChanged"
             },
             status: "Wait",
             provider: "Avanti West Coast"
@@ -43,7 +41,6 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
             scheduledDepartureTime: "13:00",
             platform: {
                 number: "1",
-                type: "confirmedAndChanged"
             },
             status: "Wait",
             provider: "Avanti West Coast"
@@ -55,7 +52,6 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
             scheduledDepartureTime: "LOAD",
             platform: {
                 number: "LOAD",
-                type: "confirmedAndChanged"
             },
             status: "Go",
             provider: "Avanti West Coast"
@@ -65,7 +61,6 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
             scheduledDepartureTime: "LOAD",
             platform: {
                 number: "LOAD",
-                type: "confirmedAndChanged"
             },
             status: "Go",
             provider: "Avanti West Coast"
@@ -75,7 +70,6 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
             scheduledDepartureTime: "LOAD",
             platform: {
                 number: "LOAD",
-                type: "confirmedAndChanged"
             },
             status: "Go",
             provider: "Avanti West Coast"
@@ -98,7 +92,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
                 scheduledDepartureTime: "LOAD",
                 platform: {
                     number: "LOAD",
-                    type: "confirmedAndChanged"
+
                 },
                 status: "Go",
                 provider: "Avanti West Coast"
@@ -108,7 +102,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
                 scheduledDepartureTime: "LOAD",
                 platform: {
                     number: "LOAD",
-                    type: "confirmedAndChanged"
+
                 },
                 status: "Go",
                 provider: "Avanti West Coast"
@@ -118,7 +112,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
                 scheduledDepartureTime: "LOAD",
                 platform: {
                     number: "LOAD",
-                    type: "confirmedAndChanged"
+
                 },
                 status: "Go",
                 provider: "Avanti West Coast"
