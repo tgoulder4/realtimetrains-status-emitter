@@ -4,20 +4,19 @@ import WebSocket from 'ws';
 import { env } from '@/env';
 import { TrackState } from '@/lib/types';
 import { maxWidthClassNames } from '@/lib/layout';
-import MainTrackingArea from './mainTrackingArea';
-import { redirect, useSearchParams } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { findStationNameByCode } from '@/lib/destinations';
 import { dissectTrainInfoFromUrl } from './dissectServicesToTrack';
 import HeaderLogoWithName from './LogoWithName';
+import TrackingArea from './TrackingArea';
 
 type Props = {
-    // searchParams: { [key: string]: string | string[] | undefined }
+    searchParams: { [key: string]: string | string[] | undefined }
 }
 
 
-function TrackPage({ }: Props) {
-    const sp = useSearchParams();
-    const journeysInCondensedURLformat = sp.get('trains');
+function TrackPage({ searchParams }: Props) {
+    const journeysInCondensedURLformat = searchParams.trains as string;
     // console.log("trains found in url: ", journeysInCondensedURLformat)
     if (!journeysInCondensedURLformat) {
         console.error("No trains to track")
@@ -44,7 +43,7 @@ function TrackPage({ }: Props) {
                     </div>
                 </div>
             </div>
-            <MainTrackingArea serviceToTrack={servicesToTrack[0]} />
+            <TrackingArea serviceToTrack={servicesToTrack[0]} />
         </main>
     )
 }
