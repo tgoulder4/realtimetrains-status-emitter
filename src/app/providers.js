@@ -7,14 +7,14 @@ export function PHProvider({ children }) {
         console.log('url', url)
         const match = url.match(/[?&]session_id=([^&]+)/);
         console.log('match', match)
-        let sessionID = match ? match[1] : null;
-        if (!sessionID) {
-            const _sID = localStorage.getItem('sessionID');
-            if (_sID) {
-                localStorage.setItem('sessionID', _sID);
-                sessionID = _sID;
-            }
+        let sessionID;
+        if (match) {
+            localStorage.setItem('sessionID', match[1]);
         }
+
+        sessionID = localStorage.getItem('sessionID')
+
+        console.log('sessionID', sessionID)
         if (sessionID) {
             console.log('bootstrapping with sessionID', sessionID)
             posthog.init('phc_OwZ5Eo5Bfah214KJbQUu71XpFlzMRXo0nozeI8sZWNN', {
