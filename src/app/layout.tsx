@@ -1,9 +1,13 @@
+
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
 import { Toaster, toast } from 'sonner'
 import { PHProvider } from './providers'
+import { applicationStatus } from "@/app-config";
+import { redirect } from "next/navigation";
+import UnderMaintenancePage from "@/components/pages/UnderMaintenance";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -21,7 +25,7 @@ export default function RootLayout({
       <PHProvider>
         <body className={inter.className + " bg-zinc-100 font-semibold"}>
           <Toaster className={inter.className} position="top-center" />
-          {children}
+          {applicationStatus == "maintenance" ? <UnderMaintenancePage /> : children}
         </body>
       </PHProvider>
     </html>
