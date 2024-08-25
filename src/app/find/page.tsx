@@ -137,20 +137,23 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
         }
     }, []);
     useEffect(() => {
-        async function main() {
-            setInterval(async () => {
-                console.log("performing minute update")
-                const allServices = await getServiceListCA();
-                setDepartures(allServices);
-                setRenderedDepartures(allServices);
-                //if selected departures contain departure time with dest code any that are not in the new list, remove them and toast. should toast is boolean
-                const shouldToast = selectedDepartures.some(
-                    dep => !allServices.some(service => service.destination.code == dep.slice(dep.indexOf("D-") + 2, dep.indexOf("A-")))
-                )
-                if (shouldToast) toast.error("One or more of your selected departures are no longer available.")
-            }, 60000);
+        async function fetchData() {
+            const allServices = await getServiceListCA();
+            setDepartures(allServices);
+            setRenderedDepartures(allServices);
+            //if selected departures contain departure time with dest code any that are not in the new list, remove them and toast. should toast is boolean
+            const shouldToast = selectedDepartures.some(
+                dep => !allServices.some(service => service.destination.code == dep.slice(dep.indexOf("D-") + 2, dep.indexOf("A-")))
+            )
+            if (shouldToast) toast.error("One or more of your selected departures are no longer available.")
         }
-        main()
+
+
+        fetchData()
+        setInterval(async () => {
+            console.log("performing minute update")
+            fetchData()
+        }, 60000);
     }, []);
     return (
         <main className="flex min-h-fit flex-col pb-48">
