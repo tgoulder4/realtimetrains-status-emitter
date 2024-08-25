@@ -1,9 +1,10 @@
+import { convertDateToUTC } from '@/utils/timeUtils';
 import React from 'react'
 
 type Props = {}
 
 function DeparturesNoAimPage({ }: Props) {
-    var d = new Date();
+    var d = convertDateToUTC(new Date());
     //add 30 mins to current time
     var h: string | number = d.getHours();
     var m: string | number = d.getMinutes();

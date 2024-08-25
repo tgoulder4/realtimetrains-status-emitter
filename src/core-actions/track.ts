@@ -7,8 +7,8 @@ export async function getTrackStateCA(journey: Journey): Promise<TrackState> {
         departure,
     } = journey
     const serviceList = await getServiceListCA(departure.code);
-    console.log("departure: ", departure, "serviceList: ", serviceList);
     const correspondingJourney = serviceList.find(service => (service.destination.code == departure.code && service.scheduledDepartureTime == departure.time));
+    console.log("correspondingJourney: ", correspondingJourney);
     if (!correspondingJourney || !correspondingJourney.scheduledDepartureTime) throw new Error("We couldn't find the journey.");
 
     const timeTilRefresh = getMillisecondsTilRefresh(correspondingJourney!.status, correspondingJourney!.scheduledDepartureTime);

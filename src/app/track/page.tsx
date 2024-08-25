@@ -6,7 +6,7 @@ import { TrackState } from '@/lib/types';
 import { maxWidthClassNames } from '@/lib/layout';
 import { redirect } from 'next/navigation';
 import { findStationNameByCode } from '@/lib/destinations';
-import { dissectTrainInfoFromUrl } from './dissectServicesToTrack';
+import { dissectTrainInfoFromUrl } from './get-station-details-from-station-code';
 import HeaderLogoWithName from './LogoWithName';
 import TrackingArea from './TrackingArea';
 

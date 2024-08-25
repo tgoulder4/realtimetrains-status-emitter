@@ -79,6 +79,6 @@ export function getDescriptionFromStatus(status: string) {
         case "Error":
             return "There was an error. Sorry about that.";
         default:
-            return "There was an error. Sorry about that.";
+            return "Hang on tight! Loading status...";
     }
 }

@@ -23,7 +23,7 @@ export function PHProvider({ children }) {
                     sessionID
                 }
             })
-            return <PostHogProvider client={posthog}> {children} </PostHogProvider>
+            return <PostHogProvider client={posthog}>{children}</PostHogProvider>
         } else {
             return children;
         }
