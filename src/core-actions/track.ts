@@ -6,6 +6,7 @@ export async function getTrackStateCA(journey: Journey): Promise<TrackState> {
     const {
         departure,
     } = journey
+    console.log("getTrackStateCA called with journey: ", journey);
     const serviceList = await getServiceListCA(departure.code);
     const correspondingJourney = serviceList.find(service => (service.destination.code == departure.code && service.scheduledDepartureTime == departure.time));
     console.log("correspondingJourney: ", correspondingJourney);

@@ -120,6 +120,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
         ])
         const aimStationCode = data.dest;
         if (aimStationCode) {
+            console.log("onsubmit calling getServiceListCA with aimStationCode: ", aimStationCode)
             const services = await getServiceListCA(aimStationCode);
             setRenderedDepartures(services.slice(0, 8));
         } else {
@@ -138,6 +139,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
     }, []);
     useEffect(() => {
         async function fetchData() {
+            console.log("performing minute update")
             const allServices = await getServiceListCA();
             setDepartures(allServices);
             setRenderedDepartures(allServices);
@@ -150,10 +152,11 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
 
 
         fetchData()
-        setInterval(async () => {
-            console.log("performing minute update")
+        const timer = setInterval(() => {
+
             fetchData()
         }, 60000);
+        return () => clearInterval(timer);
     }, []);
     return (
         <main className="flex min-h-fit flex-col pb-48">

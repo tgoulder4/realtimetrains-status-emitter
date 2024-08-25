@@ -26,7 +26,6 @@ export function useTrackingState(serviceToTrack: Journey) {
     useEffect(() => {
         let timer: NodeJS.Timeout;
         const fetchData = async () => {
-
             console.log("fetching data for service: ", serviceToTrack);
             const newState = await execute({ journey: serviceToTrack });
             console.log("newState: ", newState)

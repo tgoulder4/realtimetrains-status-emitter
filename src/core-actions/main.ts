@@ -62,13 +62,8 @@ export const getServiceListCA = async (dest?: string): Promise<Service[]> => {
             } else if (checkIfClassInPlatformSpan($, service, "ex")) {
                 const depHours = Number(scheduledDepartureTime.slice(0, 2));
                 const depMins = Number(scheduledDepartureTime.slice(2));
-                //make a new date from dephours and depmins
-                const dd = new Date();
-                dd.setHours(depHours);
-                dd.setMinutes(depMins);
-                const depDateUTC = convertDateToUTC(dd);
 
-                const getTimeUntilStartPolling = getTimeInMsUntilStartPolling(depDateUTC.getHours(), depDateUTC.getMinutes());
+                const getTimeUntilStartPolling = getTimeInMsUntilStartPolling(depHours, depMins);
                 console.log("getTimeUntilStartPolling: ", getTimeUntilStartPolling)
                 if (getTimeUntilStartPolling > 0) {
                     status = "Prepare"
