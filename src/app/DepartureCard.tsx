@@ -2,7 +2,7 @@ import React from 'react'
 import { Service } from '@/lib/types'
 import { Badge } from "@/components/ui/badge"
 import { checkStationIsPopular } from '@/lib/utils'
-import { getColourFromStatus, getGlyphFromStatus } from './track/getRenderInfoFromState'
+import { getColourFromStatus, getGlyphFromStatus } from './track/get-attributes-from-status'
 
 type Props = {
     partialDepartureInfo: {

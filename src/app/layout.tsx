@@ -2,7 +2,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Suspense } from "react";
 import { Toaster, toast } from 'sonner'
 import { PHProvider } from './providers'
 import { applicationStatus } from "@/app-config";

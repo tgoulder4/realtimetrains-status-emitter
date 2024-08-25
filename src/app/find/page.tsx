@@ -135,10 +135,20 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
         if (searchParams.err) {
             toast.error(searchParams.err as string);
         }
+    }, []);
+    useEffect(() => {
         async function main() {
-            const allServices = await getServiceListCA();
-            setDepartures(allServices);
-            setRenderedDepartures(allServices);
+            setInterval(async () => {
+                console.log("performing minute update")
+                const allServices = await getServiceListCA();
+                setDepartures(allServices);
+                setRenderedDepartures(allServices);
+                //if selected departures contain departure time with dest code any that are not in the new list, remove them and toast. should toast is boolean
+                const shouldToast = selectedDepartures.some(
+                    dep => !allServices.some(service => service.destination.code == dep.slice(dep.indexOf("D-") + 2, dep.indexOf("A-")))
+                )
+                if (shouldToast) toast.error("One or more of your selected departures are no longer available.")
+            }, 60000);
         }
         main()
     }, []);

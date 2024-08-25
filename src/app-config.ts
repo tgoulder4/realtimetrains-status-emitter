@@ -1,2 +1,2 @@
 export const applicationName = 'BeatTheRush';
-export const applicationStatus = 'maintenance';
+export const applicationStatus: 'prod' | 'maintenance' = 'prod';

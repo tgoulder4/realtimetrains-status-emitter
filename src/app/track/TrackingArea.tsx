@@ -5,15 +5,16 @@ import { env } from '@/env';
 import { Journey, Service, TrackState } from '@/lib/types';
 import { maxWidthClassNames } from '@/lib/layout';
 import DepartureCard from '../DepartureCard';
-import { getColourFromStatus, getDescriptionFromStatus, getGlyphFromStatus, getHexColourFromStatus, getIntuitiveStatusFromStatus } from './getRenderInfoFromState';
+import { getColourFromStatus, getDescriptionFromStatus, getGlyphFromStatus, getHexColourFromStatus, getIntuitiveStatusFromStatus } from './get-attributes-from-status';
 import { useTrackingState } from '@/lib/hooks/useTrackState';
 import { changeColour } from '@/lib/colours';
 import { getCheckingAgainText } from '@/utils/textUtils';
+import PlatformCard from './platform-card';
 type Props = {
     serviceToTrack: Journey;
 }
 function TrackingArea({ serviceToTrack }: Props) {
-    const [currentTrackingState, timeRemaining] = useTrackingState(serviceToTrack) as [TrackState, number];
+    const currentTrackingState = useTrackingState(serviceToTrack) as TrackState;
     //url like http://localhost:3000/track?trains=1940BHM+1200MAN
     const {
         destination,
@@ -22,7 +23,10 @@ function TrackingArea({ serviceToTrack }: Props) {
         status,
         platform,
     } = currentTrackingState.data;
-    const { timeTilRefresh } = currentTrackingState.hidden;
+    const { timeTilRefresh, updateKey } = currentTrackingState.hidden;
+    useEffect(() => {
+        console.log("rendering tracking area with status: ", status);
+    }, [])
     return (
         <div className={`flex h-full w-full flex-col px-4 py-8 bg-slate-100 ${maxWidthClassNames}`}>
             <div className="flex flex-col items-center gap-3 transition-all">
@@ -35,29 +39,7 @@ function TrackingArea({ serviceToTrack }: Props) {
                 </div>
                 <div className="hidden bg-yellow-800 bg-red-800 bg-green-800 bg-slate-800"></div>
 
-                {/* statusCard */}
-                {
-                    platform.number == "--" ?
-                        <div className="bg-zinc-300 animate animate-pulse duration-500 w-full h-52 lg:h-72" />
-                        :
-                        <div className={` relative w-full overflow-hidden statusCard text-white flex flex-col items-center animate transition-colors ${getColourFromStatus(status)}`}>
-                            <div className="absolute z-10 transition-all duration-700 h-full" style={{
-                                width: `${((timeRemaining / timeTilRefresh) * 120)}%`,
-                                backgroundColor: (timeRemaining <= -1 && status !== "Go") ? changeColour(getHexColourFromStatus(status)).darken(10).toHexString() : (timeRemaining == timeTilRefresh && timeTilRefresh >= 0) ? 'green' : `${changeColour(getHexColourFromStatus(status)).lighten(1).setAlpha((timeRemaining / timeTilRefresh) + 0.1)}`
-                            }}></div>
-                            <div className={`flex z-20 pt-5 flex-col items-center mt-3 `}>
-                                <h2 className='font-semibold -mb-10'>Platform</h2>
-
-                                <h1 className='text-[11.25rem]'>{platform.number}</h1>
-                            </div>
-                            <div className="-mt-12 -mb-3 z-20">
-                                {status !== "Go" && status !== "Error" && <p className='text-white/50  font-bold' style={{ opacity: 1 }}>{getCheckingAgainText(status, timeRemaining, timeTilRefresh)}</p>}
-                            </div>
-                            <div className="p-5 w-full z-20 ">
-                                <div className="py-3 grid place-items-center bg-white/10 w-full" style={{ opacity: timeRemaining <= 1 ? 20 : 1 }}>{getIntuitiveStatusFromStatus(status)}</div>
-                            </div>
-                        </div>
-                }
+                <PlatformCard updateKey={updateKey} platform={platform} status={status} timeTilRefresh={timeTilRefresh} />
                 <div className="w-full flex flex-col  md:flex-row gap-3">
                     <div className="bg-black/5 w-full grid place-items-center py-5">
                         <div className="w-1/2 max-w-xl items-center flex flex-col gap-2">

@@ -1,13 +1,13 @@
 'use client'
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { randomBytes } from 'crypto';
 import { getTrackStateSA } from '@/app/track/actions';
 import { TrackState, Journey } from '@/lib/types';
-import { getTimeInMsUntilStartPolling } from '@/utils/timeUtils';
 import { MIN_TIME_TIL_REFRESH } from '../constants';
+import { useServerAction } from 'zsa-react';
 
 export function useTrackingState(serviceToTrack: Journey) {
-    console.log("serviceToTrack: ", serviceToTrack)
+    const { execute } = useServerAction(getTrackStateSA);
     const [currentTrackingState, setCurrentTrackingState] = useState<TrackState>({
         data: {
             status: "Loading",
@@ -23,45 +23,34 @@ export function useTrackingState(serviceToTrack: Journey) {
             updateKey: randomBytes(16).toString('hex')
         }
     });
-    const [timeRemaining, setTimeRemaining] = useState<number>(currentTrackingState.hidden.timeTilRefresh);
-    const initialMainRanRef = useRef(false);
     useEffect(() => {
-        console.log("status: ", currentTrackingState.data.status)
         let timer: NodeJS.Timeout;
-        let clientCountdownTimer: NodeJS.Timeout;
-        main();
+        const fetchData = async () => {
 
-        async function main() {
-            console.log("running main, currentTimeTilRefresh: ", currentTrackingState.hidden.timeTilRefresh)
-            timer = setInterval(async () => {
-                console.log("main called")
-                if (currentTrackingState.hidden.timeTilRefresh < MIN_TIME_TIL_REFRESH && currentTrackingState.data.status !== "Loading") return;
-                console.log("timeTilRefresh: ", currentTrackingState.hidden.timeTilRefresh)
-                if (currentTrackingState.data.status == "Go") {
-                    console.log("clearing interval")
-                    clearInterval(timer)
-                };
-                console.log("Getting new state")
-                const newState = await getTrackStateSA({ journey: serviceToTrack });
-                console.log("newState: ", newState)
-                if (!newState || !newState[0]) {
-                    console.error("ERROR FETCHING NEW_TRACK_STATE: ", newState[1].message);
+            console.log("fetching data for service: ", serviceToTrack);
+            const newState = await execute({ journey: serviceToTrack });
+            console.log("newState: ", newState)
+            if (newState[0]) {
+                console.log("setting track state to: ", newState[0]);
+                setCurrentTrackingState(newState[0]);
+                if (newState[0].data.status == "Error" || newState[0].data.status == "Go") {
+                    console.log("returning due to edge cases. newState: ", newState[0]);
                     clearInterval(timer);
                     return;
-                }
-                console.log("setting new state as currentTrackingState")
-                setCurrentTrackingState(newState[0]);
-                clientCountdownTimer = setInterval(() => {
-                    setTimeRemaining(prev => prev - 1000);
-                }, 1000);
-                currentTrackingState.data.status == "Loading" && clearInterval(clientCountdownTimer);
-            }, initialMainRanRef.current ? currentTrackingState.hidden.timeTilRefresh : Number(Infinity));
+                };
+            } else {
+                console.error("ERROR FETCHING NEW_TRACK_STATE: ", newState[1].message);
+            }
         }
+        fetchData();
+        timer = setInterval(() => {
+            fetchData();
+            console.log("refreshing in ", currentTrackingState.hidden.timeTilRefresh);
+        }, currentTrackingState.hidden.timeTilRefresh < MIN_TIME_TIL_REFRESH ? MIN_TIME_TIL_REFRESH : currentTrackingState.hidden.timeTilRefresh);
 
-        return () => { clearInterval(timer); clearInterval(clientCountdownTimer) };
-    }, [currentTrackingState.data.status]);
 
-    console.log("timeRemaining: ", timeRemaining)
+        return () => clearInterval(timer);
+    }, []);
 
-    return [currentTrackingState, timeRemaining];
+    return currentTrackingState;
 }
