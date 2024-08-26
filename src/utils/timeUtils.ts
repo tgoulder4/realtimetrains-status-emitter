@@ -6,16 +6,14 @@ export function convertDateToUTC(date: Date) {
     return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
 }
 export function getTimeInMsUntilStartPolling(localDepHours: number, localDepMins: number) {
-    // console.log("localDepHours: ", localDepHours, "localDepMins: ", localDepMins)
+    console.log("getTimeInMsUntilStartPolling called with localDepHours: ", localDepHours, "localDepMins: ", localDepMins);
     var dd = new Date();
     dd.setHours(localDepHours);
     dd.setMinutes(localDepMins);
     const depDateUTC = convertDateToUTC(dd);
 
-    const now = convertDateToUTC(new Date())
-    const nowHoursInMs = now.getHours() * 60 * 60 * 1000;
-    const nowMinsInMs = now.getMinutes() * 60 * 1000;
-    const timeUntilPollingStart = ((depDateUTC.getHours() * 60 * 60 * 1000) - nowHoursInMs) + ((depDateUTC.getMinutes() * 60 * 1000) - nowMinsInMs) - (MINS_BEFORE_POLLING_START * 60 * 1000);
+    const nowUTC = convertDateToUTC(new Date())
+    const timeUntilPollingStart = ((depDateUTC.getHours() * 60 * 60 * 1000) - nowUTC.getHours() * 60 * 60 * 1000) + ((depDateUTC.getMinutes() * 60 * 1000) - nowUTC.getMinutes() * 60 * 1000) - (MINS_BEFORE_POLLING_START * 60 * 1000);
     // console.log("timeUntilPollingStart: ", timeUntilPollingStart);
     return timeUntilPollingStart;
 }

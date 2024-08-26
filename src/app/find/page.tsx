@@ -141,6 +141,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
         async function fetchData() {
             console.log("performing minute update")
             const allServices = await getServiceListCA();
+            console.log("allServices: ", allServices)
             setDepartures(allServices);
             setRenderedDepartures(allServices);
             //if selected departures contain departure time with dest code any that are not in the new list, remove them and toast. should toast is boolean
@@ -153,7 +154,6 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
 
         fetchData()
         const timer = setInterval(() => {
-
             fetchData()
         }, 60000);
         return () => clearInterval(timer);
