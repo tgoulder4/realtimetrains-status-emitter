@@ -7,13 +7,14 @@ import { dissectOneTrainInfoFromUrl, dissectTrainInfoFromUrl } from "./get-stati
 import { getTrackStateCA } from "@/core-actions/track";
 import { rateLimitByKey } from "@/lib/limiter";
 import { redirect } from "next/navigation";
+import { MIN_TIME_TIL_REFRESH } from "@/lib/constants";
 
 export const getTrackStateSA = unauthenticatedAction
     .createServerAction()
     .input(z.object({ journey: JourneySchema }))
     .handler(async ({ input }) => {
         // console.log("getTrackState called with input: ", input)
-        await rateLimitByKey({ key: "getTrackState", window: 10000, limit: 10 });
+        await rateLimitByKey({ key: "getTrackState", window: MIN_TIME_TIL_REFRESH - 1000, limit: 1 });
         try {
             const ts = await getTrackStateCA(input.journey);
             return ts as TrackState;

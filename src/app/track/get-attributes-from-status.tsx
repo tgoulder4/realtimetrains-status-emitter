@@ -47,6 +47,12 @@ export function getIntuitiveStatusFromStatus(status: string) {
 export function getGlyphFromStatus(status: string, localDepHours: number, localDepMins: number) {
     'use client'
     switch (status) {
+        case "Wait":
+            return <svg width="16" height="16" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11.6667 2.3335H16.3333" stroke="black" strokeOpacity="0.8" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M14 16.3335L17.5 12.8335" stroke="black" strokeOpacity="0.8" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M14 25.6667C19.1546 25.6667 23.3333 21.488 23.3333 16.3333C23.3333 11.1787 19.1546 7 14 7C8.84533 7 4.66666 11.1787 4.66666 16.3333C4.66666 21.488 8.84533 25.6667 14 25.6667Z" stroke="black" strokeOpacity="0.8" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
         case "Go":
             return <svg width="16" height="16" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M21 7L8.16671 19.8333L2.33337 14" stroke="black" strokeOpacity="0.8" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
@@ -59,7 +65,7 @@ export function getGlyphFromStatus(status: string, localDepHours: number, localD
             const timeTilStartPolling = getTimeInMsUntilStartPolling(localDepHours, localDepMins);
             console.log("timeTilStartPolling: ", timeTilStartPolling);
             if (timeTilStartPolling > 0) {
-                return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" opacity={50} xmlns="http://www.w3.org/2000/svg">
                     <path d="M5 22H19" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     <path d="M5 2H19" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     <path d="M17 22V17.828C16.9999 17.2976 16.7891 16.789 16.414 16.414L12 12L7.586 16.414C7.2109 16.789 7.00011 17.2976 7 17.828V22" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />

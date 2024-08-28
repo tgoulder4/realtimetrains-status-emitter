@@ -12,7 +12,7 @@ import { MIN_TIME_TIL_REFRESH } from "@/lib/constants";
 export function getCheckingAgainText(timeRemaining: number, msTilRefresh: number, status: Service['status']): string {
     console.log("getCheckingAgainText called with timeRemaining: ", timeRemaining, " msTilRefresh: ", msTilRefresh, " status: ", status)
     if (status == "Prepare") {
-        if (msTilRefresh <= 60000) {
+        if (msTilRefresh <= 120000) {
             return `Checking again in ${timeRemaining / 1000}s`
         }
         var d = new Date();
