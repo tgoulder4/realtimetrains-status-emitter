@@ -3,7 +3,6 @@ import { JourneySchema, TrackStateSchema } from "@/lib/schemas";
 import { TrackState } from "@/lib/types";
 import { unauthenticatedAction } from "@/lib/safe-action";
 import { z } from "zod";
-import { getServiceListCA } from "@/core-actions/main";
 import { dissectOneTrainInfoFromUrl, dissectTrainInfoFromUrl } from "./get-station-details-from-station-code";
 import { getTrackStateCA } from "@/core-actions/track";
 import { rateLimitByKey } from "@/lib/limiter";

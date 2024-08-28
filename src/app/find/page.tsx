@@ -120,6 +120,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
         ])
         const aimStationCode = data.dest;
         if (aimStationCode) {
+            console.log("onsubmit calling getServiceListCA with aimStationCode: ", aimStationCode)
             const services = await getServiceListCA(aimStationCode);
             setRenderedDepartures(services.slice(0, 8));
         } else {
@@ -139,6 +140,8 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
     useEffect(() => {
         async function fetchData() {
             const allServices = await getServiceListCA();
+            console.log("Refreshign data, allServices: ", allServices)
+            console.log("allServices: ", allServices)
             setDepartures(allServices);
             setRenderedDepartures(allServices);
             //if selected departures contain departure time with dest code any that are not in the new list, remove them and toast. should toast is boolean
@@ -150,10 +153,10 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
 
 
         fetchData()
-        setInterval(async () => {
-            console.log("performing minute update")
+        const timer = setInterval(() => {
             fetchData()
         }, 60000);
+        return () => clearInterval(timer);
     }, []);
     return (
         <main className="flex min-h-fit flex-col pb-48">
@@ -195,7 +198,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
             </div>
             <div className={`${maxWidthClassNames}  flex flex-col h-full justify-between`}>
                 <div className="px-4 lg:px-12 pt-8 flex flex-col h-full gap-4">
-                    <h2 className="font-semibold">{aimStation ? "Results" : "Departing soon"}</h2>
+                    <h2 className="font-semibold">{aimStation.code ? "Results" : "Departing soon"}</h2>
                     <div className="flex flex-col gap-4">
                         {renderedDepartures.map((departure, index) => {
                             const { destination } = departure;
@@ -228,7 +231,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
                         if (selectedDepartures.length == 0) { toast.error("Please select at least one departure"); setNoSelectionError("Please select at least one departure"); }
                         else { window.location.href = `/track?trains=${selectedDepartures.join("+")}` }
                     }}
-                    className={`animate-in fixed bottom-12 left-[calc(50%_-_120px)] right-[calc(50%_-_120px)] text-center text-lg font-semibold ${selectedDepartures.length > 0 ? "bg-green-900 border-b-8 border-green-950 hover:border-b-0 -translate-y-2" : ""}  px-12 py-8  transition-transform ease-in text-white`}>
+                    className={`animate-in fixed bottom-12 left-[calc(50%_-_120px)] right-[calc(50%_-_120px)] text-center text-lg font-semibold ${selectedDepartures.length > 0 ? "bg-green-900 border-b-8 border-green-950 hover:border-b-0 -translate-y-2" : "opacity-0"}  px-12 py-8  transition-transform ease-in text-white`}>
                     Beat The Rush!
                     {/* {selectedDepartures.length > 0 && `(${selectedDepartures.length})` } */}
                 </Button>

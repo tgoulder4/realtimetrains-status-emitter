@@ -4,12 +4,12 @@ import React from 'react'
 type Props = {}
 
 function DeparturesNoAimPage({ }: Props) {
-    var d = convertDateToUTC(new Date());
+    var d = new Date()
     //add 30 mins to current time
     var h: string | number = d.getHours();
     var m: string | number = d.getMinutes();
-    const timeOffsetInMinutes = 40;
-    h = m + timeOffsetInMinutes >= 60 ? h + 1 : h
+    const timeOffsetInMinutes = 20;
+    h = m + timeOffsetInMinutes >= 60 ? h + 1 > 23 ? 0 : h + 2 : h
     m = m + timeOffsetInMinutes >= 60 ? m + timeOffsetInMinutes - 60 : m + timeOffsetInMinutes;
     h = h < 10 ? '0' + h : h;
     m = m < 10 ? '0' + m : m;
