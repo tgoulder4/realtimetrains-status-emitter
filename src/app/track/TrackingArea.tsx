@@ -8,7 +8,6 @@ import DepartureCard from '../DepartureCard';
 import { getColourFromStatus, getDescriptionFromStatus, getGlyphFromStatus, getHexColourFromStatus, getIntuitiveStatusFromStatus } from './get-attributes-from-status';
 import { useTrackingState } from '@/lib/hooks/useTrackState';
 import { changeColour } from '@/lib/colours';
-import { getCheckingAgainText } from '@/utils/textUtils';
 import PlatformCard from './platform-card';
 type Props = {
     serviceToTrack: Journey;
@@ -23,6 +22,7 @@ function TrackingArea({ serviceToTrack }: Props) {
         status,
         platform,
     } = currentTrackingState.data;
+    console.log("scheduledDepartureTime: ", scheduledDepartureTime);
     const { timeTilRefresh, updateKey } = currentTrackingState.hidden;
     useEffect(() => {
         console.log("rendering tracking area with status: ", status);
@@ -44,7 +44,7 @@ function TrackingArea({ serviceToTrack }: Props) {
                     <div className="bg-black/5 w-full grid place-items-center py-5">
                         <div className="w-1/2 max-w-xl items-center flex flex-col gap-2">
                             <div className="h-2 mb-4">
-                                {getGlyphFromStatus(status)}
+                                {getGlyphFromStatus(status, Number(scheduledDepartureTime.slice(0, 2)), Number(scheduledDepartureTime.slice(2)))}
                             </div>
                             <h3 className='w-full text-center'>{getDescriptionFromStatus(status)}</h3>
                         </div>

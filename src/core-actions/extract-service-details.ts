@@ -1,6 +1,5 @@
 import { findStationCodeByName } from "@/lib/destinations";
 import { Service } from "@/lib/types";
-import { getTimeInMsUntilStartPolling } from "@/utils/timeUtils";
 function checkIfPlatformHasClass($: cheerio.Root, service: cheerio.Element, className: string) {
     return $(service).find(".platform span").attr("class")?.includes(className)
 }
@@ -18,6 +17,7 @@ export function extractServiceDetailsFromServiceElementCA($: cheerio.Root, servi
         code: findStationCodeByName(destinationStationName)
     }
     const scheduledDepartureTime = $(service).find(".time").text();
+    console.log("scheduledDepartureTime: ", scheduledDepartureTime);
     const provider = $(service).find(".secline").text().split("·")[0].trim().replace(" service", "");
     let status: Service["status"];
     if (checkIfPlatformHasClass($, service, "a") && !checkIfPlatformHasClass($, service, "c")) {
@@ -25,19 +25,22 @@ export function extractServiceDetailsFromServiceElementCA($: cheerio.Root, servi
     }
     else if (checkIfPlatformHasClass($, service, "c") && checkIfPlatformHasClass($, service, "a")) {
         status = "Go"
-    } else if (checkIfPlatformHasClass($, service, "ex")) {
+    }
+    else if (checkIfPlatformHasClass($, service, "ex")) {
         const depHours = Number(scheduledDepartureTime.slice(0, 2));
         const depMins = Number(scheduledDepartureTime.slice(2));
-
-        const getTimeUntilStartPolling = getTimeInMsUntilStartPolling(depHours, depMins);
-        if (getTimeUntilStartPolling > 0) {
-            console.log("getTimeUntilStartPolling: ", getTimeUntilStartPolling, " was greater than 0. Setting status to Prepare");
-            status = "Prepare"
-        } else {
-            console.log("getTimeUntilStartPolling: ", getTimeUntilStartPolling, " was less than 0. Setting status to Wait.");
-            status = 'Wait'
-        }
-    } else {
+        //do time operations only on client side.
+        // const getTimeUntilStartPolling = getTimeInMsUntilStartPolling(depHours, depMins);
+        // if (getTimeUntilStartPolling > 0) {
+        //     console.log("getTimeUntilStartPolling: ", getTimeUntilStartPolling, " was greater than 0. Setting status to Prepare");
+        //     status = "Prepare"
+        // } else {
+        //     console.log("getTimeUntilStartPolling: ", getTimeUntilStartPolling, " was less than 0. Setting status to Wait.");
+        //     status = 'Wait'
+        // }
+        status = 'Prepare'
+    }
+    else {
         status = 'Error'
     }
 

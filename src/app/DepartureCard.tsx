@@ -30,9 +30,9 @@ function DepartureCard({ partialDepartureInfo, isPopular, status, className, onC
             }</h2>
                 <div className="flex flex-col items-start w-full">
                     <div className="w-full flex flex-col md:flex-row md:items-center justify-between">
-                        <div className="flex flex-row items-center gap-2">
+                        <div className="flex flex-row items-center animate transition-all gap-2">
                             <h3 className='font-bold w-max'>{name}</h3>
-                            {status && getGlyphFromStatus(status)}
+                            {status && getGlyphFromStatus(status, Number(scheduledDepartureTime.slice(0, 2)), Number(scheduledDepartureTime.slice(3)))}
                         </div>
                         {!via && provider && <p className='opacity-50 text-end ml-4'>{provider}</p>}
                     </div>

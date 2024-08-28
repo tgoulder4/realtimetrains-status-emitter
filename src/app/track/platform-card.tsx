@@ -54,7 +54,7 @@ function PlatformCard({
                             <h1 className='text-[11.25rem]'>{platform.number}</h1>
                         </div>
                         <div className="-mt-12 -mb-3 z-20">
-                            {status !== "Go" && status !== "Error" && <p className='text-white/50  font-bold' style={{ opacity: 1 }}>{getCheckingAgainText(status, checkingAgainIn, timeTilRefresh)}</p>}
+                            {status !== "Go" && status !== "Error" && <p className='text-white/50  font-bold' style={{ opacity: 1 }}>{getCheckingAgainText(checkingAgainIn, timeTilRefresh, status)}</p>}
                         </div>
                         <div className="p-5 w-full z-20 ">
                             <div className="py-3 grid place-items-center bg-white/10 w-full" style={{ opacity: checkingAgainIn <= 1 ? 20 : 1 }}>{getIntuitiveStatusFromStatus(status)}</div>

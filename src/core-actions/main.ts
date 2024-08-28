@@ -28,13 +28,20 @@ export const getServiceListCA = async (dest?: string): Promise<Service[]> => {
         console.log("fetching from url: ", url)
         res = await fetch(url)
 
-        if (!res.ok) throw new Error("Failed to fetch data. Code RES_NOT_OK")
+        if (!res.ok) {
+            //try without proxy
+            console.log("res not ok. Trying without proxy")
+            url =
+                `https://www.realtimetrains.co.uk/search/simple/gb-nr:EUS${dest ? `/to/gb-nr:${dest}` : ''}`
+            res = await fetch(url)
+            if (!res.ok) { throw new Error("Failed to fetch data. Code RES_NOT_OK") }
+        }
         // console.log("res: ", res)
         const html = await res.text();
         // console.log("html: ", html)
         const $ = cheerio.load(html);
-        const list = $(".service").map((i, service) => extractServiceDetailsFromServiceElementCA($, service)).get();
-        // console.log("list returned: ", list)
+        const list: Service[] = $(".service").map((i, service) => extractServiceDetailsFromServiceElementCA($, service)).get();
+        console.log("service list returned: ", list)
         return list;
 
     } catch (e) {

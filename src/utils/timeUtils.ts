@@ -11,9 +11,17 @@ export function getTimeInMsUntilStartPolling(localDepHours: number, localDepMins
     dd.setHours(localDepHours);
     dd.setMinutes(localDepMins);
     const depDateUTC = convertDateToUTC(dd);
+    const depDateUTCHours = depDateUTC.getHours();
+    console.log("depDateUTCHours: ", depDateUTCHours);
+    const depDateUTCMinutes = depDateUTC.getMinutes();
+    console.log("depDateUTCMinutes: ", depDateUTCMinutes);
 
     const nowUTC = convertDateToUTC(new Date())
-    const timeUntilPollingStart = ((depDateUTC.getHours() * 60 * 60 * 1000) - nowUTC.getHours() * 60 * 60 * 1000) + ((depDateUTC.getMinutes() * 60 * 1000) - nowUTC.getMinutes() * 60 * 1000) - (MINS_BEFORE_POLLING_START * 60 * 1000);
+    const nowUTCHours = nowUTC.getHours();
+    console.log("nowUTCHours: ", nowUTCHours);
+    const nowUTCMinutes = nowUTC.getMinutes();
+    console.log("nowUTCMinutes: ", nowUTCMinutes);
+    const timeUntilPollingStart = ((depDateUTCHours * 60 * 60 * 1000) - nowUTCHours * 60 * 60 * 1000) + ((depDateUTCMinutes * 60 * 1000) - nowUTCMinutes * 60 * 1000) - (MINS_BEFORE_POLLING_START * 60 * 1000);
     // console.log("timeUntilPollingStart: ", timeUntilPollingStart);
     return timeUntilPollingStart;
 }
@@ -21,29 +29,29 @@ export function getTimeInMsUntilStartPolling(localDepHours: number, localDepMins
 export function getMillisecondsTilRefresh(status: TrackState['data']['status'], scheduledDepartureTime: string): number {
     switch (status) {
         case "Go":
-            return 20 ** 20;
+            return MIN_TIME_TIL_REFRESH * 200000;
         case "Changed":
             return 30000;
         case "Error":
             return 20 ** 20;
-        case "Prepare":
-            const depHours = Number(scheduledDepartureTime.slice(0, 2));
-            const depMins = Number(scheduledDepartureTime.slice(2));
-            //make a new date from dephours and depmins
-            const dd = new Date();
-            dd.setHours(depHours);
-            dd.setMinutes(depMins);
-            const depDateUTC = convertDateToUTC(dd);
+        // case "Prepare":
+        //     //date operations should only be client side.
+        //     const depHours = Number(scheduledDepartureTime.slice(0, 2));
+        //     const depMins = Number(scheduledDepartureTime.slice(2));
+        //     //make a new date from dephours and depmins
+        //     const dd = new Date();
+        //     dd.setHours(depHours);
+        //     dd.setMinutes(depMins);
 
-            const timeTilStartPolling = getTimeInMsUntilStartPolling(depDateUTC.getHours(), depDateUTC.getMinutes());
-            if (timeTilStartPolling < MILLISECONDS_BEFORE_POLLING_START) {
-                console.log("timeTilStartPolling: ", timeTilStartPolling);
-                throw new Error("TimeTilStartPolling is less than MILLISECONDS_TIL_POLLING_START while the status is prepare. This should not happen.")
-            };
-            return timeTilStartPolling;
+        //     const timeTilStartPolling = getTimeInMsUntilStartPolling(dd.getHours(), dd.getMinutes());
+        //     if (timeTilStartPolling < MILLISECONDS_BEFORE_POLLING_START) {
+        //         console.log("timeTilStartPolling: ", timeTilStartPolling);
+        //         throw new Error("TimeTilStartPolling is less than MILLISECONDS_TIL_POLLING_START while the status is prepare. This should not happen.")
+        //     };
+        //     return timeTilStartPolling;
         case "Wait":
             return 10000;
         default:
-            return 20 ** 20;
+            return MIN_TIME_TIL_REFRESH;
     }
 }

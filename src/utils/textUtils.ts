@@ -1,22 +1,33 @@
 import { Service } from "@/lib/types";
 import { convertDateToUTC } from "./timeUtils";
+import { MIN_TIME_TIL_REFRESH } from "@/lib/constants";
 
-export function getCheckingAgainText(status: Service['status'], timeRemaining: number, startTime: number) {
-    if (startTime > 10000) {
-        //add the time remaining to the current time then show the time in HH:MM
-        //timeremaining is in ms. convert to minutes and hours then add to current time
-        const d = convertDateToUTC(new Date());
-        d.setMilliseconds(d.getMilliseconds() + startTime);
-        console.log("d.getHours(): ", d.getHours(), "d.getMinutes(): ", d.getMinutes())
-        return `Checking again at ${d.getHours() < 10 ? "0" + d.getHours() : d.getHours()}:${d.getMinutes() < 10 ? "0" + d.getMinutes() : d.getMinutes()}`
+/**
+ * 
+ * @param status 
+ * @param timeRemaining 
+ * @param timeWhenPollingStarts HHMM
+ * @returns The text to display in the status card e.g. "Checking again in 5s"
+ */
+export function getCheckingAgainText(timeRemaining: number, msTilRefresh: number, status: Service['status']): string {
+    console.log("getCheckingAgainText called with timeRemaining: ", timeRemaining, " msTilRefresh: ", msTilRefresh, " status: ", status)
+    if (status == "Prepare") {
+        if (msTilRefresh <= 60000) {
+            return `Checking again in ${timeRemaining / 1000}s`
+        }
+        var d = new Date();
+        //add the ms til refresh to the current time
+        d.setMilliseconds(d.getMilliseconds() + timeRemaining);
+        console.log("getminutes: ", d.getMinutes(), " gethours: ", d.getHours())
+        return `Checking again at ${d.getHours() < 10 ? `0${d.getHours()}` : d.getHours()}:${d.getMinutes() < 10 ? `0${d.getMinutes()}` : d.getMinutes()}`
     }
-    else if (timeRemaining <= -5000) {
+    else if (timeRemaining <= -5000 && status == "Wait") {
         return 'Still checking...'
     }
-    else if ((timeRemaining <= 0) && startTime > 0) {
+    else if ((timeRemaining <= 0) && msTilRefresh > 0 && status == "Wait") {
         return 'Checking...'
     }
-    else if ((startTime <= 10000)) {
+    else if ((status == "Wait") && timeRemaining > 0) {
         return `Checking again in ${timeRemaining / 1000}s`
     }
     else {

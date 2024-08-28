@@ -13,6 +13,7 @@ export const TrackStateSchema = z.object({
     }),
     hidden: z.object({
         timeTilRefresh: z.number(),
+        timeWhenPollingStarts: z.string().length(4).optional(),
         error: z.any().optional(),
         updateKey: z.string()
     })

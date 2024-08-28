@@ -5,6 +5,7 @@ import { getTrackStateSA } from '@/app/track/actions';
 import { TrackState, Journey } from '@/lib/types';
 import { MIN_TIME_TIL_REFRESH } from '../constants';
 import { useServerAction } from 'zsa-react';
+import { getTimeInMsUntilStartPolling } from '@/utils/timeUtils';
 
 export function useTrackingState(serviceToTrack: Journey) {
     const { execute } = useServerAction(getTrackStateSA);
@@ -19,26 +20,38 @@ export function useTrackingState(serviceToTrack: Journey) {
             scheduledDepartureTime: "--",
         },
         hidden: {
-            timeTilRefresh: MIN_TIME_TIL_REFRESH,
+            timeTilRefresh: MIN_TIME_TIL_REFRESH * 20,
+            timeWhenPollingStarts: "--",
             updateKey: randomBytes(16).toString('hex')
         }
     });
     useEffect(() => {
         let timer: NodeJS.Timeout;
         const fetchData = async () => {
-            console.log("fetching data for service: ", serviceToTrack);
-            const newState = await execute({ journey: serviceToTrack });
-            console.log("newState: ", newState)
-            if (newState[0]) {
-                console.log("setting track state to: ", newState[0]);
-                setCurrentTrackingState(newState[0]);
-                if (newState[0].data.status == "Error" || newState[0].data.status == "Go") {
-                    console.log("returning due to edge cases. newState: ", newState[0]);
+            console.log("Fetchdata called. It'll next be called in ", currentTrackingState.hidden.timeTilRefresh);
+            const res = await execute({ journey: serviceToTrack });
+            console.log("res: ", res)
+            if (res[0]) {
+                let newTrackState: TrackState = res[0];
+                if (newTrackState.data.status == "Prepare") {
+                    const timeUntilStartPolling = getTimeInMsUntilStartPolling(Number(serviceToTrack.departure.time.slice(0, 2)), Number(serviceToTrack.departure.time.slice(2)));
+                    console.log("timeuntilstartpolling: ", timeUntilStartPolling);
+                    if (timeUntilStartPolling <= 0) {
+                        console.log("timeUntilStartPolling: ", timeUntilStartPolling, " was less than 0. Setting status to Wait.");
+                        newTrackState.data.status = "Wait"
+                    } else {
+                        newTrackState.hidden.timeTilRefresh = timeUntilStartPolling;
+                    }
+                }
+                console.log("setting newTrackState: ", newTrackState);
+                setCurrentTrackingState(newTrackState);
+                if (newTrackState.data.status == "Error" || newTrackState.data.status == "Go") {
+                    console.log("returning due to edge cases. newState: ", newTrackState);
                     clearInterval(timer);
                     return;
                 };
             } else {
-                console.error("ERROR FETCHING NEW_TRACK_STATE: ", newState[1].message);
+                console.error("ERROR FETCHING NEW_TRACK_STATE: ", res[1].message);
             }
         }
         fetchData();
@@ -49,7 +62,9 @@ export function useTrackingState(serviceToTrack: Journey) {
 
 
         return () => clearInterval(timer);
-    }, []);
+    }, [
+        currentTrackingState.data.status
+    ]);
 
     return currentTrackingState;
 }
