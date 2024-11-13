@@ -9,17 +9,17 @@ import { ComboBox } from "@/components/ui/combobox";
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { getServiceListCA } from "../../core-actions/main";
+import { getServiceListCA } from "../../../core-actions/main";
 import { Service } from "@/lib/types";
 import { maxWidthClassNames } from "@/lib/layout";
 import { applicationName } from "@/app-config";
 import { Input } from "@/components/ui/input";
-import DepartureCard, { CardPrim } from "../DepartureCard";
+import DepartureCard, { CardPrim } from "../../DepartureCard";
 import { Button } from "@/components/ui/button";
 import { checkTrueStationName, findStationCodeByName, findStationNameByCode } from "@/lib/destinations";
 import { findUniquelyNamedDepartures } from "@/lib/departures";
 import DeparturesComboBoxFormField from "./departuresComboBoxFormField";
-import HeaderLogoWithName from "../track/LogoWithName";
+import HeaderLogoWithName from "../../track/LogoWithName";
 import { toast } from "sonner";
 
 
@@ -164,6 +164,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
             <div className={`navArea sticky top-0 left-0 z-10 w-full pt-8 md:pt-16 pb-4  bg-zinc-900`}>
                 <div className={`${maxWidthClassNames} flex flex-col gap-8 items-center px-8 pt-8 md:px-16 md:mx-auto md:pt-0`}>
                     <HeaderLogoWithName pageTitle={`${applicationName}`} />
+                    {/* These comboboxes are not maintainable. Please use  https://headlessui.com/react/combobox */}
                     <Form {...form}>
                         <form className="w-full" onSubmit={form.handleSubmit(onSubmit)}>
                             <div className="w-full flex flex-col gap-4">

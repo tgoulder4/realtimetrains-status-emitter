@@ -19,17 +19,14 @@ export const LoginSA = unauthenticatedAction
         } = input.input;
         console.log("input", input.input)
         if (!email || !password) throw new Error("Email and password are required")
-        // console.log("calling login action with email and password")
-        // const user = await signInCA(email, password);
-        // if (!user) {
-        //     throw new Error("Invalid email or password")
-        // }
-        // console.log("user", user)
-        // await rateLimitByIp({ key: 'login', limit: 5, window: 30000 });
-        // console.log("setting session")
-        // await setSession("0");
-        //wait 2s
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        redirect('/dashboard/')
-
+        console.log("calling login action with email and password")
+        const user = await signInCA(email, password);
+        if (!user) {
+            throw new Error("Invalid email or password")
+        }
+        console.log("user", user)
+        await rateLimitByIp({ key: 'login', limit: 5, window: 30000 });
+        console.log("setting session")
+        await setSession(user.id);
+        redirect('/find')
     })

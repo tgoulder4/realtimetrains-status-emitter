@@ -29,6 +29,11 @@ datasource db {
 //   token          String
 //   tokenExpiresAt DateTime
 // }
+model MagicLinks {
+    email          String   @id @map("_id")
+    token          String
+    tokenExpiresAt DateTime
+}
 
 model ResetTokens {
     id             String   @id @default(auto()) @map("_id") @db.ObjectId
@@ -55,10 +60,11 @@ model User {
     id            String    @id @default(auto()) @map("_id") @db.ObjectId
     //   role                 Role      @default(CLIENT)
     email         String    @unique
-    emailVerified DateTime?
+    emailVerified Boolean?
     name          String
     HasAccount    Account?
-    hasSession    Session?
+    // hasSession    Session? //TO DO: LIMIT TO ONE SESSION AS SHOWN HERE
+    hasSessions   Session[]
 }
 
 model Account {

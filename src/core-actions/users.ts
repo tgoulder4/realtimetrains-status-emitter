@@ -28,7 +28,7 @@ import { applicationName } from "@/app-config";
 
 import { createTransaction } from "@/data-access/utils";
 import { AuthenticationError, EmailInUseError, LoginError } from "@/lib/errors";
-import { createVerifyEmailToken, getVerifyEmailToken, deleteVerifyEmailToken } from "@/data-access/verify-email";
+import { getVerifyEmailToken, deleteVerifyEmailToken } from "@/data-access/verify-email";
 import { sendEmail } from "./resend-core";
 import { User } from "lucia";
 
@@ -54,7 +54,7 @@ export async function deleteUserCA(
 //     return profile;
 // }
 
-export async function CAregisterUser(email: string, name: string, password?: string) {
+export async function registerUserCA(email: string, name: string, password?: string) {
     const existingUser = await getUserByEmailDA(email);
     if (existingUser) {
         throw new EmailInUseError();
@@ -148,19 +148,6 @@ export async function changePasswordCA(token: string, password: string) {
     });
 }
 
-export async function verifyEmailCA(token: string) {
-    const tokenEntry = await getVerifyEmailToken(token);
-
-    if (!tokenEntry) {
-        throw new AuthenticationError();
-    }
-
-    const userId = tokenEntry.userId;
-
-    await updateUser(userId, { emailVerified: new Date() });
-    return userId;
-}
-
 export async function confirmTokenCA(token: string) {
     const tokenEntry = await getVerifyEmailToken(token);
 
@@ -168,6 +155,7 @@ export async function confirmTokenCA(token: string) {
         throw new AuthenticationError();
     }
     await deleteVerifyEmailToken(token);
+    await updateUser(tokenEntry.userId, { emailVerified: true });
 
     return tokenEntry.userId;
 }

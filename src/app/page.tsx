@@ -1,10 +1,10 @@
-import { applicationStatus } from '@/app-config'
+
+'use server'
 import { redirect } from 'next/navigation'
-import React from 'react'
 
 type Props = {}
 
-function Page({ }: Props) {
+async function Page({ }: Props) {
   redirect('/find')
 }
 

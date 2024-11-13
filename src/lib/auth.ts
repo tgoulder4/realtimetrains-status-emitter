@@ -17,6 +17,7 @@ export const lucia = new Lucia(adapter, {
             id: attributes.UserId,
             name: attributes.name,
             email: attributes.email,
+            emailVerified: attributes.emailVerified,
             // companyIds: companies ? companies.map((c) => c.id) : [],
         };
     },
@@ -69,5 +70,6 @@ interface DatabaseUserAttributes {
     UserId: string;
     name: string;
     email: string;
+    emailVerified: boolean;
     // companyIds: string[];
 }

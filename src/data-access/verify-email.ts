@@ -2,9 +2,11 @@ import { generateRandomToken } from "@/data-access/utils";
 
 import { TOKEN_LENGTH, TOKEN_TTL } from "./resetAndVerifyLinks/lib";
 import prisma from "@/db/prisma";
-
-
-export async function createVerifyEmailToken(userId: string) {
+import { sendEmail } from "@/core-actions/resend-core";
+import { AppEmailTemplate } from "@/emails/magic-links";
+import { applicationName } from "@/app-config";
+import { upsertMagicLinkDA } from "./magic-links";
+export async function createVerifyEmailTokenDA(userId: string) {
     const token = await generateRandomToken(TOKEN_LENGTH);
     const tokenExpiresAt = new Date(Date.now() + TOKEN_TTL);
 
@@ -23,21 +25,4 @@ export async function createVerifyEmailToken(userId: string) {
         }
     })
     return token;
-}
-
-export async function getVerifyEmailToken(token: string) {
-    const existingToken = await prisma.verifyEmailTokens.findFirst({
-        where: {
-            token
-        }
-    });
-    return existingToken;
-}
-
-export async function deleteVerifyEmailToken(token: string) {
-    await prisma.verifyEmailTokens.deleteMany({
-        where: {
-            token
-        }
-    })
 }

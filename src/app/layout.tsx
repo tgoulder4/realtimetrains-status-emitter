@@ -4,9 +4,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster, toast } from 'sonner'
 import { PHProvider } from './providers'
-import { applicationStatus } from "@/app-config";
-import { redirect } from "next/navigation";
-import UnderMaintenancePage from "@/components/pages/UnderMaintenance";
 import { mainFont } from "@/lib/fonts";
 
 export const metadata: Metadata = {
@@ -22,9 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <PHProvider>
-        <body className={mainFont.className + " bg-zinc-100 font-semibold"}>
+        <body className={mainFont.className + " bg-zinc-100 font-semibold w-full"}>
           <Toaster position="top-center" />
-          {applicationStatus == "maintenance" ? <UnderMaintenancePage /> : children}
+          {children}
         </body>
       </PHProvider>
     </html>

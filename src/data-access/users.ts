@@ -1,6 +1,6 @@
 'use server'
 import crypto from "crypto";
-import { getAccountByUser } from "@/data-access/accounts";
+import { getAccountByUserId } from "@/data-access/accounts";
 import prisma from "@/db/prisma";
 import { UserSchema } from '../../prisma/generated/zod';
 import { z } from 'zod';
@@ -20,7 +20,7 @@ export async function deleteUser(userId: string) {
 
 }
 
-export async function getUser(userId: string) {
+export async function getUserById(userId: string) {
     const user = await prisma.user.findUnique({
         where: {
             id: userId,
@@ -80,7 +80,7 @@ export async function verifyPasswordDA(email: string, plainTextPassword: string)
         return false;
     }
 
-    const account = await getAccountByUser(user.id);
+    const account = await getAccountByUserId(user.id);
 
     if (!account) {
         return false;
@@ -105,15 +105,7 @@ export async function getUserByEmailDA(email: string) {
     return user;
 }
 
-export async function getMagicUserAccountByEmail(email: string) {
 
-    const user = await prisma.user.findFirst({
-        where: {
-            email,
-        },
-    });
-    return user;
-}
 
 export async function setEmailVerifiedDA(userId: string) {
     await prisma.user.update({
@@ -121,7 +113,7 @@ export async function setEmailVerifiedDA(userId: string) {
             id: userId,
         },
         data: {
-            emailVerified: new Date(),
+            emailVerified: true,
         },
     });
 }

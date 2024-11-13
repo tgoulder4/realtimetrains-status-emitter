@@ -46,7 +46,7 @@ export async function createAccount(userId: string, plainTextPassword?: string) 
     }
 }
 
-export async function getAccountByUser(userId: string) {
+export async function getAccountByUserId(userId: string) {
     const account = await prisma.account.findFirst({
         where: {
             userId

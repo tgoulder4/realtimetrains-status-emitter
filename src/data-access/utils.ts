@@ -12,6 +12,7 @@ export async function generateRandomToken(length: number) {
             }
         });
     });
+    //change it to a 6 digit number
 
     return buf.toString("hex").slice(0, length);
 }
