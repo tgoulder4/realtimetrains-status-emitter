@@ -29,13 +29,18 @@ export function useTrackingState(serviceToTrack: Journey) {
         let timer: NodeJS.Timeout;
         const fetchData = async () => {
             console.log("Fetchdata called. It'll next be called in ", currentTrackingState.hidden.timeTilRefresh);
+            //run getTrackStateSA with journey serviceToTrack
             const res = await execute({ journey: serviceToTrack });
             console.log("res: ", res)
+
+            //if res[0] is not null, set newTrackState to res[0]
             if (res[0]) {
                 let newTrackState: TrackState = res[0];
+                //if newTrackState.status is prepare, calculate time until polling starts
                 if (newTrackState.data.status == "Prepare") {
                     const timeUntilStartPolling = getTimeInMsUntilStartPolling(Number(serviceToTrack.departure.time.slice(0, 2)), Number(serviceToTrack.departure.time.slice(2)));
                     console.log("timeuntilstartpolling: ", timeUntilStartPolling);
+                    //if timeUntilStartPolling is less than 0, set status to Wait
                     if (timeUntilStartPolling <= 0) {
                         console.log("timeUntilStartPolling: ", timeUntilStartPolling, " was less than 0. Setting status to Wait.");
                         newTrackState.data.status = "Wait"
@@ -44,6 +49,7 @@ export function useTrackingState(serviceToTrack: Journey) {
                     }
                 }
                 console.log("setting newTrackState: ", newTrackState);
+                //set currentTrackingState to newTrackState
                 setCurrentTrackingState(newTrackState);
                 if (newTrackState.data.status == "Error" || newTrackState.data.status == "Go") {
                     console.log("returning due to edge cases. newState: ", newTrackState);

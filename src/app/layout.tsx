@@ -7,7 +7,7 @@ import { PHProvider } from './providers'
 import { applicationStatus } from "@/app-config";
 import { redirect } from "next/navigation";
 import UnderMaintenancePage from "@/components/pages/UnderMaintenance";
-const inter = Inter({ subsets: ["latin"] });
+import { mainFont } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   title: "Beat The Euston Rush",
@@ -22,8 +22,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <PHProvider>
-        <body className={inter.className + " bg-zinc-100 font-semibold"}>
-          <Toaster className={inter.className} position="top-center" />
+        <body className={mainFont.className + " bg-zinc-100 font-semibold"}>
+          <Toaster position="top-center" />
           {applicationStatus == "maintenance" ? <UnderMaintenancePage /> : children}
         </body>
       </PHProvider>

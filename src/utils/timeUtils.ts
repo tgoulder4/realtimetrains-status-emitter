@@ -3,7 +3,7 @@ import { TrackState } from '@/lib/types';
 export function convertDateToUTC(date: Date) {
     const UTCDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
     console.log("UTCDate: ", UTCDate.getHours() < 10 ? "0" + UTCDate.getHours() : UTCDate.getHours() + ":" + (UTCDate.getMinutes() < 10 ? "0" + UTCDate.getMinutes() : UTCDate.getMinutes()));
-    return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+    return UTCDate
 }
 export function getTimeInMsUntilStartPolling(localDepHours: number, localDepMins: number) {
     console.log("getTimeInMsUntilStartPolling called with localDepHours: ", localDepHours, "localDepMins: ", localDepMins);
