@@ -52,7 +52,7 @@ model VerifyEmailTokens {
 model Session {
     id        String   @id @map("_id")
     user      User?    @relation(fields: [userId], references: [id])
-    userId    String   @unique @db.ObjectId
+    userId    String   @db.ObjectId //ADD @UNIQUE TO THIS to limit to one session per user
     expiresAt DateTime
 }
 

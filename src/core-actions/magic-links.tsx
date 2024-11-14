@@ -10,7 +10,7 @@ import {
     setEmailVerifiedDA,
 } from "@/data-access/users";
 
-import { NotFoundError } from "@/lib/errors";
+import { NotFoundError, TokenExpiredError } from "@/lib/errors";
 import { sendEmail } from "./resend-core";
 import { AppEmailTemplate } from "@/emails/magic-links";
 import { createVerifyEmailTokenDA } from "@/data-access/verify-email";
@@ -36,7 +36,7 @@ export async function LoginWithMagicLinkCA(token: string) {
     }
 
     if (magicLinkInfo.tokenExpiresAt! < new Date()) {
-        // throw new TokenExpiredError();
+        throw new TokenExpiredError();
     }
 
     const existingUser = await getUserByEmailDA(magicLinkInfo.email);

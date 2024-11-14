@@ -14,8 +14,8 @@ export const getServiceListCA = async (dest?: string): Promise<Service[]> => {
     try {
         let res: Response;
         let url: any;
-        console.log("env.nodeEnv: ", env.NODE_ENV, " env.prod_override: ", env.prod_override)
-        if (env.NODE_ENV === "production" || Boolean(env.prod_override)) { //DO NOT CHANGE THIS LINE
+        console.log("env.nodeEnv: ", env.NODE_ENV, " env.prod_override: ", Boolean(env.prod_override_true_if_nonempty))
+        if (env.NODE_ENV === "production" || Boolean(env.prod_override_true_if_nonempty)) { //DO NOT CHANGE THIS LINE
             url = 'https://proxy.scrapeops.io/v1/?' + new URLSearchParams({
                 api_key: env.SCRAPEOPS_API_KEY,
                 url: `https://www.realtimetrains.co.uk/search/simple/gb-nr:EUS${dest ? `/to/gb-nr:${dest}` : ''}`

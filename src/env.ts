@@ -5,7 +5,7 @@ export const env = createEnv({
     server: {
         NODE_ENV: z.string().optional(),
         SCRAPEOPS_API_KEY: z.string(),
-        prod_override: z.string().optional(),
+        prod_override_true_if_nonempty: z.string().optional(),
         EMAIL_FROM: z.string(),
         EMAIL_SERVER_PASSWORD: z.string().min(1),
         APP_URL: z.string().min(1),
@@ -17,7 +17,7 @@ export const env = createEnv({
     runtimeEnv: {
         NODE_ENV: process.env.NODE_ENV,
         SCRAPEOPS_API_KEY: process.env.SCRAPEOPS_API_KEY,
-        prod_override: process.env.prod_override,
+        prod_override_true_if_nonempty: process.env.prod_override_true_if_nonempty,
         EMAIL_FROM: process.env.EMAIL_FROM,
         EMAIL_SERVER_PASSWORD: process.env.EMAIL_SERVER_PASSWORD,
         NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,

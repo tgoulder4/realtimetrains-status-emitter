@@ -1,6 +1,5 @@
 'use server'
 import { LoginWithMagicLinkCA } from '@/core-actions/magic-links'
-import { confirmTokenCA } from '@/core-actions/users'
 import { rateLimitByIp } from '@/lib/limiter'
 import { setSession } from '@/lib/session'
 import { redirect } from 'next/navigation'
@@ -23,7 +22,7 @@ async function MagicLogin({ params }: Props) {
     console.error("ML ERROR", e)
     redirect('/404?err=' + (e as string));
   }
-  redirect('/find&emailVerified=true');
+  redirect('/find?emailVerified=true');
 }
 
 export default MagicLogin

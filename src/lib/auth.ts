@@ -32,6 +32,7 @@ export const validateRequest = async (): Promise<
         return {
             user: null,
             session: null,
+
         };
     }
 
@@ -63,7 +64,7 @@ declare module "lucia" {
     interface Register {
         Lucia: typeof lucia;
         DatabaseUserAttributes: DatabaseUserAttributes;
-        // UserId: String; UNCOMMENT THIS IF IT DOESNT WORK
+        UserId: String;
     }
 }
 interface DatabaseUserAttributes {

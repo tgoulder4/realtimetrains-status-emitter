@@ -28,7 +28,6 @@ import { applicationName } from "@/app-config";
 
 import { createTransaction } from "@/data-access/utils";
 import { AuthenticationError, EmailInUseError, LoginError } from "@/lib/errors";
-import { getVerifyEmailToken, deleteVerifyEmailToken } from "@/data-access/verify-email";
 import { sendEmail } from "./resend-core";
 import { User } from "lucia";
 
@@ -148,14 +147,14 @@ export async function changePasswordCA(token: string, password: string) {
     });
 }
 
-export async function confirmTokenCA(token: string) {
-    const tokenEntry = await getVerifyEmailToken(token);
+// export async function confirmTokenCA(token: string) {
+//     const tokenEntry = await getVerifyEmailToken(token);
 
-    if (!tokenEntry) {
-        throw new AuthenticationError();
-    }
-    await deleteVerifyEmailToken(token);
-    await updateUser(tokenEntry.userId, { emailVerified: true });
+//     if (!tokenEntry) {
+//         throw new AuthenticationError();
+//     }
+//     await deleteVerifyEmailToken(token);
+//     await updateUser(tokenEntry.userId, { emailVerified: true });
 
-    return tokenEntry.userId;
-}
+//     return tokenEntry.userId;
+// }

@@ -25,7 +25,6 @@ export const RegisterSA = unauthenticatedAction
         //verify
         await rateLimitByIp({ key: 'login', limit: 5, window: 30000 });
         const user = await registerUserCA(email, name, password); //makes a new user
-        const token = await upsertMagicLinkDA(email);
         await setSession(user.id);
         redirect(`/sign-up/verifyEmail?userId=${user.id}`)
 
