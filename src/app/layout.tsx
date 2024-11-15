@@ -1,11 +1,9 @@
 
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-import { Toaster, toast } from 'sonner'
+import { Toaster, } from 'sonner'
 import { PHProvider } from './providers'
 import { mainFont } from "@/lib/fonts";
-import { DialogProvider } from "@/contexts/DialogContext";
 
 export const metadata: Metadata = {
   title: "Beat The Euston Rush",
@@ -20,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <PHProvider>
-        <body className={mainFont.className + "  bg-zinc-100 dark:bg-[#111111] font-semibold w-full h-auto"}>
+        <body className={mainFont.className + " bg-[#111111] font-semibold w-full h-auto"}>
           <Toaster position="top-center" />
           {children}
         </body>

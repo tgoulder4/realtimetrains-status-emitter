@@ -58,7 +58,7 @@ export default function StationSelector({
                         aria-expanded={open}
                         aria-readonly={readOnly}
                         className={cn(
-                            "w-full justify-between bg-[#222222] border-none text-left rounded-lg font-normal",
+                            "w-full justify-between bg-[#222222] border-none text-left rounded-none font-normal",
                             !value && allowClear && "border-2 border-blue-500",
                             readOnly && "cursor-default"
                         )}

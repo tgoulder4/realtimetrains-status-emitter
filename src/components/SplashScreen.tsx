@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { Train } from 'lucide-react'
 
 export function SplashScreen() {
-    const [isVisible, setIsVisible] = useState(true)
+    const [isVisible, setIsVisible] = useState(false)
 
     useEffect(() => {
         const timer = setTimeout(() => {

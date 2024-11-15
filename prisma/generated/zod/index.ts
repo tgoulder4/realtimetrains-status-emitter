@@ -18,7 +18,7 @@ export const VerifyEmailTokensScalarFieldEnumSchema = z.enum(['id','userId','tok
 
 export const SessionScalarFieldEnumSchema = z.enum(['id','userId','expiresAt']);
 
-export const UserScalarFieldEnumSchema = z.enum(['id','email','emailVerified','name']);
+export const UserScalarFieldEnumSchema = z.enum(['id','email','emailVerified','name','role','credits']);
 
 export const AccountScalarFieldEnumSchema = z.enum(['id','userId','password','salt']);
 
@@ -27,6 +27,11 @@ export const AppConfigScalarFieldEnumSchema = z.enum(['id','chargePerAdditional'
 export const SortOrderSchema = z.enum(['asc','desc']);
 
 export const QueryModeSchema = z.enum(['default','insensitive']);
+
+export const RoleSchema = z.enum(['USER','ADMIN']);
+
+export type RoleType = `${z.infer<typeof RoleSchema>}`
+
 /////////////////////////////////////////
 // MODELS
 /////////////////////////////////////////
@@ -86,10 +91,12 @@ export type Session = z.infer<typeof SessionSchema>
 /////////////////////////////////////////
 
 export const UserSchema = z.object({
+  role: RoleSchema,
   id: z.string(),
   email: z.string(),
   emailVerified: z.boolean().nullable(),
   name: z.string(),
+  credits: z.number(),
 })
 
 export type User = z.infer<typeof UserSchema>
@@ -211,6 +218,8 @@ export const UserSelectSchema: z.ZodType<Prisma.UserSelect> = z.object({
   email: z.boolean().optional(),
   emailVerified: z.boolean().optional(),
   name: z.boolean().optional(),
+  role: z.boolean().optional(),
+  credits: z.boolean().optional(),
   HasAccount: z.union([z.boolean(),z.lazy(() => AccountArgsSchema)]).optional(),
   hasSessions: z.union([z.boolean(),z.lazy(() => SessionArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => UserCountOutputTypeArgsSchema)]).optional(),
@@ -464,6 +473,8 @@ export const UserWhereInputSchema: z.ZodType<Prisma.UserWhereInput> = z.object({
   email: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   emailVerified: z.union([ z.lazy(() => BoolNullableFilterSchema),z.boolean() ]).optional().nullable(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  role: z.union([ z.lazy(() => EnumRoleFilterSchema),z.lazy(() => RoleSchema) ]).optional(),
+  credits: z.union([ z.lazy(() => FloatFilterSchema),z.number() ]).optional(),
   HasAccount: z.union([ z.lazy(() => AccountNullableRelationFilterSchema),z.lazy(() => AccountWhereInputSchema) ]).optional().nullable(),
   hasSessions: z.lazy(() => SessionListRelationFilterSchema).optional()
 }).strict();
@@ -473,6 +484,8 @@ export const UserOrderByWithRelationInputSchema: z.ZodType<Prisma.UserOrderByWit
   email: z.lazy(() => SortOrderSchema).optional(),
   emailVerified: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
+  role: z.lazy(() => SortOrderSchema).optional(),
+  credits: z.lazy(() => SortOrderSchema).optional(),
   HasAccount: z.lazy(() => AccountOrderByWithRelationInputSchema).optional(),
   hasSessions: z.lazy(() => SessionOrderByRelationAggregateInputSchema).optional()
 }).strict();
@@ -497,6 +510,8 @@ export const UserWhereUniqueInputSchema: z.ZodType<Prisma.UserWhereUniqueInput> 
   NOT: z.union([ z.lazy(() => UserWhereInputSchema),z.lazy(() => UserWhereInputSchema).array() ]).optional(),
   emailVerified: z.union([ z.lazy(() => BoolNullableFilterSchema),z.boolean() ]).optional().nullable(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  role: z.union([ z.lazy(() => EnumRoleFilterSchema),z.lazy(() => RoleSchema) ]).optional(),
+  credits: z.union([ z.lazy(() => FloatFilterSchema),z.number() ]).optional(),
   HasAccount: z.union([ z.lazy(() => AccountNullableRelationFilterSchema),z.lazy(() => AccountWhereInputSchema) ]).optional().nullable(),
   hasSessions: z.lazy(() => SessionListRelationFilterSchema).optional()
 }).strict());
@@ -506,9 +521,13 @@ export const UserOrderByWithAggregationInputSchema: z.ZodType<Prisma.UserOrderBy
   email: z.lazy(() => SortOrderSchema).optional(),
   emailVerified: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
+  role: z.lazy(() => SortOrderSchema).optional(),
+  credits: z.lazy(() => SortOrderSchema).optional(),
   _count: z.lazy(() => UserCountOrderByAggregateInputSchema).optional(),
+  _avg: z.lazy(() => UserAvgOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => UserMaxOrderByAggregateInputSchema).optional(),
-  _min: z.lazy(() => UserMinOrderByAggregateInputSchema).optional()
+  _min: z.lazy(() => UserMinOrderByAggregateInputSchema).optional(),
+  _sum: z.lazy(() => UserSumOrderByAggregateInputSchema).optional()
 }).strict();
 
 export const UserScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.UserScalarWhereWithAggregatesInput> = z.object({
@@ -519,6 +538,8 @@ export const UserScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.UserScal
   email: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   emailVerified: z.union([ z.lazy(() => BoolNullableWithAggregatesFilterSchema),z.boolean() ]).optional().nullable(),
   name: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  role: z.union([ z.lazy(() => EnumRoleWithAggregatesFilterSchema),z.lazy(() => RoleSchema) ]).optional(),
+  credits: z.union([ z.lazy(() => FloatWithAggregatesFilterSchema),z.number() ]).optional(),
 }).strict();
 
 export const AccountWhereInputSchema: z.ZodType<Prisma.AccountWhereInput> = z.object({
@@ -805,6 +826,8 @@ export const UserCreateInputSchema: z.ZodType<Prisma.UserCreateInput> = z.object
   email: z.string(),
   emailVerified: z.boolean().optional().nullable(),
   name: z.string(),
+  role: z.lazy(() => RoleSchema).optional(),
+  credits: z.number().optional(),
   HasAccount: z.lazy(() => AccountCreateNestedOneWithoutUserInputSchema).optional(),
   hasSessions: z.lazy(() => SessionCreateNestedManyWithoutUserInputSchema).optional()
 }).strict();
@@ -814,6 +837,8 @@ export const UserUncheckedCreateInputSchema: z.ZodType<Prisma.UserUncheckedCreat
   email: z.string(),
   emailVerified: z.boolean().optional().nullable(),
   name: z.string(),
+  role: z.lazy(() => RoleSchema).optional(),
+  credits: z.number().optional(),
   HasAccount: z.lazy(() => AccountUncheckedCreateNestedOneWithoutUserInputSchema).optional(),
   hasSessions: z.lazy(() => SessionUncheckedCreateNestedManyWithoutUserInputSchema).optional()
 }).strict();
@@ -822,6 +847,8 @@ export const UserUpdateInputSchema: z.ZodType<Prisma.UserUpdateInput> = z.object
   email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   emailVerified: z.union([ z.boolean(),z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  role: z.union([ z.lazy(() => RoleSchema),z.lazy(() => EnumRoleFieldUpdateOperationsInputSchema) ]).optional(),
+  credits: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
   HasAccount: z.lazy(() => AccountUpdateOneWithoutUserNestedInputSchema).optional(),
   hasSessions: z.lazy(() => SessionUpdateManyWithoutUserNestedInputSchema).optional()
 }).strict();
@@ -830,6 +857,8 @@ export const UserUncheckedUpdateInputSchema: z.ZodType<Prisma.UserUncheckedUpdat
   email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   emailVerified: z.union([ z.boolean(),z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  role: z.union([ z.lazy(() => RoleSchema),z.lazy(() => EnumRoleFieldUpdateOperationsInputSchema) ]).optional(),
+  credits: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
   HasAccount: z.lazy(() => AccountUncheckedUpdateOneWithoutUserNestedInputSchema).optional(),
   hasSessions: z.lazy(() => SessionUncheckedUpdateManyWithoutUserNestedInputSchema).optional()
 }).strict();
@@ -838,19 +867,25 @@ export const UserCreateManyInputSchema: z.ZodType<Prisma.UserCreateManyInput> = 
   id: z.string().optional(),
   email: z.string(),
   emailVerified: z.boolean().optional().nullable(),
-  name: z.string()
+  name: z.string(),
+  role: z.lazy(() => RoleSchema).optional(),
+  credits: z.number().optional()
 }).strict();
 
 export const UserUpdateManyMutationInputSchema: z.ZodType<Prisma.UserUpdateManyMutationInput> = z.object({
   email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   emailVerified: z.union([ z.boolean(),z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  role: z.union([ z.lazy(() => RoleSchema),z.lazy(() => EnumRoleFieldUpdateOperationsInputSchema) ]).optional(),
+  credits: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const UserUncheckedUpdateManyInputSchema: z.ZodType<Prisma.UserUncheckedUpdateManyInput> = z.object({
   email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   emailVerified: z.union([ z.boolean(),z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  role: z.union([ z.lazy(() => RoleSchema),z.lazy(() => EnumRoleFieldUpdateOperationsInputSchema) ]).optional(),
+  credits: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const AccountCreateInputSchema: z.ZodType<Prisma.AccountCreateInput> = z.object({
@@ -1089,6 +1124,24 @@ export const BoolNullableFilterSchema: z.ZodType<Prisma.BoolNullableFilter> = z.
   isSet: z.boolean().optional()
 }).strict();
 
+export const EnumRoleFilterSchema: z.ZodType<Prisma.EnumRoleFilter> = z.object({
+  equals: z.lazy(() => RoleSchema).optional(),
+  in: z.lazy(() => RoleSchema).array().optional(),
+  notIn: z.lazy(() => RoleSchema).array().optional(),
+  not: z.union([ z.lazy(() => RoleSchema),z.lazy(() => NestedEnumRoleFilterSchema) ]).optional(),
+}).strict();
+
+export const FloatFilterSchema: z.ZodType<Prisma.FloatFilter> = z.object({
+  equals: z.number().optional(),
+  in: z.number().array().optional(),
+  notIn: z.number().array().optional(),
+  lt: z.number().optional(),
+  lte: z.number().optional(),
+  gt: z.number().optional(),
+  gte: z.number().optional(),
+  not: z.union([ z.number(),z.lazy(() => NestedFloatFilterSchema) ]).optional(),
+}).strict();
+
 export const AccountNullableRelationFilterSchema: z.ZodType<Prisma.AccountNullableRelationFilter> = z.object({
   is: z.lazy(() => AccountWhereInputSchema).optional().nullable(),
   isNot: z.lazy(() => AccountWhereInputSchema).optional().nullable()
@@ -1108,21 +1161,35 @@ export const UserCountOrderByAggregateInputSchema: z.ZodType<Prisma.UserCountOrd
   id: z.lazy(() => SortOrderSchema).optional(),
   email: z.lazy(() => SortOrderSchema).optional(),
   emailVerified: z.lazy(() => SortOrderSchema).optional(),
-  name: z.lazy(() => SortOrderSchema).optional()
+  name: z.lazy(() => SortOrderSchema).optional(),
+  role: z.lazy(() => SortOrderSchema).optional(),
+  credits: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const UserAvgOrderByAggregateInputSchema: z.ZodType<Prisma.UserAvgOrderByAggregateInput> = z.object({
+  credits: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const UserMaxOrderByAggregateInputSchema: z.ZodType<Prisma.UserMaxOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   email: z.lazy(() => SortOrderSchema).optional(),
   emailVerified: z.lazy(() => SortOrderSchema).optional(),
-  name: z.lazy(() => SortOrderSchema).optional()
+  name: z.lazy(() => SortOrderSchema).optional(),
+  role: z.lazy(() => SortOrderSchema).optional(),
+  credits: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const UserMinOrderByAggregateInputSchema: z.ZodType<Prisma.UserMinOrderByAggregateInput> = z.object({
   id: z.lazy(() => SortOrderSchema).optional(),
   email: z.lazy(() => SortOrderSchema).optional(),
   emailVerified: z.lazy(() => SortOrderSchema).optional(),
-  name: z.lazy(() => SortOrderSchema).optional()
+  name: z.lazy(() => SortOrderSchema).optional(),
+  role: z.lazy(() => SortOrderSchema).optional(),
+  credits: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const UserSumOrderByAggregateInputSchema: z.ZodType<Prisma.UserSumOrderByAggregateInput> = z.object({
+  credits: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const BoolNullableWithAggregatesFilterSchema: z.ZodType<Prisma.BoolNullableWithAggregatesFilter> = z.object({
@@ -1132,6 +1199,32 @@ export const BoolNullableWithAggregatesFilterSchema: z.ZodType<Prisma.BoolNullab
   _min: z.lazy(() => NestedBoolNullableFilterSchema).optional(),
   _max: z.lazy(() => NestedBoolNullableFilterSchema).optional(),
   isSet: z.boolean().optional()
+}).strict();
+
+export const EnumRoleWithAggregatesFilterSchema: z.ZodType<Prisma.EnumRoleWithAggregatesFilter> = z.object({
+  equals: z.lazy(() => RoleSchema).optional(),
+  in: z.lazy(() => RoleSchema).array().optional(),
+  notIn: z.lazy(() => RoleSchema).array().optional(),
+  not: z.union([ z.lazy(() => RoleSchema),z.lazy(() => NestedEnumRoleWithAggregatesFilterSchema) ]).optional(),
+  _count: z.lazy(() => NestedIntFilterSchema).optional(),
+  _min: z.lazy(() => NestedEnumRoleFilterSchema).optional(),
+  _max: z.lazy(() => NestedEnumRoleFilterSchema).optional()
+}).strict();
+
+export const FloatWithAggregatesFilterSchema: z.ZodType<Prisma.FloatWithAggregatesFilter> = z.object({
+  equals: z.number().optional(),
+  in: z.number().array().optional(),
+  notIn: z.number().array().optional(),
+  lt: z.number().optional(),
+  lte: z.number().optional(),
+  gt: z.number().optional(),
+  gte: z.number().optional(),
+  not: z.union([ z.number(),z.lazy(() => NestedFloatWithAggregatesFilterSchema) ]).optional(),
+  _count: z.lazy(() => NestedIntFilterSchema).optional(),
+  _avg: z.lazy(() => NestedFloatFilterSchema).optional(),
+  _sum: z.lazy(() => NestedFloatFilterSchema).optional(),
+  _min: z.lazy(() => NestedFloatFilterSchema).optional(),
+  _max: z.lazy(() => NestedFloatFilterSchema).optional()
 }).strict();
 
 export const StringNullableFilterSchema: z.ZodType<Prisma.StringNullableFilter> = z.object({
@@ -1190,17 +1283,6 @@ export const StringNullableWithAggregatesFilterSchema: z.ZodType<Prisma.StringNu
   isSet: z.boolean().optional()
 }).strict();
 
-export const FloatFilterSchema: z.ZodType<Prisma.FloatFilter> = z.object({
-  equals: z.number().optional(),
-  in: z.number().array().optional(),
-  notIn: z.number().array().optional(),
-  lt: z.number().optional(),
-  lte: z.number().optional(),
-  gt: z.number().optional(),
-  gte: z.number().optional(),
-  not: z.union([ z.number(),z.lazy(() => NestedFloatFilterSchema) ]).optional(),
-}).strict();
-
 export const IntFilterSchema: z.ZodType<Prisma.IntFilter> = z.object({
   equals: z.number().optional(),
   in: z.number().array().optional(),
@@ -1243,22 +1325,6 @@ export const AppConfigSumOrderByAggregateInputSchema: z.ZodType<Prisma.AppConfig
   chargePerAdditional: z.lazy(() => SortOrderSchema).optional(),
   maxCharge: z.lazy(() => SortOrderSchema).optional(),
   thresholdPlatformViews: z.lazy(() => SortOrderSchema).optional()
-}).strict();
-
-export const FloatWithAggregatesFilterSchema: z.ZodType<Prisma.FloatWithAggregatesFilter> = z.object({
-  equals: z.number().optional(),
-  in: z.number().array().optional(),
-  notIn: z.number().array().optional(),
-  lt: z.number().optional(),
-  lte: z.number().optional(),
-  gt: z.number().optional(),
-  gte: z.number().optional(),
-  not: z.union([ z.number(),z.lazy(() => NestedFloatWithAggregatesFilterSchema) ]).optional(),
-  _count: z.lazy(() => NestedIntFilterSchema).optional(),
-  _avg: z.lazy(() => NestedFloatFilterSchema).optional(),
-  _sum: z.lazy(() => NestedFloatFilterSchema).optional(),
-  _min: z.lazy(() => NestedFloatFilterSchema).optional(),
-  _max: z.lazy(() => NestedFloatFilterSchema).optional()
 }).strict();
 
 export const IntWithAggregatesFilterSchema: z.ZodType<Prisma.IntWithAggregatesFilter> = z.object({
@@ -1332,6 +1398,18 @@ export const NullableBoolFieldUpdateOperationsInputSchema: z.ZodType<Prisma.Null
   unset: z.boolean().optional()
 }).strict();
 
+export const EnumRoleFieldUpdateOperationsInputSchema: z.ZodType<Prisma.EnumRoleFieldUpdateOperationsInput> = z.object({
+  set: z.lazy(() => RoleSchema).optional()
+}).strict();
+
+export const FloatFieldUpdateOperationsInputSchema: z.ZodType<Prisma.FloatFieldUpdateOperationsInput> = z.object({
+  set: z.number().optional(),
+  increment: z.number().optional(),
+  decrement: z.number().optional(),
+  multiply: z.number().optional(),
+  divide: z.number().optional()
+}).strict();
+
 export const AccountUpdateOneWithoutUserNestedInputSchema: z.ZodType<Prisma.AccountUpdateOneWithoutUserNestedInput> = z.object({
   create: z.union([ z.lazy(() => AccountCreateWithoutUserInputSchema),z.lazy(() => AccountUncheckedCreateWithoutUserInputSchema) ]).optional(),
   connectOrCreate: z.lazy(() => AccountCreateOrConnectWithoutUserInputSchema).optional(),
@@ -1399,14 +1477,6 @@ export const UserUpdateOneWithoutHasAccountNestedInputSchema: z.ZodType<Prisma.U
   delete: z.union([ z.boolean(),z.lazy(() => UserWhereInputSchema) ]).optional(),
   connect: z.lazy(() => UserWhereUniqueInputSchema).optional(),
   update: z.union([ z.lazy(() => UserUpdateToOneWithWhereWithoutHasAccountInputSchema),z.lazy(() => UserUpdateWithoutHasAccountInputSchema),z.lazy(() => UserUncheckedUpdateWithoutHasAccountInputSchema) ]).optional(),
-}).strict();
-
-export const FloatFieldUpdateOperationsInputSchema: z.ZodType<Prisma.FloatFieldUpdateOperationsInput> = z.object({
-  set: z.number().optional(),
-  increment: z.number().optional(),
-  decrement: z.number().optional(),
-  multiply: z.number().optional(),
-  divide: z.number().optional()
 }).strict();
 
 export const IntFieldUpdateOperationsInputSchema: z.ZodType<Prisma.IntFieldUpdateOperationsInput> = z.object({
@@ -1490,6 +1560,24 @@ export const NestedBoolNullableFilterSchema: z.ZodType<Prisma.NestedBoolNullable
   isSet: z.boolean().optional()
 }).strict();
 
+export const NestedEnumRoleFilterSchema: z.ZodType<Prisma.NestedEnumRoleFilter> = z.object({
+  equals: z.lazy(() => RoleSchema).optional(),
+  in: z.lazy(() => RoleSchema).array().optional(),
+  notIn: z.lazy(() => RoleSchema).array().optional(),
+  not: z.union([ z.lazy(() => RoleSchema),z.lazy(() => NestedEnumRoleFilterSchema) ]).optional(),
+}).strict();
+
+export const NestedFloatFilterSchema: z.ZodType<Prisma.NestedFloatFilter> = z.object({
+  equals: z.number().optional(),
+  in: z.number().array().optional(),
+  notIn: z.number().array().optional(),
+  lt: z.number().optional(),
+  lte: z.number().optional(),
+  gt: z.number().optional(),
+  gte: z.number().optional(),
+  not: z.union([ z.number(),z.lazy(() => NestedFloatFilterSchema) ]).optional(),
+}).strict();
+
 export const NestedBoolNullableWithAggregatesFilterSchema: z.ZodType<Prisma.NestedBoolNullableWithAggregatesFilter> = z.object({
   equals: z.boolean().optional().nullable(),
   not: z.union([ z.boolean(),z.lazy(() => NestedBoolNullableWithAggregatesFilterSchema) ]).optional().nullable(),
@@ -1509,6 +1597,32 @@ export const NestedIntNullableFilterSchema: z.ZodType<Prisma.NestedIntNullableFi
   gte: z.number().optional(),
   not: z.union([ z.number(),z.lazy(() => NestedIntNullableFilterSchema) ]).optional().nullable(),
   isSet: z.boolean().optional()
+}).strict();
+
+export const NestedEnumRoleWithAggregatesFilterSchema: z.ZodType<Prisma.NestedEnumRoleWithAggregatesFilter> = z.object({
+  equals: z.lazy(() => RoleSchema).optional(),
+  in: z.lazy(() => RoleSchema).array().optional(),
+  notIn: z.lazy(() => RoleSchema).array().optional(),
+  not: z.union([ z.lazy(() => RoleSchema),z.lazy(() => NestedEnumRoleWithAggregatesFilterSchema) ]).optional(),
+  _count: z.lazy(() => NestedIntFilterSchema).optional(),
+  _min: z.lazy(() => NestedEnumRoleFilterSchema).optional(),
+  _max: z.lazy(() => NestedEnumRoleFilterSchema).optional()
+}).strict();
+
+export const NestedFloatWithAggregatesFilterSchema: z.ZodType<Prisma.NestedFloatWithAggregatesFilter> = z.object({
+  equals: z.number().optional(),
+  in: z.number().array().optional(),
+  notIn: z.number().array().optional(),
+  lt: z.number().optional(),
+  lte: z.number().optional(),
+  gt: z.number().optional(),
+  gte: z.number().optional(),
+  not: z.union([ z.number(),z.lazy(() => NestedFloatWithAggregatesFilterSchema) ]).optional(),
+  _count: z.lazy(() => NestedIntFilterSchema).optional(),
+  _avg: z.lazy(() => NestedFloatFilterSchema).optional(),
+  _sum: z.lazy(() => NestedFloatFilterSchema).optional(),
+  _min: z.lazy(() => NestedFloatFilterSchema).optional(),
+  _max: z.lazy(() => NestedFloatFilterSchema).optional()
 }).strict();
 
 export const NestedStringNullableFilterSchema: z.ZodType<Prisma.NestedStringNullableFilter> = z.object({
@@ -1544,33 +1658,6 @@ export const NestedStringNullableWithAggregatesFilterSchema: z.ZodType<Prisma.Ne
   isSet: z.boolean().optional()
 }).strict();
 
-export const NestedFloatFilterSchema: z.ZodType<Prisma.NestedFloatFilter> = z.object({
-  equals: z.number().optional(),
-  in: z.number().array().optional(),
-  notIn: z.number().array().optional(),
-  lt: z.number().optional(),
-  lte: z.number().optional(),
-  gt: z.number().optional(),
-  gte: z.number().optional(),
-  not: z.union([ z.number(),z.lazy(() => NestedFloatFilterSchema) ]).optional(),
-}).strict();
-
-export const NestedFloatWithAggregatesFilterSchema: z.ZodType<Prisma.NestedFloatWithAggregatesFilter> = z.object({
-  equals: z.number().optional(),
-  in: z.number().array().optional(),
-  notIn: z.number().array().optional(),
-  lt: z.number().optional(),
-  lte: z.number().optional(),
-  gt: z.number().optional(),
-  gte: z.number().optional(),
-  not: z.union([ z.number(),z.lazy(() => NestedFloatWithAggregatesFilterSchema) ]).optional(),
-  _count: z.lazy(() => NestedIntFilterSchema).optional(),
-  _avg: z.lazy(() => NestedFloatFilterSchema).optional(),
-  _sum: z.lazy(() => NestedFloatFilterSchema).optional(),
-  _min: z.lazy(() => NestedFloatFilterSchema).optional(),
-  _max: z.lazy(() => NestedFloatFilterSchema).optional()
-}).strict();
-
 export const NestedIntWithAggregatesFilterSchema: z.ZodType<Prisma.NestedIntWithAggregatesFilter> = z.object({
   equals: z.number().optional(),
   in: z.number().array().optional(),
@@ -1592,6 +1679,8 @@ export const UserCreateWithoutHasSessionsInputSchema: z.ZodType<Prisma.UserCreat
   email: z.string(),
   emailVerified: z.boolean().optional().nullable(),
   name: z.string(),
+  role: z.lazy(() => RoleSchema).optional(),
+  credits: z.number().optional(),
   HasAccount: z.lazy(() => AccountCreateNestedOneWithoutUserInputSchema).optional()
 }).strict();
 
@@ -1600,6 +1689,8 @@ export const UserUncheckedCreateWithoutHasSessionsInputSchema: z.ZodType<Prisma.
   email: z.string(),
   emailVerified: z.boolean().optional().nullable(),
   name: z.string(),
+  role: z.lazy(() => RoleSchema).optional(),
+  credits: z.number().optional(),
   HasAccount: z.lazy(() => AccountUncheckedCreateNestedOneWithoutUserInputSchema).optional()
 }).strict();
 
@@ -1623,6 +1714,8 @@ export const UserUpdateWithoutHasSessionsInputSchema: z.ZodType<Prisma.UserUpdat
   email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   emailVerified: z.union([ z.boolean(),z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  role: z.union([ z.lazy(() => RoleSchema),z.lazy(() => EnumRoleFieldUpdateOperationsInputSchema) ]).optional(),
+  credits: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
   HasAccount: z.lazy(() => AccountUpdateOneWithoutUserNestedInputSchema).optional()
 }).strict();
 
@@ -1630,6 +1723,8 @@ export const UserUncheckedUpdateWithoutHasSessionsInputSchema: z.ZodType<Prisma.
   email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   emailVerified: z.union([ z.boolean(),z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  role: z.union([ z.lazy(() => RoleSchema),z.lazy(() => EnumRoleFieldUpdateOperationsInputSchema) ]).optional(),
+  credits: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
   HasAccount: z.lazy(() => AccountUncheckedUpdateOneWithoutUserNestedInputSchema).optional()
 }).strict();
 
@@ -1720,6 +1815,8 @@ export const UserCreateWithoutHasAccountInputSchema: z.ZodType<Prisma.UserCreate
   email: z.string(),
   emailVerified: z.boolean().optional().nullable(),
   name: z.string(),
+  role: z.lazy(() => RoleSchema).optional(),
+  credits: z.number().optional(),
   hasSessions: z.lazy(() => SessionCreateNestedManyWithoutUserInputSchema).optional()
 }).strict();
 
@@ -1728,6 +1825,8 @@ export const UserUncheckedCreateWithoutHasAccountInputSchema: z.ZodType<Prisma.U
   email: z.string(),
   emailVerified: z.boolean().optional().nullable(),
   name: z.string(),
+  role: z.lazy(() => RoleSchema).optional(),
+  credits: z.number().optional(),
   hasSessions: z.lazy(() => SessionUncheckedCreateNestedManyWithoutUserInputSchema).optional()
 }).strict();
 
@@ -1751,6 +1850,8 @@ export const UserUpdateWithoutHasAccountInputSchema: z.ZodType<Prisma.UserUpdate
   email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   emailVerified: z.union([ z.boolean(),z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  role: z.union([ z.lazy(() => RoleSchema),z.lazy(() => EnumRoleFieldUpdateOperationsInputSchema) ]).optional(),
+  credits: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
   hasSessions: z.lazy(() => SessionUpdateManyWithoutUserNestedInputSchema).optional()
 }).strict();
 
@@ -1758,6 +1859,8 @@ export const UserUncheckedUpdateWithoutHasAccountInputSchema: z.ZodType<Prisma.U
   email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   emailVerified: z.union([ z.boolean(),z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  role: z.union([ z.lazy(() => RoleSchema),z.lazy(() => EnumRoleFieldUpdateOperationsInputSchema) ]).optional(),
+  credits: z.union([ z.number(),z.lazy(() => FloatFieldUpdateOperationsInputSchema) ]).optional(),
   hasSessions: z.lazy(() => SessionUncheckedUpdateManyWithoutUserNestedInputSchema).optional()
 }).strict();
 

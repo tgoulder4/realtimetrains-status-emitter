@@ -2,9 +2,6 @@ import React from 'react'
 import { validateRequest } from "@/lib/auth";
 import { redirect } from 'next/navigation';
 import { Navbar } from '@/components/Navbar';
-import { DialogProvider } from '@/contexts/DialogContext';
-import { ClientLayout } from '@/components/ClientLayout';
-import { SplashScreen } from '@/components/SplashScreen';
 
 // Define the Props interface for the component
 interface Props { 
@@ -13,7 +10,6 @@ interface Props {
 
 // Export the default async function component
 export default async function UserAreaLayout({ children }: Props) {
-    try {
         // Validate the user request
         const user = await validateRequest();
 
@@ -34,18 +30,12 @@ export default async function UserAreaLayout({ children }: Props) {
 
         // Render the layout with DialogProvider and ClientLayout
         return (
-            <DialogProvider>
                     <main className="flex h-full flex-col">
                         <div className="min-h-screen bg-[#111111] text-white flex flex-col">
                             <Navbar />
                             {children} 
                         </div>
                     </main>
-            </DialogProvider>
         )
-    } catch (error) {
-        // Log any errors and redirect to a generic error page
-        console.error("Error in UserAreaLayout:", error);
-        redirect('/error');
-    }
+    
 }

@@ -65,6 +65,8 @@ model User {
     HasAccount    Account?
     // hasSession    Session? //TO DO: LIMIT TO ONE SESSION AS SHOWN HERE
     hasSessions   Session[]
+    role          Role      @default(USER)
+    credits       Float     @default(0)
 }
 
 model Account {
@@ -75,6 +77,11 @@ model Account {
     salt     String?
     // githubId    String?     @unique
     // googleId    String?     @unique
+}
+
+enum Role {
+    USER
+    ADMIN
 }
 
 //

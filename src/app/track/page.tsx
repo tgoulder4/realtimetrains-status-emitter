@@ -7,7 +7,6 @@ import { maxWidthClassNames } from '@/lib/layout';
 import { redirect } from 'next/navigation';
 import { findStationNameByCode } from '@/lib/destinations';
 import { dissectTrainInfoFromUrl } from './get-station-details-from-station-code';
-import HeaderLogoWithName from './LogoWithName';
 import TrackingArea from './TrackingArea';
 
 type Props = {
@@ -30,7 +29,6 @@ function TrackPage({ searchParams }: Props) {
         <main className="flex h-fit flex-col pb-48">
             <div className={`navArea sticky top-0 w-full pt-8 lg:pt-8 pb-0 z-50 md:pt-16 bg-zinc-900 text-white`}>
                 <div className={`${maxWidthClassNames} flex flex-col justify-between gap-8 items-center`}>
-                    <HeaderLogoWithName pageTitle='Track platform' />
                     <div className="flex flex-row justify-start w-full gap-2">
                         {servicesToTrack.length > 1 && servicesToTrack.map((service, index) =>
                             //switcher

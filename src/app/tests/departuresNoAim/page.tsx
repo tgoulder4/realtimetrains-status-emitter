@@ -4,20 +4,20 @@ import React from 'react'
 type Props = {}
 
 function DeparturesNoAimPage({ }: Props) {
-    var d = new Date()
-    //add 30 mins to current time
-    var h: string | number = d.getHours();
-    var m: string | number = d.getMinutes();
-    const timeOffsetInMinutes = 20;
-    h = m + timeOffsetInMinutes >= 60 ? h + 1 > 23 ? 0 : h + 2 : h
-    m = m + timeOffsetInMinutes >= 60 ? m + timeOffsetInMinutes - 60 : m + timeOffsetInMinutes;
-    h = h < 10 ? '0' + h : h;
-    m = m < 10 ? '0' + m : m;
-    console.log("h: ", h, "m: ", m);
+    // var d = new Date()
+    // //add 30 mins to current time
+    // var h: string | number = d.getHours();
+    // var m: string | number = d.getMinutes();
+    // const timeOffsetInMinutes = 20;
+    // h = m + timeOffsetInMinutes >= 60 ? h + 1 > 23 ? 0 : h + 2 : h
+    // m = m + timeOffsetInMinutes >= 60 ? m + timeOffsetInMinutes - 60 : m + timeOffsetInMinutes;
+    // h = h < 10 ? '0' + h : h;
+    // m = m < 10 ? '0' + m : m;
+    // console.log("h: ", h, "m: ", m);
 
     return (
         <>
-            {/* saved from url=(0056)https://www.realtimetrains.co.uk/search/simple/gb-nr:EUS */}
+            {/* saved from url=(0056)https://www.realtimetrains.co.uk/search/detailed/gb-nr:EUS */}
             <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
             <meta httpEquiv="x-ua-compatible" content="ie=edge" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -34,7 +34,7 @@ function DeparturesNoAimPage({ }: Props) {
                 property="twitter:title"
                 content="Realtime Trains | Live Departures from London Euston"
             />
-            <title>Realtime Trains | Live Departures from London Euston</title>
+            <title>DETAILED Realtime Trains | Live Departures from London Euston</title>
             {/* preloads */}
             <link
                 rel="preload"
@@ -193,384 +193,587 @@ function DeparturesNoAimPage({ }: Props) {
                             </div>
                             <div className="callout condensed">
                                 <div className="servicelist">
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C22003/2024-08-12#allox_id=0"
-                                    >
-                                        <div className="time">1316</div>
-                                        <div className="notion" />
-                                        <div className="location">
+                                    <div className="titlerow show-for-medium">
+                                        <div className="stp">STP</div>
+                                        <div className="time plan a">Plan Arr</div>
+                                        <div className="time real a">Act Arr</div>
+                                        <div className="location o">Origin</div>
+                                        <div className="platform">Pl</div>
+                                        <div className="tid">ID</div>
+                                        <div className="toc">TOC</div>
+                                        <div className="location d">Destination</div>
+                                        <div className="time plan d">Plan Dep</div>
+                                        <div className="time real d">Act Dep</div>
+                                        <div className="cars">
+                                            <span >
+                                                <i className="glyphicons glyphicons-train"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <a className="service " href="https://www.realtimetrains.co.uk/service/gb-nr:C31714/2024-11-15/detailed#allox_id=0">
+                                        <div className="stp ">WTT</div>
+                                        <div className="time plan a gbtt">0753</div>
+                                        <div className="time real a  act c late">0759¼</div>
+                                        <div className="location o ">
+                                            <span>Liverpool Lime Street</span>
+                                        </div>
+                                        <div className="platform c act ">14</div>
+                                        <div className="tid">1R06</div>
+                                        <div className="toc">VT</div>
+                                        <div className="location d ts">Terminates here</div>
+                                        <div className="time plan d wtt ts"></div>
+                                        <div className="time real d  exp  "></div>
+                                        <div className="cars c">
+                                            <div>11</div>
+                                        </div>
+                                        <div className="classname c">Avanti WC Pendolino</div>
+                                        <div className="lb lb1"></div>
+                                        <div className="lb lb2"></div>
+                                        <div className="lb lb3"></div>
+                                    </a>
+                                    <a className="service origin" href="https://www.realtimetrains.co.uk/service/gb-nr:C78281/2024-11-15/detailed">
+                                        <div className="stp ">WTT</div>
+                                        <div className="time plan a ts"></div>
+                                        <div className="time real a"></div>
+                                        <div className="location o ts">Starts here</div>
+                                        <div className="platform c act ">10</div>
+                                        <div className="tid">2T13</div>
+                                        <div className="toc">LM</div>
+                                        <div className="location d ">
+                                            <span>Tring</span>
+                                        </div>
+                                        <div className="time plan d gbtt ">0754</div>
+                                        <div className="time real d  act c rt">0753¾</div>
+                                        <div className="cars"></div>
+                                        <div className="classname"></div>
+                                        <div className="lb lb1"></div>
+                                        <div className="lb lb2"></div>
+                                        <div className="lb lb3"></div>
+                                    </a>
+                                    <a className="service origin" href="https://www.realtimetrains.co.uk/service/gb-nr:C76069/2024-11-15/detailed">
+                                        <div className="stp diff">VAR</div>
+                                        <div className="time plan a ts"></div>
+                                        <div className="time real a"></div>
+                                        <div className="location o ts">Starts here</div>
+                                        <div className="platform c act ">12</div>
+                                        <div className="tid">1Y17</div>
+                                        <div className="toc">LM</div>
+                                        <div className="location d ">
                                             <span>Birmingham New Street</span>
-                                            <div className="addl">
-
-                                                <div className="secline">
-                                                    {/* CHANGED TEST SERVICE  */}
-                                                    Avanti WC Pendolino · 9 coaches
-                                                </div>
-                                            </div>
                                         </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a c">1</span>
-                                            </div>
-                                        </div>
+                                        <div className="time plan d gbtt ">0756</div>
+                                        <div className="time real d  act c rt">0756</div>
+                                        <div className="cars"></div>
+                                        <div className="classname"></div>
+                                        <div className="lb lb1"></div>
+                                        <div className="lb lb2"></div>
+                                        <div className="lb lb3"></div>
                                     </a>
-
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:C78334/2024-08-12"
-                                    >
-                                        <div className="time">1324</div>
-                                        <div className="notion" />
-                                        <div className="location">
-                                            <span>Tring </span>
-                                            <div className="addl">
-                                                <div className="secline">
-                                                    {/* GO UNCHANGED TEST SERVICE  */}
-                                                    West Midlands Trains</div>
-                                            </div>
+                                    <a className="service " href="https://www.realtimetrains.co.uk/service/gb-nr:C31715/2024-11-15/detailed">
+                                        <div className="stp ">WTT</div>
+                                        <div className="time plan a gbtt">0757</div>
+                                        <div className="time real a canx ">
+                                            <span >Cancel</span>
                                         </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="a ">8</span>
-                                            </div>
+                                        <div className="location o ">
+                                            <span>Wolverhampton</span>
                                         </div>
+                                        <div className="platform">-</div>
+                                        <div className="tid">1R07</div>
+                                        <div className="toc">VT</div>
+                                        <div className="location d ts">Terminates here</div>
+                                        <div className="time plan d wtt ts"></div>
+                                        <div className="time real d h exp  "></div>
+                                        <div className="cars"></div>
+                                        <div className="classname"></div>
+                                        <div className="lb lb1"></div>
+                                        <div className="lb lb2"></div>
+                                        <div className="lb lb3"></div>
                                     </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:P89897/2024-08-12"
-                                    >
-                                        <div className="time">1330</div>
-                                        <div className="notion" />
-                                        <div className="location">
+                                    <a className="service " href="https://www.realtimetrains.co.uk/service/gb-nr:C76307/2024-11-15/detailed">
+                                        <div className="stp ">WTT</div>
+                                        <div className="time plan a gbtt">0757</div>
+                                        <div className="time real a  act c rt">0757¼</div>
+                                        <div className="location o ">
+                                            <span>Bletchley</span>
+                                        </div>
+                                        <div className="platform c act ">10</div>
+                                        <div className="tid">2B06</div>
+                                        <div className="toc">LM</div>
+                                        <div className="location d ts">Terminates here</div>
+                                        <div className="time plan d wtt ts"></div>
+                                        <div className="time real d  exp  "></div>
+                                        <div className="cars"></div>
+                                        <div className="classname"></div>
+                                        <div className="lb lb1"></div>
+                                        <div className="lb lb2"></div>
+                                        <div className="lb lb3"></div>
+                                    </a>
+                                    <a className="service nonpax" href="https://www.realtimetrains.co.uk/service/gb-nr:27366/2024-11-15/detailed#allox_id=0">
+                                        <div className="stp diff">VST</div>
+                                        <div className="time plan a wtt">0757</div>
+                                        <div className="time real a  act c rt">0801½</div>
+                                        <div className="location o ">
+                                            <span>Wolverhampton</span>
+                                        </div>
+                                        <div className="platform c act ">5</div>
+                                        <div className="tid">5R07</div>
+                                        <div className="toc">VT</div>
+                                        <div className="location d ts">Terminates here</div>
+                                        <div className="time plan d wtt ts"></div>
+                                        <div className="time real d  exp  "></div>
+                                        <div className="cars c">
+                                            <div>11</div>
+                                        </div>
+                                        <div className="classname c">Avanti WC Pendolino</div>
+                                        <div className="lb lb1"></div>
+                                        <div className="lb lb2"></div>
+                                        <div className="lb lb3"></div>
+                                    </a>
+                                    <a className="service origin" href="https://www.realtimetrains.co.uk/service/gb-nr:P89788/2024-11-15/detailed">
+                                        <div className="stp ">WTT</div>
+                                        <div className="time plan a ts"></div>
+                                        <div className="time real a"></div>
+                                        <div className="location o ts">Starts here</div>
+                                        <div className="platform c act ">9</div>
+                                        <div className="tid">2D59</div>
+                                        <div className="toc">LO</div>
+                                        <div className="location d ">
                                             <span>Watford Junction</span>
-                                            <div className="addl">
-
-                                                <div className="secline">
-                                                    {/* WAIT TEST SERVICE  */}
-                                                    London Overground</div>
-                                            </div>
                                         </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="ex ">9</span>
-                                            </div>
-                                        </div>
+                                        <div className="time plan d gbtt ">0758</div>
+                                        <div className="time real d  act c rt">0758</div>
+                                        <div className="cars"></div>
+                                        <div className="classname"></div>
+                                        <div className="lb lb1"></div>
+                                        <div className="lb lb2"></div>
+                                        <div className="lb lb3"></div>
                                     </a>
-                                    <a
-                                        className="service "
-                                        href="https://www.realtimetrains.co.uk/service/gb-nr:P89897/2024-08-12"
-                                    >
-                                        <div className="time">{h}{m}</div>
-                                        <div className="notion" />
-                                        <div className="location">
+                                    <a className="service " href="https://www.realtimetrains.co.uk/service/gb-nr:C31716/2024-11-15/detailed#allox_id=0">
+                                        <div className="stp ">WTT</div>
+                                        <div className="time plan a gbtt">0800</div>
+                                        <div className="time real a  act c late">0811¾</div>
+                                        <div className="location o ">
+                                            <span>Lancaster</span>
+                                        </div>
+                                        <div className="platform c act ">3</div>
+                                        <div className="tid">1R08</div>
+                                        <div className="toc">VT</div>
+                                        <div className="location d ts">Terminates here</div>
+                                        <div className="time plan d wtt ts"></div>
+                                        <div className="time real d  exp  "></div>
+                                        <div className="cars c">
+                                            <div>9</div>
+                                        </div>
+                                        <div className="classname c">Avanti WC Pendolino</div>
+                                        <div className="lb lb1"></div>
+                                        <div className="lb lb2"></div>
+                                        <div className="lb lb3"></div>
+                                    </a>
+                                    <a className="service nonpax origin" href="https://www.realtimetrains.co.uk/service/gb-nr:S86427/2024-11-15/detailed#allox_id=0">
+                                        <div className="stp diff">STP</div>
+                                        <div className="time plan a ts"></div>
+                                        <div className="time real a"></div>
+                                        <div className="location o ts">Starts here</div>
+                                        <div className="platform c act ">6</div>
+                                        <div className="tid">3K88</div>
+                                        <div className="toc">VT</div>
+                                        <div className="location d ">
+                                            <span>Crewe</span>
+                                        </div>
+                                        <div className="time plan d wtt ">0802</div>
+                                        <div className="time real d  act c rt">0801¾</div>
+                                        <div className="cars c">
+                                            <div>5</div>
+                                        </div>
+                                        <div className="classname c">Avanti WC Evero</div>
+                                        <div className="lb lb1"></div>
+                                        <div className="lb lb2"></div>
+                                        <div className="lb lb3"></div>
+                                    </a>
+                                    <a className="service origin" href="https://www.realtimetrains.co.uk/service/gb-nr:C78285/2024-11-15/detailed">
+                                        <div className="stp ">WTT</div>
+                                        <div className="time plan a ts"></div>
+                                        <div className="time real a"></div>
+                                        <div className="location o ts">Starts here</div>
+                                        <div className="platform c act ">8</div>
+                                        <div className="tid">2T15</div>
+                                        <div className="toc">LM</div>
+                                        <div className="location d ">
+                                            <span>Tring</span>
+                                        </div>
+                                        <div className="time plan d gbtt ">0804</div>
+                                        <div className="time real d  act c rt">0803¾</div>
+                                        <div className="cars"></div>
+                                        <div className="classname"></div>
+                                        <div className="lb lb1"></div>
+                                        <div className="lb lb2"></div>
+                                        <div className="lb lb3"></div>
+                                    </a>
+                                    <a className="service " href="https://www.realtimetrains.co.uk/service/gb-nr:C75911/2024-11-15/detailed">
+                                        <div className="stp ">WTT</div>
+                                        <div className="time plan a gbtt">0805</div>
+                                        <div className="time real a  act c rt">0807½</div>
+                                        <div className="location o ">
+                                            <span>Crewe</span>
+                                        </div>
+                                        <div className="platform c act ">13</div>
+                                        <div className="tid">1U02</div>
+                                        <div className="toc">LM</div>
+                                        <div className="location d ts">Terminates here</div>
+                                        <div className="time plan d wtt ts"></div>
+                                        <div className="time real d  exp  "></div>
+                                        <div className="cars"></div>
+                                        <div className="classname"></div>
+                                        <div className="lb lb1"></div>
+                                        <div className="lb lb2"></div>
+                                        <div className="lb lb3"></div>
+                                    </a>
+                                    <a className="service nonpax" href="https://www.realtimetrains.co.uk/service/gb-nr:27408/2024-11-15/detailed">
+                                        <div className="stp diff">VST</div>
+                                        <div className="time plan a wtt">0807</div>
+                                        <div className="time real a canx ">
+                                            <span >Cancel</span>
+                                        </div>
+                                        <div className="location o ">
+                                            <span>Wolverhampton</span>
+                                        </div>
+                                        <div className="platform">-</div>
+                                        <div className="tid">5R09</div>
+                                        <div className="toc">VT</div>
+                                        <div className="location d ts">Terminates here</div>
+                                        <div className="time plan d wtt ts"></div>
+                                        <div className="time real d h exp  "></div>
+                                        <div className="cars"></div>
+                                        <div className="classname"></div>
+                                        <div className="lb lb1"></div>
+                                        <div className="lb lb2"></div>
+                                        <div className="lb lb3"></div>
+                                    </a>
+                                    <a className="service " href="https://www.realtimetrains.co.uk/service/gb-nr:C31717/2024-11-15/detailed">
+                                        <div className="stp ">WTT</div>
+                                        <div className="time plan a gbtt">0807</div>
+                                        <div className="time real a canx ">
+                                            <span >
+                                                Cancel
+                                            </span>
+                                        </div>
+                                        <div className="location o ">
+                                            <span>Wolverhampton</span>
+                                        </div>
+                                        <div className="platform">-</div>
+                                        <div className="tid">1R09</div>
+                                        <div className="toc">VT</div>
+                                        <div className="location d ts">Terminates here</div>
+                                        <div className="time plan d wtt ts"></div>
+                                        <div className="time real d h exp  "></div>
+                                        <div className="cars"></div>
+                                        <div className="classname"></div>
+                                        <div className="lb lb1"></div>
+                                        <div className="lb lb2"></div>
+                                        <div className="lb lb3"></div>
+                                    </a>
+                                    <a className="service " href="https://www.realtimetrains.co.uk/service/gb-nr:P89328/2024-11-15/detailed">
+                                        <div className="stp ">WTT</div>
+                                        <div className="time plan a gbtt">0811</div>
+                                        <div className="time real a  act c rt">0807½</div>
+                                        <div className="location o ">
                                             <span>Watford Junction</span>
-                                            <div className="addl">
-
-                                                <div className="secline">
-                                                    {/* WAIT FUTURE-to-SOON transition  */}
-                                                    Avanti west coast</div>
-                                            </div>
                                         </div>
-                                        <div className="platformbox">
-                                            <div className="platform c">
-                                                <span className="ex ">9</span>
-                                            </div>
-                                        </div>
+                                        <div className="platform c act ">9</div>
+                                        <div className="tid">2C08</div>
                                     </a>
-
-                                    {" "}
                                 </div>
                             </div>
-                        </div>
-                        <div className="panel small">
-                            <h3>Search Menu</h3>
-                            <div className="callout detailed" id="searchbox">
-                                <form
-                                    method="get"
-                                    action="https://www.realtimetrains.co.uk/search/handler"
-                                >
-                                    <label>
-                                        Location
-                                        <span
-                                            className="tt-typeahead"
-                                            style={{ position: "relative", display: "inline-block" }}
-                                        >
-                                            <input
-                                                type="text"
-                                                name="location"
-                                                placeholder="Location"
-                                                defaultValue="London Euston"
-                                                id="mainlocsearch"
-                                                autoComplete="off"
-                                                className="tt-input"
-                                                spellCheck="false"
-                                                dir="auto"
-                                                aria-owns="mainlocsearch_listbox"
-                                                role="combobox"
-                                                aria-autocomplete="list"
-                                                aria-expanded="false"
-                                                style={{ position: "relative", verticalAlign: "top" }}
-                                            />
+                            <div className="panel small">
+                                <h3>Search Menu</h3>
+                                <div className="callout detailed" id="searchbox">
+                                    <form
+                                        method="get"
+                                        action="https://www.realtimetrains.co.uk/search/handler"
+                                    >
+                                        <label>
+                                            Location
                                             <span
-                                                role="status"
-                                                aria-live="polite"
-                                                style={{
-                                                    position: "absolute",
-                                                    padding: 0,
-                                                    border: 0,
-                                                    height: 1,
-                                                    width: 1,
-                                                    marginBottom: "-1px",
-                                                    marginRight: "-1px",
-                                                    overflow: "hidden",
-                                                    clip: "rect(0px, 0px, 0px, 0px)",
-                                                    whiteSpace: "nowrap"
-                                                }}
-                                            />
-                                            <pre
-                                                aria-hidden="true"
-                                                style={{
-                                                    position: "absolute",
-                                                    visibility: "hidden",
-                                                    whiteSpace: "pre",
-                                                    fontFamily:
-                                                        'urania, "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
-                                                    fontSize: 16,
-                                                    fontStyle: "normal",
-                                                    fontVariant: "normal",
-                                                    fontWeight: 400,
-                                                    wordSpacing: 0,
-                                                    letterSpacing: 0,
-                                                    textIndent: 0,
-                                                    textRendering: "auto",
-                                                    textTransform: "none"
-                                                }}
-                                            />
-                                            <div
-                                                role="listbox"
-                                                className="tt-menu"
-                                                id="mainlocsearch_listbox"
-                                                style={{
-                                                    position: "absolute",
-                                                    top: "100%",
-                                                    left: 0,
-                                                    zIndex: 100,
-                                                    display: "none"
-                                                }}
+                                                className="tt-typeahead"
+                                                style={{ position: "relative", display: "inline-block" }}
                                             >
+                                                <input
+                                                    type="text"
+                                                    name="location"
+                                                    placeholder="Location"
+                                                    defaultValue="London Euston"
+                                                    id="mainlocsearch"
+                                                    autoComplete="off"
+                                                    className="tt-input"
+                                                    spellCheck="false"
+                                                    dir="auto"
+                                                    aria-owns="mainlocsearch_listbox"
+                                                    role="combobox"
+                                                    aria-autocomplete="list"
+                                                    aria-expanded="false"
+                                                    style={{ position: "relative", verticalAlign: "top" }}
+                                                />
+                                                <span
+                                                    role="status"
+                                                    aria-live="polite"
+                                                    style={{
+                                                        position: "absolute",
+                                                        padding: 0,
+                                                        border: 0,
+                                                        height: 1,
+                                                        width: 1,
+                                                        marginBottom: "-1px",
+                                                        marginRight: "-1px",
+                                                        overflow: "hidden",
+                                                        clip: "rect(0px, 0px, 0px, 0px)",
+                                                        whiteSpace: "nowrap"
+                                                    }}
+                                                />
+                                                <pre
+                                                    aria-hidden="true"
+                                                    style={{
+                                                        position: "absolute",
+                                                        visibility: "hidden",
+                                                        whiteSpace: "pre",
+                                                        fontFamily:
+                                                            'urania, "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
+                                                        fontSize: 16,
+                                                        fontStyle: "normal",
+                                                        fontVariant: "normal",
+                                                        fontWeight: 400,
+                                                        wordSpacing: 0,
+                                                        letterSpacing: 0,
+                                                        textIndent: 0,
+                                                        textRendering: "auto",
+                                                        textTransform: "none"
+                                                    }}
+                                                />
                                                 <div
-                                                    role="presentation"
-                                                    className="tt-dataset tt-dataset-mainlocsearch_stations"
-                                                />
+                                                    role="listbox"
+                                                    className="tt-menu"
+                                                    id="mainlocsearch_listbox"
+                                                    style={{
+                                                        position: "absolute",
+                                                        top: "100%",
+                                                        left: 0,
+                                                        zIndex: 100,
+                                                        display: "none"
+                                                    }}
+                                                >
+                                                    <div
+                                                        role="presentation"
+                                                        className="tt-dataset tt-dataset-mainlocsearch_stations"
+                                                    />
+                                                </div>
+                                            </span>
+                                        </label>
+                                        <div className="grid-x group">
+                                            <div className="small-6 cell">
+                                                <label>
+                                                    Date?
+                                                    <input
+                                                        type="text"
+                                                        name="when_date"
+                                                        placeholder="Today"
+                                                        autoComplete="off"
+                                                        defaultValue=""
+                                                    />
+                                                </label>
                                             </div>
-                                        </span>
-                                    </label>
-                                    <div className="grid-x group">
-                                        <div className="small-6 cell">
-                                            <label>
-                                                Date?
-                                                <input
-                                                    type="text"
-                                                    name="when_date"
-                                                    placeholder="Today"
-                                                    autoComplete="off"
-                                                    defaultValue=""
-                                                />
-                                            </label>
-                                        </div>
-                                        <div className="small-6 cell">
-                                            <label>
-                                                When?
-                                                <input
-                                                    type="text"
-                                                    placeholder="Now"
-                                                    autoComplete="off"
-                                                    name="when_time"
-                                                    defaultValue=""
-                                                />
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div className="spacer" />
-                                    <div className="text-center">
-                                        <h5>Filtering</h5>
-                                    </div>
-                                    <div className="grid-x group">
-                                        <div className="small-6 medium-3 xlarge-6 cell">
-                                            <label>
-                                                <span className="hide-for-xlarge">Calls </span>
-                                                Has called at
-                                                <span
-                                                    className="tt-typeahead"
-                                                    style={{ position: "relative", display: "inline-block" }}
-                                                >
+                                            <div className="small-6 cell">
+                                                <label>
+                                                    When?
                                                     <input
                                                         type="text"
-                                                        name="call_previous"
-                                                        defaultValue=""
+                                                        placeholder="Now"
                                                         autoComplete="off"
-                                                        id="b9taifcm36"
-                                                        className="tt-input"
-                                                        spellCheck="false"
-                                                        dir="auto"
-                                                        aria-owns="b9taifcm36_listbox"
-                                                        role="combobox"
-                                                        aria-autocomplete="list"
-                                                        aria-expanded="false"
-                                                        style={{ position: "relative", verticalAlign: "top" }}
-                                                    />
-                                                    <span
-                                                        role="status"
-                                                        aria-live="polite"
-                                                        style={{
-                                                            position: "absolute",
-                                                            padding: 0,
-                                                            border: 0,
-                                                            height: 1,
-                                                            width: 1,
-                                                            marginBottom: "-1px",
-                                                            marginRight: "-1px",
-                                                            overflow: "hidden",
-                                                            clip: "rect(0px, 0px, 0px, 0px)",
-                                                            whiteSpace: "nowrap"
-                                                        }}
-                                                    />
-                                                    <pre
-                                                        aria-hidden="true"
-                                                        style={{
-                                                            position: "absolute",
-                                                            visibility: "hidden",
-                                                            whiteSpace: "pre",
-                                                            fontFamily:
-                                                                'urania, "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
-                                                            fontSize: 16,
-                                                            fontStyle: "normal",
-                                                            fontVariant: "normal",
-                                                            fontWeight: 400,
-                                                            wordSpacing: 0,
-                                                            letterSpacing: 0,
-                                                            textIndent: 0,
-                                                            textRendering: "auto",
-                                                            textTransform: "none"
-                                                        }}
-                                                    />
-                                                    <div
-                                                        role="listbox"
-                                                        className="tt-menu"
-                                                        id="b9taifcm36_listbox"
-                                                        style={{
-                                                            position: "absolute",
-                                                            top: "100%",
-                                                            left: 0,
-                                                            zIndex: 100,
-                                                            display: "none"
-                                                        }}
-                                                    >
-                                                        <div
-                                                            role="presentation"
-                                                            className="tt-dataset tt-dataset-b9taifcm36_stations"
-                                                        />
-                                                    </div>
-                                                </span>
-                                            </label>
-                                        </div>
-                                        <div className="small-6 medium-3 xlarge-6 cell">
-                                            <label>
-                                                <span className="hide-for-xlarge">Calls </span>
-                                                Will call at
-                                                <span
-                                                    className="tt-typeahead"
-                                                    style={{ position: "relative", display: "inline-block" }}
-                                                >
-                                                    <input
-                                                        type="text"
-                                                        name="call_subsequent"
+                                                        name="when_time"
                                                         defaultValue=""
-                                                        autoComplete="off"
-                                                        id="ekyof2kxy38"
-                                                        className="tt-input"
-                                                        spellCheck="false"
-                                                        dir="auto"
-                                                        aria-owns="ekyof2kxy38_listbox"
-                                                        role="combobox"
-                                                        aria-autocomplete="list"
-                                                        aria-expanded="false"
-                                                        style={{ position: "relative", verticalAlign: "top" }}
                                                     />
-                                                    <span
-                                                        role="status"
-                                                        aria-live="polite"
-                                                        style={{
-                                                            position: "absolute",
-                                                            padding: 0,
-                                                            border: 0,
-                                                            height: 1,
-                                                            width: 1,
-                                                            marginBottom: "-1px",
-                                                            marginRight: "-1px",
-                                                            overflow: "hidden",
-                                                            clip: "rect(0px, 0px, 0px, 0px)",
-                                                            whiteSpace: "nowrap"
-                                                        }}
-                                                    />
-                                                    <pre
-                                                        aria-hidden="true"
-                                                        style={{
-                                                            position: "absolute",
-                                                            visibility: "hidden",
-                                                            whiteSpace: "pre",
-                                                            fontFamily:
-                                                                'urania, "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
-                                                            fontSize: 16,
-                                                            fontStyle: "normal",
-                                                            fontVariant: "normal",
-                                                            fontWeight: 400,
-                                                            wordSpacing: 0,
-                                                            letterSpacing: 0,
-                                                            textIndent: 0,
-                                                            textRendering: "auto",
-                                                            textTransform: "none"
-                                                        }}
-                                                    />
-                                                    <div
-                                                        role="listbox"
-                                                        className="tt-menu"
-                                                        id="ekyof2kxy38_listbox"
-                                                        style={{
-                                                            position: "absolute",
-                                                            top: "100%",
-                                                            left: 0,
-                                                            zIndex: 100,
-                                                            display: "none"
-                                                        }}
-                                                    >
-                                                        <div
-                                                            role="presentation"
-                                                            className="tt-dataset tt-dataset-ekyof2kxy38_stations"
-                                                        />
-                                                    </div>
-                                                </span>
-                                            </label>
+                                                </label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <input
-                                        type="submit"
-                                        className="button expanded"
-                                        id="search_primary"
-                                        defaultValue="Search"
-                                    />
-                                    <div
-                                        id="data-typeahead"
-                                        data-url="/php/ajax_search.php?type=stations"
-                                        data-type="stations"
-                                    ></div>
-                                </form>
-                            </div>
-                            <div className="ad-wrapper">
-                                {/* Content Ignite Ad Unit Placeholder */}
-                                <div className="ad-unit rail long" id="rtt-ci-ss-rail" />
-                                {/* / Ad Unit Placeholder */}
+                                        <div className="spacer" />
+                                        <div className="text-center">
+                                            <h5>Filtering</h5>
+                                        </div>
+                                        <div className="grid-x group">
+                                            <div className="small-6 medium-3 xlarge-6 cell">
+                                                <label>
+                                                    <span className="hide-for-xlarge">Calls </span>
+                                                    Has called at
+                                                    <span
+                                                        className="tt-typeahead"
+                                                        style={{ position: "relative", display: "inline-block" }}
+                                                    >
+                                                        <input
+                                                            type="text"
+                                                            name="call_previous"
+                                                            defaultValue=""
+                                                            autoComplete="off"
+                                                            id="b9taifcm36"
+                                                            className="tt-input"
+                                                            spellCheck="false"
+                                                            dir="auto"
+                                                            aria-owns="b9taifcm36_listbox"
+                                                            role="combobox"
+                                                            aria-autocomplete="list"
+                                                            aria-expanded="false"
+                                                            style={{ position: "relative", verticalAlign: "top" }}
+                                                        />
+                                                        <span
+                                                            role="status"
+                                                            aria-live="polite"
+                                                            style={{
+                                                                position: "absolute",
+                                                                padding: 0,
+                                                                border: 0,
+                                                                height: 1,
+                                                                width: 1,
+                                                                marginBottom: "-1px",
+                                                                marginRight: "-1px",
+                                                                overflow: "hidden",
+                                                                clip: "rect(0px, 0px, 0px, 0px)",
+                                                                whiteSpace: "nowrap"
+                                                            }}
+                                                        />
+                                                        <pre
+                                                            aria-hidden="true"
+                                                            style={{
+                                                                position: "absolute",
+                                                                visibility: "hidden",
+                                                                whiteSpace: "pre",
+                                                                fontFamily:
+                                                                    'urania, "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
+                                                                fontSize: 16,
+                                                                fontStyle: "normal",
+                                                                fontVariant: "normal",
+                                                                fontWeight: 400,
+                                                                wordSpacing: 0,
+                                                                letterSpacing: 0,
+                                                                textIndent: 0,
+                                                                textRendering: "auto",
+                                                                textTransform: "none"
+                                                            }}
+                                                        />
+                                                        <div
+                                                            role="listbox"
+                                                            className="tt-menu"
+                                                            id="b9taifcm36_listbox"
+                                                            style={{
+                                                                position: "absolute",
+                                                                top: "100%",
+                                                                left: 0,
+                                                                zIndex: 100,
+                                                                display: "none"
+                                                            }}
+                                                        >
+                                                            <div
+                                                                role="presentation"
+                                                                className="tt-dataset tt-dataset-b9taifcm36_stations"
+                                                            />
+                                                        </div>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                            <div className="small-6 medium-3 xlarge-6 cell">
+                                                <label>
+                                                    <span className="hide-for-xlarge">Calls </span>
+                                                    Will call at
+                                                    <span
+                                                        className="tt-typeahead"
+                                                        style={{ position: "relative", display: "inline-block" }}
+                                                    >
+                                                        <input
+                                                            type="text"
+                                                            name="call_subsequent"
+                                                            defaultValue=""
+                                                            autoComplete="off"
+                                                            id="ekyof2kxy38"
+                                                            className="tt-input"
+                                                            spellCheck="false"
+                                                            dir="auto"
+                                                            aria-owns="ekyof2kxy38_listbox"
+                                                            role="combobox"
+                                                            aria-autocomplete="list"
+                                                            aria-expanded="false"
+                                                            style={{ position: "relative", verticalAlign: "top" }}
+                                                        />
+                                                        <span
+                                                            role="status"
+                                                            aria-live="polite"
+                                                            style={{
+                                                                position: "absolute",
+                                                                padding: 0,
+                                                                border: 0,
+                                                                height: 1,
+                                                                width: 1,
+                                                                marginBottom: "-1px",
+                                                                marginRight: "-1px",
+                                                                overflow: "hidden",
+                                                                clip: "rect(0px, 0px, 0px, 0px)",
+                                                                whiteSpace: "nowrap"
+                                                            }}
+                                                        />
+                                                        <pre
+                                                            aria-hidden="true"
+                                                            style={{
+                                                                position: "absolute",
+                                                                visibility: "hidden",
+                                                                whiteSpace: "pre",
+                                                                fontFamily:
+                                                                    'urania, "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
+                                                                fontSize: 16,
+                                                                fontStyle: "normal",
+                                                                fontVariant: "normal",
+                                                                fontWeight: 400,
+                                                                wordSpacing: 0,
+                                                                letterSpacing: 0,
+                                                                textIndent: 0,
+                                                                textRendering: "auto",
+                                                                textTransform: "none"
+                                                            }}
+                                                        />
+                                                        <div
+                                                            role="listbox"
+                                                            className="tt-menu"
+                                                            id="ekyof2kxy38_listbox"
+                                                            style={{
+                                                                position: "absolute",
+                                                                top: "100%",
+                                                                left: 0,
+                                                                zIndex: 100,
+                                                                display: "none"
+                                                            }}
+                                                        >
+                                                            <div
+                                                                role="presentation"
+                                                                className="tt-dataset tt-dataset-ekyof2kxy38_stations"
+                                                            />
+                                                        </div>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <input
+                                            type="submit"
+                                            className="button expanded"
+                                            id="search_primary"
+                                            defaultValue="Search"
+                                        />
+                                        <div
+                                            id="data-typeahead"
+                                            data-url="/php/ajax_search.php?type=stations"
+                                            data-type="stations"
+                                        ></div>
+                                    </form>
+                                </div>
+                                <div className="ad-wrapper">
+                                    {/* Content Ignite Ad Unit Placeholder */}
+                                    <div className="ad-unit rail long" id="rtt-ci-ss-rail" />
+                                    {/* / Ad Unit Placeholder */}
+                                </div>
                             </div>
                         </div>
                     </div>
