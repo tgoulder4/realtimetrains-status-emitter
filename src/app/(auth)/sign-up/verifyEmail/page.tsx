@@ -4,7 +4,7 @@ import { OTPInput, SlotProps } from 'input-otp'
 import { cn } from '@/lib/utils'
 import { useServerAction } from 'zsa-react'
 import { useToast } from '@/hooks/use-toast'
-import { sendMagicLinkCA } from '@/core-actions/magic-links'
+import { sendMagicLinkCA } from '@/core-actions/auth/magic-links'
 import { getUserById } from '@/data-access/users'
 import { redirect } from 'next/navigation'
 type Props = {

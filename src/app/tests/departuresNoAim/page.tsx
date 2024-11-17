@@ -1,4 +1,4 @@
-import { convertDateToUTC } from '@/utils/timeUtils';
+import { convertDateToUTC } from '@/core-actions/core/utils/time-handling';
 import React from 'react'
 
 type Props = {}

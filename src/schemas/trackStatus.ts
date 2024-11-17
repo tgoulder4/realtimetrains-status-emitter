@@ -7,9 +7,15 @@ export const TrackStatusResponseSchema = z.object({
 })
 
 export const TrackStatusParamsSchema = z.object({
-  destination: z.string().length(3),
-  time: z.string().regex(/^T-\d{4}$/)
+  //origin 3 letter capital letter code
+  origin: z.string().regex(/^[A-Z]{3}$/),
+  departureId: z.string().regex(/^[A-Z0-9]{4}$/),
 })
 
+export const FindServicesParamsSchema = z.object({
+  //origin 3 letter capital letter code
+  origin: z.string().regex(/^[A-Z]{3}$/),
+})
 export type TrackStatusResponse = z.infer<typeof TrackStatusResponseSchema>
 export type TrackStatusParams = z.infer<typeof TrackStatusParamsSchema>
+export type FindServicesParams = z.infer<typeof FindServicesParamsSchema>

@@ -1,5 +1,5 @@
 'use server'
-import { LoginWithMagicLinkCA } from '@/core-actions/magic-links'
+import { LoginWithMagicLinkCA } from '@/core-actions/auth/magic-links'
 import { rateLimitByIp } from '@/lib/limiter'
 import { setSession } from '@/lib/session'
 import { redirect } from 'next/navigation'

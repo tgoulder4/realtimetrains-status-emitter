@@ -26,6 +26,27 @@ export function getTimeInMsUntilStartPolling(localDepHours: number, localDepMins
     return timeUntilPollingStart;
 }
 
+/**
+ * Parses a time string and converts it to a Date object
+ * @param timeString - The time string to parse (format: "HH:MM")
+ * @param referenceDate - The reference date to use
+ * @returns A Date object representing the parsed time
+ */
+export function parseTime(timeString: string, referenceDate: Date): Date {
+    console.log(`[parseTime] Parsing time: ${timeString}, Reference date: ${referenceDate}`);
+    const [hours, minutes] = timeString.split(':').map(Number);
+    console.log(`[parseTime] Parsed hours: ${hours}, minutes: ${minutes}`);
+    const date = convertDateToUTC(new Date(referenceDate));
+    date.setUTCHours(hours, minutes, 0, 0);
+    console.log(`[parseTime] Initial parsed date: ${date}`);
+    if (date < referenceDate) {
+        date.setUTCDate(date.getUTCDate() + 1);
+        console.log(`[parseTime] Date adjusted to next day: ${date}`);
+    }
+    console.log(`[parseTime] Final parsed date: ${date}`);
+    return date;
+}
+
 export function getMillisecondsTilRefresh(status: TrackState['data']['status'], scheduledDepartureTime: string): number {
     switch (status) {
         case "Go":

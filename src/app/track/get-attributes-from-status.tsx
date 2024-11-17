@@ -1,5 +1,5 @@
 import { MINS_BEFORE_POLLING_START } from "@/lib/constants";
-import { getTimeInMsUntilStartPolling } from "@/utils/timeUtils";
+import { getTimeInMsUntilStartPolling } from "@/core-actions/core/utils/time-handling";
 
 export function getColourFromStatus(status: string) {
     switch (status) {

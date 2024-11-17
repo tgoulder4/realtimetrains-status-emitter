@@ -11,7 +11,7 @@ import {
 } from "@/data-access/users";
 
 import { NotFoundError, TokenExpiredError } from "@/lib/errors";
-import { sendEmail } from "./resend-core";
+import { sendEmail } from "../emails/resend-core";
 import { AppEmailTemplate } from "@/emails/magic-links";
 import { createVerifyEmailTokenDA } from "@/data-access/verify-email";
 import { env } from "@/env";

@@ -1,6 +1,6 @@
 'use server'
 
-import { signInCA } from "@/core-actions/users"
+import { signInCA } from "@/core-actions/auth/users"
 import { rateLimitByIp } from "@/lib/limiter"
 import { unauthenticatedAction } from "@/lib/safe-action"
 import { setSession } from "@/lib/session"

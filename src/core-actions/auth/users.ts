@@ -28,7 +28,7 @@ import { applicationName } from "@/app-config";
 
 import { createTransaction } from "@/data-access/utils";
 import { AuthenticationError, EmailInUseError, LoginError } from "@/lib/errors";
-import { sendEmail } from "./resend-core";
+import { sendEmail } from "../emails/resend-core";
 import { User } from "lucia";
 
 

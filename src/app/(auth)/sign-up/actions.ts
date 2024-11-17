@@ -1,6 +1,6 @@
 'use server'
-import { sendMagicLinkCA } from "@/core-actions/magic-links"
-import { registerUserCA, signInCA } from "@/core-actions/users"
+import { sendMagicLinkCA } from "@/core-actions/auth/magic-links"
+import { registerUserCA, signInCA } from "@/core-actions/auth/users"
 import { getAccountByUserId } from "@/data-access/accounts"
 import { upsertMagicLinkDA } from "@/data-access/magic-links"
 import { DataLayerResponse, } from "@/data-access/users"

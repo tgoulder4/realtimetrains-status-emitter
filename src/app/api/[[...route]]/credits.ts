@@ -1,7 +1,7 @@
 
 import { zValidator } from '@hono/zod-validator'
 import { z } from 'zod'
-import { checkCreditsCA } from '@/core-actions/track-status-ca'
+import { checkCreditsCA } from '@/core-actions/core/track'
 import { Hono } from 'hono'
 
 const app = new Hono()

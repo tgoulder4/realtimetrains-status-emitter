@@ -5,7 +5,7 @@ import { getTrackStateSA } from '@/app/track/actions';
 import { TrackState, Journey } from '@/lib/types';
 import { MIN_TIME_TIL_REFRESH } from '../constants';
 import { useServerAction } from 'zsa-react';
-import { getTimeInMsUntilStartPolling } from '@/utils/timeUtils';
+import { getTimeInMsUntilStartPolling } from '@/core-actions/core/utils/time-handling';
 
 export function useTrackingState(serviceToTrack: Journey) {
     const { execute } = useServerAction(getTrackStateSA);

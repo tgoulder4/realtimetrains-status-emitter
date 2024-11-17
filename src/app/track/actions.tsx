@@ -21,7 +21,7 @@
 
 import { z } from 'zod'
 import { TrackStatusParamsSchema } from '@/schemas/trackStatus'
-import { checkCreditsCA, getDepartureStateCA, decrementCreditsCA } from '@/core-actions/track-status-ca'
+import { checkCreditsCA, getDepartureStateCA, decrementCreditsCA } from '@/core-actions/core/track'
 import { rateLimitByIp, rateLimitByKey } from '@/lib/limiter'
 import { authenticatedAction } from '@/lib/safe-action'
 

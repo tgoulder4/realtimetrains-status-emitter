@@ -1,5 +1,5 @@
 import { Service } from "@/lib/types";
-import { convertDateToUTC } from "./timeUtils";
+import { convertDateToUTC } from "../core-actions/core/utils/time-handling";
 import { MIN_TIME_TIL_REFRESH } from "@/lib/constants";
 
 /**

@@ -9,6 +9,7 @@ export const env = createEnv({
         EMAIL_FROM: z.string(),
         EMAIL_SERVER_PASSWORD: z.string().min(1),
         APP_URL: z.string().min(1),
+        RTT_BASE_URL: z.string().min(1),
     },
     client: {
         NEXT_PUBLIC_POSTHOG_KEY: z.string().min(1),
@@ -23,6 +24,7 @@ export const env = createEnv({
         NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
         NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
         APP_URL: process.env.APP_URL,
+        RTT_BASE_URL: process.env.RTT_BASE_URL,
         // HOST_NAME: process.env.HOST_NAME
     },
 });

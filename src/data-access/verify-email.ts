@@ -2,7 +2,7 @@ import { generateRandomToken } from "@/data-access/utils";
 
 import { TOKEN_LENGTH, TOKEN_TTL } from "./resetAndVerifyLinks/lib";
 import prisma from "@/db/prisma";
-import { sendEmail } from "@/core-actions/resend-core";
+import { sendEmail } from "@/core-actions/emails/resend-core";
 import { AppEmailTemplate } from "@/emails/magic-links";
 import { applicationName } from "@/app-config";
 import { upsertMagicLinkDA } from "./magic-links";
