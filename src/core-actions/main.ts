@@ -42,13 +42,17 @@ export const getServiceListCA = async (dest?: string): Promise<Service[]> => {
         const $ = cheerio.load(html);
         const list: Service[] = $(".service").map((i, service) => extractServiceDetailsFromServiceElementCA($, service)).get();
         console.log("service list returned: ", list)
+        //the first item in the list may be a placeholder, check if its name is empty
+        if (list.length > 0 && list[0].destination.name === '') {
+            list.shift(); //remove the first item if it's a placeholder
+        }
         return list;
 
     } catch (e) {
         console.error(e);
         return [{
             status: 'Error', platform: {
-                number: '--',
+                number: '--', type: 'confirmedAndChanged'
             }, provider: "Avanti", scheduledDepartureTime: '--', destination: { name: '', code: '' }
         }]
     }

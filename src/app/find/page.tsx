@@ -27,24 +27,24 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
     //header form stuff
     const formSchema = z.object({ dest: z.string().length(3).or(z.string().length(0)), dep: z.literal("London Euston") });
     const [departures, setDepartures] = useState<Service[]>([
-        {
-            destination: { name: "Birmingham New Street", code: "BHM" },
-            scheduledDepartureTime: "12:00",
-            platform: {
-                number: "1",
-            },
-            status: "Wait",
-            provider: "Avanti West Coast"
-        },
-        {
-            destination: { name: "Birmingham New Street", code: "BHM" },
-            scheduledDepartureTime: "13:00",
-            platform: {
-                number: "1",
-            },
-            status: "Wait",
-            provider: "Avanti West Coast"
-        }
+        // {
+        //     destination: { name: "Birmingham New Street", code: "BHM" },
+        //     scheduledDepartureTime: "12:00",
+        //     platform: {
+        //         number: "1",
+        //     },
+        //     status: "Wait",
+        //     provider: "Avanti West Coast"
+        // },
+        // {
+        //     destination: { name: "Birmingham New Street", code: "BHM" },
+        //     scheduledDepartureTime: "13:00",
+        //     platform: {
+        //         number: "1",
+        //     },
+        //     status: "Wait",
+        //     provider: "Avanti West Coast"
+        // }
     ]);
     const [renderedDepartures, setRenderedDepartures] = useState<Service[]>([
         {
@@ -52,6 +52,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
             scheduledDepartureTime: "LOAD",
             platform: {
                 number: "LOAD",
+                type: "confirmedAndChanged"
             },
             status: "Go",
             provider: "Avanti West Coast"
@@ -61,6 +62,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
             scheduledDepartureTime: "LOAD",
             platform: {
                 number: "LOAD",
+                type: "confirmedAndChanged"
             },
             status: "Go",
             provider: "Avanti West Coast"
@@ -70,6 +72,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
             scheduledDepartureTime: "LOAD",
             platform: {
                 number: "LOAD",
+                type: "confirmedAndChanged"
             },
             status: "Go",
             provider: "Avanti West Coast"
@@ -92,7 +95,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
                 scheduledDepartureTime: "LOAD",
                 platform: {
                     number: "LOAD",
-
+                    type: "confirmedAndChanged"
                 },
                 status: "Go",
                 provider: "Avanti West Coast"
@@ -102,7 +105,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
                 scheduledDepartureTime: "LOAD",
                 platform: {
                     number: "LOAD",
-
+                    type: "confirmedAndChanged"
                 },
                 status: "Go",
                 provider: "Avanti West Coast"
@@ -112,7 +115,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
                 scheduledDepartureTime: "LOAD",
                 platform: {
                     number: "LOAD",
-
+                    type: "confirmedAndChanged"
                 },
                 status: "Go",
                 provider: "Avanti West Coast"
