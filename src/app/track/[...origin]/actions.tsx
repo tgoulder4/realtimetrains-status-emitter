@@ -1,29 +1,12 @@
 
 
 'use server'
-
-
-// export const getTrackStateSA = unauthenticatedAction
-//     .createServerAction()
-//     .input(z.object({ journey: JourneySchema }))
-//     .handler(async ({ input }) => {
-//         // console.log("getTrackState called with input: ", input)
-//         await rateLimitByKey({ key: "getTrackState", window: MIN_TIME_TIL_REFRESH - 1000, limit: 1 });
-//         try {
-//             const ts = await getTrackStateCA(input.journey);
-//             return ts as TrackState;
-//         } catch (e) {
-//             console.log("getTrackState error: ", e);
-//             redirect('/find?err=' + e);
-//         }
-//         // console.log("getTrackState returning: ", ts);
-//     })
-
 import { z } from 'zod'
-import { TrackStatusParamsSchema } from '@/schemas/trackStatus'
-import { checkCreditsCA, getDepartureStateCA, decrementCreditsCA } from '@/core-actions/core/track'
+import { TrackStatusParamsSchema, TrackStatusResponse } from '@/schemas/trackStatus'
 import { rateLimitByIp, rateLimitByKey } from '@/lib/limiter'
-import { authenticatedAction } from '@/lib/safe-action'
+import { authenticatedAction, unauthenticatedAction } from '@/lib/safe-action'
+import { checkCreditsCA, decrementCreditsCA } from '@/core-actions/core/utils/credits'
+import { getTrackStateCA } from '@/core-actions/track-ca'
 
 export const checkCreditsSA = authenticatedAction
   .createServerAction()
@@ -37,7 +20,7 @@ export const checkCreditsSA = authenticatedAction
     return credits
   })
 
-export const getDepartureStateSA = authenticatedAction
+export const getTrackStateSA = unauthenticatedAction
   .createServerAction()
   .input(
     TrackStatusParamsSchema.extend({
@@ -55,14 +38,19 @@ export const getDepartureStateSA = authenticatedAction
       throw new Error('Insufficient credits')
     }
 
-    const departureState = await getDepartureStateCA(input.input)
+    console.log("Calling getTrackStateCA with params:", input.input)
+    const departureState = await getTrackStateCA(input.input)
     if (!departureState) {
-      throw new Error('No departure state found')
+      throw new Error("Couldn't retrieve the departure state.")
+    }
+    const newCredits = await decrementCreditsCA(input.input.userId);
+    if (newCredits == null) {
+      throw new Error('Failed to decrement credits.')
     }
 
     // Decrement credits after successfully fetching departure state
-    await decrementCreditsCA(input.input.userId)
 
     console.log("[getDepartureStateSA] Departure state:", departureState)
-    return departureState
+    console.log("[getDepartureStateSA] Assigning remaining credits for user", input.input.userId, ":", newCredits)
+    return { ...departureState, remainingCredits: newCredits } as TrackStatusResponse
   })

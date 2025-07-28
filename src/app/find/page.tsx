@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Loader2, MapPin } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -10,6 +10,7 @@ import { ClientLayout } from '@/components/ClientLayout'
 import StationSelector from '@/components/StationSelector'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
+import { fullApplicationName } from '@/app-config'
 
 type Station = {
     code: string;
@@ -17,7 +18,7 @@ type Station = {
 }
 
 type Departure = {
-    status: "Loading" | "Wait" | "Go" | "Changed" | "Error" | "Prepare";
+    status: "Wait" | "Go" | "Prepare" | "Unknown";
     platform: {
         number: string;
     };
@@ -25,24 +26,69 @@ type Departure = {
     destination: Station;
     callingAt: Station[];
     provider: string;
-    rushBeatenCount: number;
+    Trainpeekcount: number;
+    tId: string;
 }
 
-const stations: Station[] = [
-    { code: "EUS", name: "London Euston" },
-    { code: "BHM", name: "Birmingham New Street" },
-    { code: "TRI", name: "Tring" },
-    { code: "WFJ", name: "Watford Junction" },
-    { code: "MKC", name: "Milton Keynes Central" },
-    { code: "COV", name: "Coventry" },
-    { code: "LIV", name: "Liverpool Lime Street" },
-    { code: "MAN", name: "Manchester Piccadilly" },
-    { code: "GLA", name: "Glasgow Central" },
-]
+// const stations: Station[] = [
+//     { code: "EUS", name: "London Euston" },
+//     { code: "BHM", name: "Birmingham New Street" },
+//     { code: "TRI", name: "Tring" },
+//     { code: "WFJ", name: "Watford Junction" },
+//     { code: "MKC", name: "Milton Keynes Central" },
+//     { code: "COV", name: "Coventry" },
+//     { code: "LIV", name: "Liverpool Lime Street" },
+//     { code: "MAN", name: "Manchester Piccadilly" },
+//     { code: "GLA", name: "Glasgow Central" },
+// ]
+// // Mock departures data
+// const mockDepartures: Departure[] = [
+//     {
+//         tId: "A1B2",
+//         status: "Wait",
+//         platform: { number: "1" },
+//         scheduledDepartureTime: "10:30",
+//         destination: stations[1],
+//         callingAt: [stations[3], stations[4], stations[5]],
+//         provider: "Avanti West Coast",
+//         Trainpeekcount: 5
+//     },
+//     {
+//         tId: "C3D4",
+//         status: "Prepare",
+//         platform: { number: "3" },
+//         scheduledDepartureTime: "11:00",
+//         destination: stations[6],
+//         callingAt: [stations[2], stations[4], stations[5]],
+//         provider: "London Northwestern Railway",
+//         Trainpeekcount: 3
+//     },
+//     {
+//         tId: "E5F6",
+//         status: "Go",
+//         platform: { number: "6" },
+//         scheduledDepartureTime: "11:15",
+//         destination: stations[7],
+//         callingAt: [stations[3], stations[5], stations[6]],
+//         provider: "Avanti West Coast",
+//         Trainpeekcount: 8
+//     },
+//     {
+//         tId: "G7H8",
+//         status: "Unknown",
+//         platform: { number: "TBA" },
+//         scheduledDepartureTime: "11:45",
+//         destination: stations[8],
+//         callingAt: [stations[1], stations[5], stations[7]],
+//         provider: "Avanti West Coast",
+//         Trainpeekcount: 2
+//     }
+// ]
+
 
 
 export default function FindPage() {
-    const [from, setFrom] = useState<Station | null>(stations[0])
+    const [from, setFrom] = useState<Station | null>(null)
     const [to, setTo] = useState<Station | null>(null)
     const [selectedDeparture, setSelectedDeparture] = useState<number | null>(null)
     const [departures, setDepartures] = useState<Departure[]>([])
@@ -70,6 +116,8 @@ export default function FindPage() {
                 console.error('Error fetching departures:', error)
                 return []
             }
+            // await new Promise(resolve => setTimeout(resolve, 1000))
+            // return mockDepartures;
         }
 
         const main = async () => {
@@ -86,6 +134,21 @@ export default function FindPage() {
         return () => clearInterval(interval)
     }, [])
 
+    const availableStations = useMemo(() => {
+        const uniqueStations = new Set<Station>()
+        departures.forEach(dep => {
+            uniqueStations.add(dep.destination)
+            dep.callingAt.forEach(station => uniqueStations.add(station))
+        })
+        return Array.from(uniqueStations)
+    }, [departures]);
+    console.log('availableStations', availableStations)
+    const handleSetTo = (station: Station | null) => {
+        setTo(station)
+        if (station) {
+            setSelectedDeparture(null) // Reset selected departure when changing destination
+        }
+    }
     const filteredDepartures = to
         ? departures.filter(d => d.destination.code === to.code || d.callingAt.some(station => station.code === to.code))
         : departures
@@ -95,7 +158,7 @@ export default function FindPage() {
         console.log('setting showCreditsDialog to true')
         setShowCreditsDialog(true)
 
-        console.log("Beat the Rush clicked!")
+        console.log(`Reveal platform clicked!`)
     }
     return (
         <>
@@ -104,7 +167,7 @@ export default function FindPage() {
                     <CardHeader>
                         <CardTitle className="text-2xl">You're guaranteed a seat every time!</CardTitle>
                         <CardDescription className="text-white text-opacity-90">
-                            Beat the rush by seeing your train's platform before it's announced to everyone else.
+                            See your train's platform before it's announced to everyone else.
                         </CardDescription>
                     </CardHeader>
                 </Card>
@@ -118,13 +181,13 @@ export default function FindPage() {
                                 label="From"
                                 value={from}
                                 onChange={setFrom}
-                                stations={stations}
+                                stations={availableStations}
                             />
                             <StationSelector
                                 label="To"
                                 value={to}
                                 onChange={setTo}
-                                stations={stations.filter(station => station.code !== from?.code)}
+                                stations={availableStations.filter(station => station.code !== 'EUS')}
                                 allowClear
                             />
                         </div>
@@ -132,7 +195,7 @@ export default function FindPage() {
 
                     <div className="w-full lg:w-2/3">
                         <h2 className="text-xl font-semibold mb-4 flex items-center justify-between">
-                            <span>{to ? 'Search results' : 'Hidden platforms'}</span>
+                            <span>{to ? 'Search results' : 'Choose a departure'}</span>
                             <div className="flex items-center">
                                 {isLoading && (
                                     <Loader2 className="animate-spin h-5 w-5 mr-2" />
@@ -243,7 +306,10 @@ export default function FindPage() {
                         <p className="text-sm">Remember, your credits will decrease by 1 every minute while we search for the latest platform updates.</p>
                     </div>
                     <DialogFooter className="mt-6">
-                        <Button onClick={() => { setShowCreditsDialog(false); window.location.href = '/track' }} className="w-full bg-teal-500 hover:bg-teal-600 text-white rounded-none">
+                        <Button onClick={() => {
+                            setShowCreditsDialog(false); window.location.href = `/track/EUS?trains=${departures[selectedDeparture!].tId}&aimStation=${selectedDeparture !== null ? departures[selectedDeparture!].destination.code : ''
+                                }`
+                        }} className="w-full bg-teal-500 hover:bg-teal-600 text-white rounded-none">
                             Got it!
                         </Button>
                     </DialogFooter>

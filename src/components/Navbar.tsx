@@ -9,14 +9,17 @@ export function Navbar() {
 
     return (
         <nav className="navbar sticky top-0 z-50 h-12 bg-black flex items-center justify-between px-4">
-            <Train className="h-6 w-6 text-white" />
+            <a href="/find" className="flex gap-2">
+                <Train className="h-6 w-6 text-white" />
+                <p className="">BeatTheRush <span className="hidden sm:inline opacity-50 font-normal">by TrainPeek</span></p>
+            </a>
             <div className="flex items-center space-x-4">
-                <Button
+                {/* <Button
                     variant="ghost"
                     className="text-white"
                 >
                     100 credits
-                </Button>
+                </Button> */}
                 <Avatar
                     className="rounded-none h-8 w-8 cursor-pointer border-2 border-white border-opacity-10"
                 >

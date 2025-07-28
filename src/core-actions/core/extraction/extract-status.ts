@@ -1,6 +1,6 @@
 import { MILLISECONDS_BEFORE_POLLING_START } from "@/lib/constants";
-import { convertDateToUTC, parseTime } from "./time-handling";
-import { DepartureState } from "@/schemas/departure";
+import { convertDateToUTC, parseTime } from "../utils/time-handling";
+import { DepartureState } from "@/schemas/states";
 
 /**
  * Determines the status of a train service based on platform class and time
@@ -29,7 +29,8 @@ export function getStatus($service: cheerio.Cheerio): DepartureState['status'] |
         // 'a' for arrived, 'c' for changed
         console.log(`[getStatus] Platform is active or changed, status: Go`);
         return 'Go';
+    } else {
+        console.log(`[getStatus] Unable to determine status, returning null`);
+        return 'Unknown'
     }
-    console.log(`[getStatus] Unable to determine status, returning null`);
-    return null;
 }

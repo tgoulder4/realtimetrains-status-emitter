@@ -2,10 +2,20 @@ import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
 import { z } from 'zod'
 import { TrackStatusParamsSchema } from '../../../schemas/trackStatus'
-import { addCreditsCA, checkCreditsCA, decrementCreditsCA, getDepartureStateCA } from '@/core-actions/core/track'
+
+
 import { lucia } from '@/lib/auth'
 import { env } from '@/env'
+import {
+  addCreditsCA,
 
+  checkCreditsCA,
+
+  decrementCreditsCA,
+
+
+} from '@/core-actions/core/utils/credits'
+import { getTrackStateCA } from '@/core-actions/track-ca'
 
 const app = new Hono()
 
@@ -15,9 +25,9 @@ const app = new Hono()
     return c.json({ credits })
   })
 
-  .post('/get-departure-state', zValidator('json', TrackStatusParamsSchema), async (c) => {
+  .post('/get-track-state', zValidator('json', TrackStatusParamsSchema), async (c) => {
     const params = c.req.valid('json')
-    const departureState = await getDepartureStateCA(params)
+    const departureState = await getTrackStateCA(params)
     if (!departureState) {
       return c.json({ error: 'No matching service found' }, 404)
     }

@@ -39,14 +39,6 @@ function PlatformCard({
                             width: `${((checkingAgainIn / timeTilRefresh) * 120)}%`,
                             backgroundColor:
                                 changeColour(getHexColourFromStatus(status)).lighten(1).setAlpha((checkingAgainIn / timeTilRefresh) + 1.5).toString()
-                            // (checkingAgainIn <= -1 && status !== "Go")
-                            //     ?
-                            //     changeColour(getHexColourFromStatus(status)).darken(10).toHexString()
-                            //     : (checkingAgainIn == timeTilRefresh && timeTilRefresh >= 0)
-                            //         ?
-                            //         'green'
-                            //         :
-                            //         `${changeColour(getHexColourFromStatus(status)).lighten(1).setAlpha((checkingAgainIn / timeTilRefresh) + 0.1)}`
                         }}></div>
                         <div className={`flex z-20 pt-5 flex-col items-center mt-3 `}>
                             <h2 className='font-semibold -mb-10'>Platform</h2>

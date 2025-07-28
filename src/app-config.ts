@@ -1,1 +1,2 @@
-export const applicationName = 'BeatTheRush';
+export const applicationName = 'TrainPeek';
+export const fullApplicationName = 'Beat The Rush';

@@ -1,9 +1,10 @@
 import { z } from 'zod'
-import { DepartureStateSchema } from './departure'
+import { DepartureStateSchema } from './states'
 
-export const TrackStatusResponseSchema = z.object({
-  departureState: DepartureStateSchema,
-  remainingCredits: z.number().int().nonnegative()
+//extend departurestateschema with remainingCredits: z.number().int().nonnegative(),
+export const TrackStatusResponseSchema = DepartureStateSchema.extend({
+  remainingCredits: z.number().int().nonnegative(),
+  tId: z.string().length(4),
 })
 
 export const TrackStatusParamsSchema = z.object({

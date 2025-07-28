@@ -1,76 +1,94 @@
-'use client'
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { randomBytes } from 'crypto';
-import { getTrackStateSA } from '@/app/track/actions';
-import { TrackState, Journey } from '@/lib/types';
-import { MIN_TIME_TIL_REFRESH } from '../constants';
+import { TrackStatusResponse } from '@/schemas/trackStatus';
+import { useState, useEffect } from 'react';
 import { useServerAction } from 'zsa-react';
-import { getTimeInMsUntilStartPolling } from '@/core-actions/core/utils/time-handling';
+import *  as  Realm from "realm-web";
+import { getTrackStateSA } from '@/app/track/[...origin]/actions';
 
-export function useTrackingState(serviceToTrack: Journey) {
-    const { execute } = useServerAction(getTrackStateSA);
-    const [currentTrackingState, setCurrentTrackingState] = useState<TrackState>({
-        data: {
-            status: "Loading",
-            platform: {
-                number: "--",
-            },
-            destination: { name: "--", code: "--" },
-            provider: "--",
-            scheduledDepartureTime: "--",
-        },
-        hidden: {
-            timeTilRefresh: MIN_TIME_TIL_REFRESH * 20,
-            timeWhenPollingStarts: "--",
-            updateKey: randomBytes(16).toString('hex')
-        }
-    });
+// interface Tracksta {
+//     tId: string;
+//     status: "Wait" | "Go" | "Prepare" | "Unknown";
+//     platform: { number: string };
+//     scheduledDepartureTime: string;
+//     destination: { name: string; code: string };
+//     callingAt: { name: string; code: string }[];
+//     provider: string;
+//     millisecondsTilRefresh: number;
+//     Trainpeekcount: number;
+// }
+
+interface UseTrackStateProps {
+    departureId: string;
+    origin: string;
+    userId: string;
+}
+
+const mockTrackingState: TrackStatusResponse = {
+    tId: "1234",
+    status: "Wait",
+    platform: { number: "1" },
+    scheduledDepartureTime: "10:30",
+    destination: { name: "Birmingham New Street", code: "BHM" },
+    callingAt: [
+        { name: "Watford Junction", code: "WFJ" },
+        { name: "Milton Keynes Central", code: "MKC" },
+        { name: "Coventry", code: "COV" }
+    ],
+    provider: "Avanti West Coast",
+    millisecondsTilRefresh: 9000,
+    remainingCredits: 100,
+    timeKeepingStatus: "OnTime"
+};
+
+// const REALM_APP_ID = 'your-realm-app-id'; // Replace with your actual Realm App ID
+
+export function useTrackState({ departureId, origin, userId }: UseTrackStateProps) {
+    const [trackingState, setTrackingState] = useState<TrackStatusResponse | null>(null);
+    const [error, setError] = useState<Error | null>(null);
     useEffect(() => {
-        let timer: NodeJS.Timeout;
         const fetchData = async () => {
-            console.log("Fetchdata called. It'll next be called in ", currentTrackingState.hidden.timeTilRefresh);
-            //run getTrackStateSA with journey serviceToTrack
-            const res = await execute({ journey: serviceToTrack });
-            console.log("res: ", res)
+            try {
+                //use only for testing colours of platform card
+                // if (false) {
+                // Simulating API call with a delay
+                await new Promise(resolve => setTimeout(resolve, 1000));
 
-            //if res[0] is not null, set newTrackState to res[0]
-            if (res[0]) {
-                let newTrackState: TrackState = res[0];
-                //if newTrackState.status is prepare, calculate time until polling starts
-                if (newTrackState.data.status == "Prepare") {
-                    const timeUntilStartPolling = getTimeInMsUntilStartPolling(Number(serviceToTrack.departure.time.slice(0, 2)), Number(serviceToTrack.departure.time.slice(2)));
-                    console.log("timeuntilstartpolling: ", timeUntilStartPolling);
-                    //if timeUntilStartPolling is less than 0, set status to Wait
-                    if (timeUntilStartPolling <= 0) {
-                        console.log("timeUntilStartPolling: ", timeUntilStartPolling, " was less than 0. Setting status to Wait.");
-                        newTrackState.data.status = "Wait"
+                // Simulate status changes
+                const statuses: ("Wait" | "Go" | "Prepare" | "Unknown")[] = ["Wait", "Prepare", "Go", "Unknown"];
+                const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+
+                setTrackingState({
+                    ...mockTrackingState,
+                    status: randomStatus,
+                    millisecondsTilRefresh: 9000, // Reset the countdown each time
+                });
+                // }
+
+                getTrackStateSA({
+                    departureId,
+                    origin,
+                    userId
+                }).then((response) => {
+                    const [data, err] = response;
+                    if (!err) {
+                        setTrackingState(data as TrackStatusResponse);
                     } else {
-                        newTrackState.hidden.timeTilRefresh = timeUntilStartPolling;
+                        throw new Error("Failed to fetch tracking state");
                     }
-                }
-                console.log("setting newTrackState: ", newTrackState);
-                //set currentTrackingState to newTrackState
-                setCurrentTrackingState(newTrackState);
-                if (newTrackState.data.status == "Error" || newTrackState.data.status == "Go") {
-                    console.log("returning due to edge cases. newState: ", newTrackState);
-                    clearInterval(timer);
-                    return;
-                };
-            } else {
-                console.error("ERROR FETCHING NEW_TRACK_STATE: ", res[1].message);
+                }).catch(err => {
+                    console.error("[useTrackState] Error fetching tracking state:", err);
+                    setError(err instanceof Error ? err : new Error('An unknown error occurred'));
+                });
+
+            } catch (err) {
+                setError(err instanceof Error ? err : new Error('An unknown error occurred'));
             }
-        }
+        };
+
         fetchData();
-        timer = setInterval(() => {
-            fetchData();
-            console.log("refreshing in ", currentTrackingState.hidden.timeTilRefresh);
-        }, currentTrackingState.hidden.timeTilRefresh < MIN_TIME_TIL_REFRESH ? MIN_TIME_TIL_REFRESH : currentTrackingState.hidden.timeTilRefresh);
+        const interval = setInterval(fetchData, 9000); // Fetch every 9 seconds
 
+        return () => clearInterval(interval);
+    }, [departureId, origin, userId]);
 
-        return () => clearInterval(timer);
-    }, [
-        currentTrackingState.data.status
-    ]);
-
-    return currentTrackingState;
+    return { trackingState, error };
 }

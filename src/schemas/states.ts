@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const DepartureStateSchema = z.object({
   status: z.enum(["Prepare", "Wait", "Go", "Unknown"]),
+  timeKeepingStatus: z.enum(["OnTime", "Late", "Cancelled", "Unknown"]),
   platform: z.object({
     number: z.string(),
   }),
@@ -15,6 +16,7 @@ export const DepartureStateSchema = z.object({
     name: z.string(),
   })),
   provider: z.string(),
+  millisecondsTilRefresh: z.number(),
 });
 
 export type DepartureState = z.infer<typeof DepartureStateSchema>;

@@ -5,7 +5,7 @@ export function checkTrueStationName(destination: string) {
 }
 export const findStationCodeByName = (stationName: string) => {
     const station = stationNamesWithCodes.find(station => station.StationName === stationName) || { Code: "" };
-    return station.Code
+    return station.Code || null;
 }
 export const findStationNameByCode = (destinationStationCode: string) => {
     const station = stationNamesWithCodes.find(station => station.Code === destinationStationCode) || { StationName: "" };

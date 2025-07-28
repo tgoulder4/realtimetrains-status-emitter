@@ -1,4 +1,5 @@
 import { env } from "@/env";
+import { rateLimitByKey } from "@/lib/limiter";
 
 
 interface FetchOptions {
@@ -13,6 +14,9 @@ export async function fetchServiceList({ origin = 'EUS' }: FetchOptions = {}): P
     const isProduction = env.NODE_ENV === "production" || Boolean(env.prod_override_true_if_nonempty);
     const fullUrl = `${BASE_URL}${origin}`;
 
+    await rateLimitByKey({
+        key: `fetchServiceList-${origin}`, limit: 5, window: 10000
+    });
     console.log(`Environment: ${isProduction ? 'Production' : 'Development'}`);
 
     let url: string;

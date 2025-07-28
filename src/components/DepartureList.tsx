@@ -2,6 +2,7 @@ import React from 'react'
 import { Check, AlertTriangle, X, Eye, Hourglass, ArrowRight } from 'lucide-react'
 import { cn } from "@/lib/utils"
 import { BusinessIndicator } from './BusinessIndicator'
+import StatusGlyph from './statusGlyph'
 
 type Station = {
     code: string;
@@ -9,7 +10,7 @@ type Station = {
 }
 
 type Departure = {
-    status: "Loading" | "Wait" | "Go" | "Changed" | "Error" | "Prepare";
+    status: "Prepare" | "Wait" | "Go" | "Unknown";
     platform: {
         number: string;
     };
@@ -17,7 +18,7 @@ type Departure = {
     destination: Station;
     callingAt: Station[];
     provider: string;
-    rushBeatenCount: number;
+    Trainpeekcount: number;
 }
 
 type DepartureListProps = {
@@ -59,17 +60,13 @@ export function DepartureList({ departures, isLoading, selectedDeparture, setSel
                             <div className="flex-grow">
                                 <span className="text-xl font-bold mr-2 text-white">{departure.scheduledDepartureTime}</span>
                                 <span className="font-semibold text-white">{departure.destination.name}</span>
-                                {departure.status === "Go" && <Check className="inline-block w-4 h-4 ml-2 text-white opacity-20" />}
-                                {departure.status === "Wait" && <Check className="inline-block w-4 h-4 ml-2 text-white opacity-20" />}
-                                {departure.status === "Changed" && <Check className="inline-block w-4 h-4 ml-2 text-white opacity-20" />}
-                                {departure.status === "Error" && <AlertTriangle className="inline-block w-4 h-4 ml-2 text-white opacity-20" />}
-                                {departure.status === "Prepare" && <Hourglass className="inline-block w-4 h-4 ml-2 text-white opacity-20" />}
+                                <StatusGlyph status={departure.status} />
                                 {to && departure.callingAt.some(station => station.code === to.code) && (
                                     <div className="text-sm text-gray-400 mt-1">Calling at {to.name}</div>
                                 )}
                             </div>
                             <div className="text-right flex flex-col items-end">
-                                <BusinessIndicator count={departure.rushBeatenCount} />
+                                <BusinessIndicator count={departure.Trainpeekcount} />
                                 <span className="mt-2 text-white text-opacity-70">
                                     {departure.provider.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                                 </span>
