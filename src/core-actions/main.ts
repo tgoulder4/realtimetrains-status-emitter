@@ -14,7 +14,10 @@ export const getServiceListCA = async (dest?: string): Promise<Service[]> => {
     try {
         let res: Response;
         let url: any;
-        if (env.NODE_ENV === "production") { //DO NOT CHANGE THIS LINE
+        if (
+            // env.NODE_ENV === "production"
+            false
+        ) { //DO NOT CHANGE THIS LINE
             url = 'https://proxy.scrapeops.io/v1/?' + new URLSearchParams({
                 api_key: env.SCRAPEOPS_API_KEY,
                 url: `https://www.realtimetrains.co.uk/search/simple/gb-nr:EUS${dest ? `/to/gb-nr:${dest}` : ''}`
