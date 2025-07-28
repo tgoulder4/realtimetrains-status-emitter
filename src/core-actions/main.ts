@@ -52,7 +52,7 @@ export const getServiceListCA = async (dest?: string): Promise<Service[]> => {
         console.error(e);
         return [{
             status: 'Error', platform: {
-                number: '--', type: 'confirmedAndChanged'
+                number: '--'
             }, provider: "Avanti", scheduledDepartureTime: '--', destination: { name: '', code: '' }
         }]
     }

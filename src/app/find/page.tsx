@@ -52,7 +52,6 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
             scheduledDepartureTime: "LOAD",
             platform: {
                 number: "LOAD",
-                type: "confirmedAndChanged"
             },
             status: "Go",
             provider: "Avanti West Coast"
@@ -62,7 +61,6 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
             scheduledDepartureTime: "LOAD",
             platform: {
                 number: "LOAD",
-                type: "confirmedAndChanged"
             },
             status: "Go",
             provider: "Avanti West Coast"
@@ -72,7 +70,6 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
             scheduledDepartureTime: "LOAD",
             platform: {
                 number: "LOAD",
-                type: "confirmedAndChanged"
             },
             status: "Go",
             provider: "Avanti West Coast"
@@ -95,7 +92,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
                 scheduledDepartureTime: "LOAD",
                 platform: {
                     number: "LOAD",
-                    type: "confirmedAndChanged"
+
                 },
                 status: "Go",
                 provider: "Avanti West Coast"
@@ -105,7 +102,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
                 scheduledDepartureTime: "LOAD",
                 platform: {
                     number: "LOAD",
-                    type: "confirmedAndChanged"
+
                 },
                 status: "Go",
                 provider: "Avanti West Coast"
@@ -115,7 +112,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
                 scheduledDepartureTime: "LOAD",
                 platform: {
                     number: "LOAD",
-                    type: "confirmedAndChanged"
+
                 },
                 status: "Go",
                 provider: "Avanti West Coast"
