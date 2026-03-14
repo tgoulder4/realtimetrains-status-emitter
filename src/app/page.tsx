@@ -11,7 +11,7 @@ function Page({ }: Props) {
 
 
   return (<>
-    <div className='items-center w-full h-full grid place-items-center' style={{ backgroundImage: "url('backdrop.jpg')", backgroundSize: '100%' }} >
+    <div className='items-center w-full h-full grid place-items-center' style={{ backgroundImage: "url('backdrop.jpg')", backgroundSize: 'cover', backgroundPositionX: '50%' }} >
 
       <div className="flex flex-col items-center bg-white p-4">
 

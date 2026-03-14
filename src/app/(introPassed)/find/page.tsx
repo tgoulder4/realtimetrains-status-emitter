@@ -159,7 +159,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
         return () => clearInterval(timer);
     }, []);
     return (
-        <main className="flex min-h-fit flex-col pb-48" style={{ backgroundImage: "url('backdrop.jpg')", backgroundSize: '100%' }} >
+        <main className="flex min-h-fit flex-col pb-48" style={{ backgroundImage: "url('backdrop.jpg')", backgroundSize: '1280px', backgroundPositionX: '50%' }} >
             <div className={`hidden ${maxWidthClassNames}`}></div>
             <div className={`navArea top-0 left-0 z-10 w-full pt-8 md:pt-16 pb-4  bg-zinc-900 bg-opacity-40`}>
                 <div className={`${maxWidthClassNames} flex flex-col gap-8 items-center px-8 pt-8 md:px-16 md:mx-auto md:pt-0`}>
