@@ -9,17 +9,17 @@ import { ComboBox } from "@/components/ui/combobox";
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { getServiceListCA } from "../../core-actions/main";
+import { getServiceListCA } from "../../../core-actions/main";
 import { Service } from "@/lib/types";
 import { maxWidthClassNames } from "@/lib/layout";
 import { applicationName } from "@/app-config";
 import { Input } from "@/components/ui/input";
-import DepartureCard, { CardPrim } from "../DepartureCard";
+import DepartureCard, { CardPrim } from "../../DepartureCard";
 import { Button } from "@/components/ui/button";
 import { checkTrueStationName, findStationCodeByName, findStationNameByCode } from "@/lib/destinations";
 import { findUniquelyNamedDepartures } from "@/lib/departures";
 import DeparturesComboBoxFormField from "./departuresComboBoxFormField";
-import HeaderLogoWithName from "../track/LogoWithName";
+import HeaderLogoWithName from "../../track/LogoWithName";
 import { toast } from "sonner";
 
 
@@ -159,16 +159,16 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
         return () => clearInterval(timer);
     }, []);
     return (
-        <main className="flex min-h-fit flex-col pb-48">
+        <main className="flex min-h-fit flex-col pb-48" style={{ backgroundImage: "url('backdrop.jpg')", backgroundSize: '100%' }} >
             <div className={`hidden ${maxWidthClassNames}`}></div>
-            <div className={`navArea sticky top-0 left-0 z-10 w-full pt-8 md:pt-16 pb-4  bg-zinc-900`}>
+            <div className={`navArea top-0 left-0 z-10 w-full pt-8 md:pt-16 pb-4  bg-zinc-900 bg-opacity-40`}>
                 <div className={`${maxWidthClassNames} flex flex-col gap-8 items-center px-8 pt-8 md:px-16 md:mx-auto md:pt-0`}>
                     <HeaderLogoWithName pageTitle={`${applicationName}`} />
                     <Form {...form}>
                         <form className="w-full" onSubmit={form.handleSubmit(onSubmit)}>
                             <div className="w-full flex flex-col gap-4">
                                 <div className="flex flex-row gap-2">
-                                    <div className={`w-full flex flex-row items-center gap-2`}>
+                                    <div className={` hidden w-full  flex-row items-center gap-2`}>
                                         <p className="opacity-40  text-white">From:</p>
                                         <FormField
                                             control={form.control}
@@ -186,7 +186,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
                                 </div>
                                 <div className="pl-[17px] flex flex-row gap-2">
                                     <div className={`w-full flex flex-row items-center gap-2`}>
-                                        <p className="opacity-40  text-white">To:</p>
+                                        <p className=" text-white">Find Train (Select Destination):</p>
                                         <DeparturesComboBoxFormField onSubmit={onSubmit} _options={findUniquelyNamedDepartures(departures).map(station => ({ label: station.destination.name, value: station.destination.code }))} form={form} />
                                     </div>
                                 </div>
@@ -198,7 +198,7 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
             </div>
             <div className={`${maxWidthClassNames}  flex flex-col h-full justify-between`}>
                 <div className="px-4 lg:px-12 pt-8 flex flex-col h-full gap-4">
-                    <h2 className="font-semibold">{aimStation.code ? "Results" : "Departing soon"}</h2>
+                    <h2 className="font-semibold text-white">{aimStation.code ? "Results" : "Departing soon"}</h2>
                     <div className="flex flex-col gap-4">
                         {renderedDepartures.map((departure, index) => {
                             const { destination } = departure;
@@ -236,6 +236,11 @@ export default function Home({ searchParams }: { searchParams: { [key: string]: 
                     {/* {selectedDepartures.length > 0 && `(${selectedDepartures.length})` } */}
                 </Button>
                 {/* </div> */}
+                <div className="bg-black text-white bottom-0 text-left w-full sticky flex justify-between">
+                    <h3 className="font-normal">© Tye Goulder</h3>
+                    <h3 className="font-normal">BTR will soon be a paid service</h3>
+                    <a href="/faq" className="underline">FAQ</a>
+                </div>
             </div>
         </main >
     );
